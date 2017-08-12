@@ -1,0 +1,69 @@
+img.books {
+	height: 100%;
+	max-height: 200px;
+}
+
+.loading {
+	display: none;
+	align-items: center;
+	justify-content: center;
+	background:#000;
+	position: fixed;
+	z-index: 2000;
+	opacity:0.6;
+	width: 100%;
+	height: 100%;
+}
+.loadingCircle {
+	width: 120px;
+	height: 120px;
+	z-index: 2006;
+}
+.progress {
+	display: none;
+}
+.selection {
+	padding-left: 10.5px;
+	padding-right: 10.5px;
+}
+.bookInfo {
+	display: none;
+}
+.bookCategory {
+	display: none;
+}
+.bookCategoryA {
+	display: none;
+}
+.bookCategoryB {
+	display: none;
+}
+.updBooks {
+	display: none;
+}
+.addBtn {
+	position: absolute;
+	right: 17px; 
+	bottom: 1em;
+}
+.adminInfo {
+	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid #c5c5c5;
+}
+.cover {
+	margin-right: 0 !important;
+}
+.cover .coverImage {
+	position: absolute;
+	visibility: hidden;
+	z-index: 5;
+	bottom: 2.7em;
+	right: 1em;
+}
+.cover .coverImage img {
+	max-width: 150px;
+}
+.cover:hover .coverImage {
+	visibility: visible;
+}
