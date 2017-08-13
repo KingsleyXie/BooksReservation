@@ -78,8 +78,8 @@ $(document).ready(function() {
 										"</div>" + 
 									"</div>" + 
 									"<div class=\"card-action center-align\">" + 
-										"<a class=\"cover\" href=\"" + response[res].books[i].image + "\">触碰或点击查看封面图片" + 
-											"<div class=\"coverImage\">" + 
+										"<a class=\"cover-reservation\" href=\"" + response[res].books[i].image + "\">触碰或点击查看封面图片" + 
+											"<div class=\"coverImage-reservation\">" + 
 												"<img src=\"" + response[res].books[i].image + "\" alt=\"封面图片\">" + 
 											"</div>" + 
 										"</a>" + 
