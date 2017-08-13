@@ -10,9 +10,8 @@ if (!isset($_POST['type'])) {
 // type value - 0: all, 1: search, 2: category
 
 $loadImg = false;
-if (isset($_POST['loadImg'])) {
-	$loadImg = true;
-}
+if (isset($_POST['loadImg'])) $loadImg = true;
+
 $defaultCover = "./assets/pictures/defaultCover.png";
 
 switch ($_POST['type']) {
@@ -47,7 +46,7 @@ switch ($_POST['type']) {
 		break;
 
 	default:
-		$response = array('error' => 1);
+		response(3, '请求错误');
 		break;
 }
 

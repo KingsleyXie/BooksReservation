@@ -10,8 +10,6 @@ if (!isset($_POST['type'])) {
 
 // type value - 0: all, 1: search
 
-
-
 if ($_POST['type'] == "0") {
 	
 	if (!isset($_SESSION['username'])) {

@@ -8,9 +8,7 @@ if (!isset($_POST['count'])) {
 }
 
 if ($_POST['count'] <= 0 OR empty($_POST['studentName']) OR empty($_POST['studentNo']) OR empty($_POST['dormitory']) OR empty($_POST['contact']) OR empty($_POST['date']) OR empty($_POST['timePeriod']) OR !isset($_POST['list0']) OR !isset($_POST['list1']) OR !isset($_POST['list2'])) {
-	$response = array('code' => 1);
-	echo json_encode($response);
-	return;
+	response(1, '请将预约信息填写完整！');
 }
 
 $dup = 0;
@@ -21,11 +19,7 @@ if ($_POST['count'] == 3 && (($_POST['list0'] == $_POST['list1']) OR ($_POST['li
 	$dup = 1;
 }
 
-if ($_POST['count'] > 3 OR $dup == 1) {
-	$response = array('code' => 3);
-	echo json_encode($response);
-	return;
-}
+if ($_POST['count'] > 3 OR $dup == 1) response(3, '错误请求');
 
 
 
@@ -33,11 +27,7 @@ $sql = 'SELECT * from students WHERE studentNo = ?';
 $stmt = $connect->prepare($sql);
 $stmt->execute(array($_POST['studentNo']));
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-if (!empty($result)) {
-	$response = array('code' => 2);
-	echo json_encode($response);
-	return;
-}
+if (!empty($result)) response(2, '该学号已存在预约订单！');
 
 
 $sql = 'SELECT * FROM books WHERE (bookID = ? AND remainingAmount <= 0) OR (bookID = ? AND remainingAmount <= 0) OR (bookID = ? AND remainingAmount <= 0)';
@@ -45,9 +35,6 @@ $stmt = $connect->prepare($sql);
 $stmt->execute(array($_POST['list0'], $_POST['list1'], $_POST['list2']));
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if (!empty($result)) {
-	$response = array('code' => 5);
-	echo json_encode($response);
-
 	date_default_timezone_set('Asia/Shanghai');
 	$time=date('Y.m.d H:i:s');
 	$logFile = fopen("../collision.log", "a");
@@ -55,7 +42,7 @@ if (!empty($result)) {
 	fwrite($logFile, $logText);
 	fclose($logFile);
 
-	return;
+	response(5, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
 }
 
 
@@ -82,13 +69,8 @@ if (empty($result)) {
 		$stmt = $connect->prepare($sql);
 		$stmt->execute(array($_POST['list0'], $_POST['list1'], $_POST['list2']));
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($result)) {
-			$response = array('code' => 0);
-			echo json_encode($response);
-			return;
-		}
+		if (empty($result)) response(0);
 	}
 }
 
-$response = array('code' => 4);
-echo json_encode($response);
+response(4, '订单提交失败，请联系管理员或重试');
