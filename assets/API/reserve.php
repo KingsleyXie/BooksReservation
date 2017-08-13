@@ -2,7 +2,6 @@
 header('Content-Type: application/json');
 require_once('./config.php');
 
-
 if (!isset($_POST['count'])) {
 	header('Location: http://p1.img.cctvpic.com/20120409/images/1333902721891_1333902721891_r.jpg');
 	return;

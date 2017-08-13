@@ -17,8 +17,8 @@ switch ($_POST['type']) {
 		    echo json_encode($response);
 		    return;
 		}
+		//Default username and password(Hash Method: SHA256) are both 'test', please remember to change it when you  deploy it online
 		if ($_POST['username'] != 'test' OR hash('sha256', $_POST['password']) != '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08') {
-		// if ($_POST['username'] != 'admin' OR hash('sha256', $_POST['password']) != 'e7488ae5d86390d0c79135f12107cbb086f3a544d459db412b6410edd44a2a29') {
 		    $response = array('code' => 1);
 		    echo json_encode($response);
 		    return;

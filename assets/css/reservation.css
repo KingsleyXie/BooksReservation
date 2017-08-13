@@ -177,14 +177,15 @@ th {
 .card .card-content {
 	padding-bottom: 0;
 }
-.copyright {
-	padding-top: 10px;
-	line-height: 1em;
-	border-top: 1px solid rgba(158, 158, 158, 0.3);
-}
-.copyright p {
-	text-align: center;
-}
 .alertContent {
 	font-size: 1.5rem;
+}
+.copyright {
+	padding-top: 10px;
+	margin-bottom: 20px;
+	line-height: 1em;
+	text-align: center;
+}
+.copyright a {
+	color: inherit;
 }
