@@ -1,4 +1,4 @@
-.reservationTitle {
+.reservation-title {
 	font-size: 2em;
 	text-align: center;
 	padding-bottom: 20px;
@@ -32,19 +32,19 @@
 	display: flex;
 	justify-content: center;
 }
-.fullText{
+.full-text{
 	padding-bottom: 0px !important;
 }
-.card.horizontal.listCard .card-image img {
+.card.horizontal.list-card .card-image img {
 	max-width: 80px;
 }
-.card.horizontal.listCard .card-stacked .card-content {
+.card.horizontal.list-card .card-stacked .card-content {
 	padding-top: 0;
 	padding-bottom: 0;
 	padding-left: 15px;
 	padding-right: 0;
 }
-.card.horizontal.listCard .card-stacked{
+.card.horizontal.list-card .card-stacked{
 	width: calc(100% - 128px);
 }
 .card.horizontal .card-stacked .card-content .card-title{
@@ -60,13 +60,13 @@
 .welcome {
 	max-height: 90%;
 }
-.dialogTitle {
+.dialog-title {
 	font-size: 2.3rem;
 	line-height: 100%;
 	margin-top: 0.3rem;
 	margin-bottom: 1.5rem;
 }
-.loadImg {
+.load-img {
 	margin-top: 1.3rem;
 	margin-bottom: 1.5rem;
 }
@@ -84,7 +84,7 @@
 	text-align: center;
 	color: #9e9e9e
 }
-.bookConfirm {
+.book-confirm {
 	display: none;
 	position: fixed;
 	background-color: #ee6e73;
@@ -108,7 +108,7 @@
 	width: 100%;
 	height: 100%;
 }
-.loadingCircle {
+.loading-circle {
 	width: 120px;
 	height: 120px;
 	z-index: 2006;
@@ -122,35 +122,35 @@ th {
 .cover {
 	margin-right: 0;
 }
-.cover .coverImage {
+.cover .cover-image {
 	position: absolute;
 	visibility: hidden;
 	z-index: 5;
 	bottom: 1em;
 	left: 1.5em;
 }
-.cover .coverImage img {
+.cover .cover-image img {
 	max-width: 100px;
 }
-.cover:hover .coverImage {
+.cover:hover .cover-image {
 	visibility: visible;
 }
 .selection {
 	padding-left: 10.5px;
 	padding-right: 10.5px;
 }
-.bookCategoryA {
+.book-categoryA {
 	display: none;
 }
-.bookCategoryB {
+.book-categoryB {
 	display: none;
 }
-.addBtn {
+.btn-add {
 	position: absolute;
 	right: 7px; 
 	bottom: 6px;
 }
-.delBtn {
+.btn-del {
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -162,7 +162,7 @@ th {
 	height: 32px;
 	background-color: #009688 !important;
 }
-.confirmBtn {
+.btn-confirm {
 	background-color: #ee6673;
 	color: white;
 }
@@ -189,6 +189,6 @@ th {
 .copyright a {
 	color: inherit;
 }
-.alertContent {
+.alert-content {
 	font-size: 1.5rem;
 }

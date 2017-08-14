@@ -30,8 +30,8 @@ $(document).ready(function() {
 
 						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? " 等" : "";
 						var btnAttr = response[i].remainingAmount == 0 ? 
-						"<a class=\"btn-floating waves-effect waves-light grey center-align addBtn\">0</a>" : 
-						"<a class=\"btn-floating waves-effect waves-light red center-align addBtn\"" +
+						"<a class=\"btn-floating waves-effect waves-light grey center-align btn-add\">0</a>" : 
+						"<a class=\"btn-floating waves-effect waves-light red center-align btn-add\"" +
 						"data-id=" + response[i].bookID + " onclick=\"addToList(this)\">" + 
 						response[i].remainingAmount + "</a>";
 						
@@ -80,8 +80,8 @@ $(document).ready(function() {
 
 						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? " 等" : "";
 						var btnAttr = response[i].remainingAmount == 0 ? 
-						"<a class=\"btn-floating waves-effect waves-light grey center-align addBtn\">0</a>" : 
-						"<a class=\"btn-floating waves-effect waves-light red center-align addBtn\"" +
+						"<a class=\"btn-floating waves-effect waves-light grey center-align btn-add\">0</a>" : 
+						"<a class=\"btn-floating waves-effect waves-light red center-align btn-add\"" +
 						"data-id=" + response[i].bookID + " onclick=\"addToList(this)\">" + 
 						response[i].remainingAmount + "</a>";
 						
@@ -132,8 +132,8 @@ $(document).ready(function() {
 
 							var MultipleAuthor = response[i].isMultipleAuthor == 1 ? " 等" : "";
 							var btnAttr = response[i].remainingAmount == 0 ? 
-							"<a class=\"btn-floating waves-effect waves-light grey center-align addBtn\">0</a>" : 
-							"<a class=\"btn-floating waves-effect waves-light red center-align addBtn\"" +
+							"<a class=\"btn-floating waves-effect waves-light grey center-align btn-add\">0</a>" : 
+							"<a class=\"btn-floating waves-effect waves-light red center-align btn-add\"" +
 							"data-id=" + response[i].bookID + " onclick=\"addToList(this)\">" + 
 							response[i].remainingAmount + "</a>";
 							
@@ -244,7 +244,7 @@ function searchReservation() {
 			if (response[0].code == 0) {
 				document.getElementById("reservation").innerHTML = 
 					"<div class=\"card-content\">" + 
-						"<div class=\"reservationTitle\">订单详情</div>" + 
+						"<div class=\"reservation-title\">订单详情</div>" + 
 						"<div class=\"card-title\">订单号：" + response[1].reservationNo + "</div>" + 
 						"<div class=\"card-details\">" + 
 							"<table class=\"highlight responsive-table\">" + 
@@ -411,7 +411,7 @@ function modifyReservation() {
 					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? " 等" : "";
 					
 					document.getElementById("listData").innerHTML += 
-						"<div class=\"card horizontal listCard\">" + 
+						"<div class=\"card horizontal list-card\">" + 
 							"<div class=\"card-image\">" + 
 								"<img class=\"z-depth-3\" src=\"" + response[1].books[i].image + "\">" + 
 							"</div>" + 
@@ -424,7 +424,7 @@ function modifyReservation() {
 										"<p>" + response[1].books[i].pubdate + "</p>" + 
 									"</div>" + 
 								"</div>" + 
-							"</div><a class=\"btn-floating waves-effect waves-light red center-align delBtn\"" +
+							"</div><a class=\"btn-floating waves-effect waves-light red center-align btn-del\"" +
 							"data-id=" + response[1].books[i].bookID + " onclick=\"deleteFromList(this)\">x</a>" +
 						"</div>";
 				}
@@ -501,11 +501,11 @@ function addToList(val) {
 	var pubdate = val.previousSibling.children[0].children[1].children[2].innerText;
 
 	if (val.innerText == 0) {
-		val.outerHTML = "<a class=\"btn-floating waves-effect waves-light grey center-align addBtn\">0</a>";
+		val.outerHTML = "<a class=\"btn-floating waves-effect waves-light grey center-align btn-add\">0</a>";
 	}
 
 	document.getElementById("listData").innerHTML += 
-		"<div class=\"card horizontal listCard\">" + 
+		"<div class=\"card horizontal list-card\">" + 
 			"<div class=\"card-image\">" + 
 				"<img class=\"z-depth-3\" src=\"" + image + "\">" + 
 			"</div>" + 
@@ -518,7 +518,7 @@ function addToList(val) {
 						"<p>" + pubdate + "</p>" + 
 					"</div>" + 
 				"</div>" + 
-			"</div><a class=\"btn-floating waves-effect waves-light red center-align delBtn\"" +
+			"</div><a class=\"btn-floating waves-effect waves-light red center-align btn-del\"" +
 			"data-id=" + val.dataset.id + " onclick=\"deleteFromList(this)\">x</a>" +
 		"</div>";
 }
