@@ -34,43 +34,37 @@
 .cover {
 	margin-right: 0 !important;
 }
-.cover .coverImage {
+.cover .coverimage {
 	position: absolute;
 	visibility: hidden;
 	z-index: 5;
 	bottom: 2.7em;
 	right: 1em;
 }
-.cover .coverImage img {
+.cover .cover-image img {
 	max-width: 150px;
 }
-.cover:hover .coverImage {
+.cover:hover .cover-image {
 	visibility: visible;
 }
 
 .cover-reservation {
 	margin-right: 0 !important;
 }
-.cover-reservation .coverImage-reservation {
+.cover-reservation .cover-image-reservation {
 	position: absolute;
 	visibility: hidden;
 	z-index: 5;
 	bottom: 1em;
 	left: 1.5em;
 }
-.cover-reservation .coverImage-reservation img {
+.cover-reservation .cover-image-reservation img {
 	max-width: 100px;
 }
-.cover-reservation:hover .coverImage-reservation {
+.cover-reservation:hover .cover-image-reservation {
 	visibility: visible;
 }
 
-.reservationTitle {
-	font-size: 2em;
-	text-align: center;
-	padding-bottom: 20px;
-	font-weight: 300;
-}
 .white-text {
 	padding-bottom: 7px !important;
 }
@@ -99,21 +93,6 @@
 	display: flex;
 	justify-content: center;
 }
-.fullText{
-	padding-bottom: 0px !important;
-}
-.card.horizontal.listCard .card-image img {
-	max-width: 80px;
-}
-.card.horizontal.listCard .card-stacked .card-content {
-	padding-top: 0;
-	padding-bottom: 0;
-	padding-left: 15px;
-	padding-right: 0;
-}
-.card.horizontal.listCard .card-stacked{
-	width: calc(100% - 128px);
-}
 .card.horizontal .card-stacked .card-content .card-title{
 	white-space:nowrap;
 	text-overflow:ellipsis;
@@ -123,16 +102,6 @@
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
-}
-.dialogTitle {
-	font-size: 2.3rem;
-	line-height: 100%;
-	margin-top: 0.3rem;
-	margin-bottom: 1.5rem;
-}
-.loadImg {
-	margin-top: 1.3rem;
-	margin-bottom: 1.5rem;
 }
 .modal .welcome-content {
 	padding-bottom: 15px;

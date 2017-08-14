@@ -117,7 +117,7 @@ $(document).ready(function() {
 										"<p>作者：" + response[i].author + MultipleAuthor + "</p>" + 
 										"<p>出版社：" + response[i].press + "</p>" + 
 										"<p>出版日期：" + response[i].pubdate + "</p>" + 
-										"<div class=\"adminInfo\">" + 
+										"<div class=\"admin-info\">" + 
 											"<p><strong>书籍 ID：" + response[i].bookID + "</strong></p>" + 
 											"<p>剩余数量：" + response[i].remainingAmount + "</p>" + Category +
 											"<p>入库时间：" + response[i].importTime + "</p>" + 
@@ -128,7 +128,7 @@ $(document).ready(function() {
 								"<div class=\"card-action center-align\">" + 
 									"<a class=\"cover\" href=\"" + response[i].image + "\">" + 
 										"触碰或点击查看封面图片" + 
-										"<div class=\"coverImage\">" + 
+										"<div class=\"cover-image\">" + 
 											"<img src=\"" + response[i].image + "\" alt=\"封面图片\" >" + 
 										"</div>" + 
 									"</a>" + 
