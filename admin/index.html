@@ -12,9 +12,8 @@
 
 <body>
 
-
 	<div id="loading" class="loading">
-		<div class="preloader-wrapper active loadingCircle">
+		<div class="preloader-wrapper active loading-circle">
 		     <div class="spinner-layer spinner-blue">
 		       <div class="circle-clipper left">
 		         <div class="circle"></div>
@@ -93,7 +92,7 @@
 				<div class="indeterminate"></div>
 			</div>
 
-			<div class="bookInfo" id="bookInfo" class="center-align">
+			<div class="book-info" id="bookInfo" class="center-align">
 				<div class="row">
 					<div class="input-field col s5">
 						<input name="title" id="title" type="text" class="validate"/>
@@ -131,7 +130,7 @@
 			</div>
 
 
-			<div id="bookCategory" class="bookCategory center-align">
+			<div id="bookCategory" class="book-category center-align">
 				<p>请选择书籍分类：</p>
 				<input class="with-gap" name="bookCategory" type="radio" id="CategoryA" value="CategoryA" onclick="selectCategory(this.id)"/>
 				<label for="CategoryA">教材课本</label>
@@ -139,7 +138,7 @@
 				<label for="CategoryB">课外书籍</label>
 			</div>
 
-			<div id="bookCategoryA" class="bookCategoryA">
+			<div id="bookCategoryA" class="book-categoryA">
 				<div class="row">
 					<div class="input-field col s6 selection">
 						<select name="grade" id="grade">
@@ -164,7 +163,7 @@
 				</div>
 			</div>
 
-			<div id="bookCategoryB" class="bookCategoryB">
+			<div id="bookCategoryB" class="book-categoryB">
 				<div class="row">
 					<div class="input-field col s12 selection">
 						<select name="extracurricularCategory" id="extracurricularCategory">
@@ -202,7 +201,7 @@
 				<div class="indeterminate"></div>
 			</div>
 
-			<div class="updBooks" id="updBooks" class="center-align">
+			<div class="upd-books" id="updBooks" class="center-align">
 				<div class="row">
 					<div class="input-field col s5">
 						<input name="updTitle" id="updTitle" type="text" class="validate"/>
@@ -237,14 +236,14 @@
 						<label for="updImage">封面图片链接</label>
 					</div>
 				</div>
-				<div id="updBookCategory" class="updBookCategory center-align">
+				<div id="updBookCategory" class="center-align">
 					<p>请选择书籍分类：</p>
 					<input class="with-gap" name="updBookCategory" type="radio" id="updCategoryA" value="CategoryA" onclick="updCategory(this.id)"/>
 					<label for="updCategoryA">教材课本</label>
 					<input class="with-gap" name="updBookCategory" type="radio" id="updCategoryB" value="CategoryB" onclick="updCategory(this.id)"/>
 					<label for="updCategoryB">课外书籍</label>
 				</div>
-				<div id="updBookCategoryA" class="updBookCategoryA">
+				<div id="updBookCategoryA">
 					<div class="row">
 						<div class="input-field col s6 selection">
 							<select name="updGrade" id="updGrade">
@@ -268,7 +267,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="updBookCategoryB" class="updBookCategoryB">
+				<div id="updBookCategoryB">
 					<div class="row">
 						<div class="input-field col s12 selection">
 							<select name="updExtracurricularCategory" id="updExtracurricularCategory">

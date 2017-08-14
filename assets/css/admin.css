@@ -9,7 +9,7 @@
 	width: 100%;
 	height: 100%;
 }
-.loadingCircle {
+.loading-circle {
 	width: 120px;
 	height: 120px;
 	z-index: 2006;
@@ -19,14 +19,14 @@
 	padding-right: 10.5px;
 }
 .progress,
-.bookInfo,
-.bookCategory,
-.bookCategoryA,
-.bookCategoryB,
-.updBooks {
+.book-info,
+.book-category,
+.book-categoryA,
+.book-categoryB,
+.upd-books {
 	display: none;
 }
-.adminInfo {
+.admin-info {
 	margin-top: 5px;
 	padding-top: 5px;
 	border-top: 1px solid #c5c5c5;
