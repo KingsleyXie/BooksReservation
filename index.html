@@ -78,13 +78,13 @@
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#search">搜索书籍</a></li>
 				<li><a href="#category">分类查看</a></li>
-				<li><a href="#searchReservation">预订情况查询</a></li>
+				<li><a href="#search-reservation">预订情况查询</a></li>
 			</ul>
 
 			<ul class="side-nav" id="mobile">
 				<li><a href="#search">搜索书籍</a></li>
 				<li><a href="#category">分类查看</a></li>
-				<li><a href="#searchReservation">预订情况查询</a></li>
+				<li><a href="#search-reservation">预订情况查询</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -198,8 +198,8 @@
 			<h5>订单查询</h5>
 			<div class="row">
 				<div class="input-field col s12">
-					<input name="stuNo" id="stuNo" type="text">
-					<label for="stuNo">请输入学号</label>
+					<input type="text" id="stu-number" name="stuNo">
+					<label for="stu-number">请输入学号</label>
 				</div>
 			</div>
 
@@ -217,7 +217,7 @@
 
 	<div class="placeholder" id="placeholder">没有更多书籍啦~</div>
 
-	<a class="book-confirm" id="bookConfirm" href="#list">查看预约书籍列表</a>
+	<a class="book-confirm" id="book-confirm" href="#list">查看预约书籍列表</a>
 
 	<div class="modal bottom-sheet" id="list">
 		<div class="modal-content">
@@ -241,8 +241,8 @@
 					</div>
 
 					<div class="input-field col s5">
-						<input type="text" id="student-no" name="studentNo" required>
-						<label for="student-no">学号</label>
+						<input type="text" id="student-number" name="studentNo" required>
+						<label for="student-number">学号</label>
 					</div>
 
 					<div class="input-field col s3 selection">

@@ -31,14 +31,14 @@ $(document).ready(function() {
 						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
 						var btnAttr = response[i].remainingAmount == 0 ? 
 						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' : 
-						'<a class="btn-floating waves-effect waves-light red center-align btn-add"' +
+						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
 						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' + 
 						response[i].remainingAmount + '</a>';
 						
 						document.getElementById("display").innerHTML += 
 							'<div class="card horizontal">' + 
 								'<div class="card-image">' + 
-									'<img class="z-depth-3" src=' + response[i].image + 'onclick="window.location.href=this.src">' + 
+									'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' + 
 								'</div>' + 
 								'<div class="card-stacked">' + 
 									'<div class="card-content">' + 
@@ -53,7 +53,7 @@ $(document).ready(function() {
 							'</div>';
 					}
 					document.getElementById("placeholder").style.display = 'block';
-					document.getElementById("bookConfirm").style.display = 'block';
+					document.getElementById("book-confirm").style.display = 'block';
 					$("#welcome").modal('close');
 				}
 
@@ -62,7 +62,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#searchForm").submit(function(e) {
+	$("#search-form").submit(function(e) {
 		e.preventDefault();
 		document.getElementById("loading").style.display = 'flex';
 		$.ajax({
@@ -81,14 +81,14 @@ $(document).ready(function() {
 						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
 						var btnAttr = response[i].remainingAmount == 0 ? 
 						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' : 
-						'<a class="btn-floating waves-effect waves-light red center-align btn-add"' +
+						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
 						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' + 
 						response[i].remainingAmount + '</a>';
 						
 						document.getElementById("display").innerHTML += 
 							'<div class="card horizontal">' + 
 								'<div class="card-image">' + 
-									'<img class="z-depth-3" src=' + response[i].image + 'onclick="window.location.href=this.src">' + 
+									'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' + 
 								'</div>' + 
 								'<div class="card-stacked">' + 
 									'<div class="card-content">' + 
@@ -103,7 +103,7 @@ $(document).ready(function() {
 							'</div>';
 					}
 					document.getElementById("placeholder").style.display = 'block';
-					document.getElementById("bookConfirm").style.display = 'block';
+					document.getElementById("book-confirm").style.display = 'block';
 					$("#search").modal('close');
 					$(".button-collapse").sideNav('hide');
 				}
@@ -113,7 +113,7 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#categoryForm").submit(function(e) {
+	$("#category-form").submit(function(e) {
 		e.preventDefault();
 		document.getElementById("loading").style.display = 'flex';
 		if (Check()) {
@@ -133,14 +133,14 @@ $(document).ready(function() {
 							var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
 							var btnAttr = response[i].remainingAmount == 0 ? 
 							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' : 
-							'<a class="btn-floating waves-effect waves-light red center-align btn-add"' +
+							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
 							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' + 
 							response[i].remainingAmount + '</a>';
 							
 							document.getElementById("display").innerHTML += 
 								'<div class="card horizontal">' + 
 									'<div class="card-image">' + 
-										'<img class="z-depth-3" src=' + response[i].image + 'onclick="window.location.href=this.src">' + 
+										'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' + 
 									'</div>' + 
 									'<div class="card-stacked">' + 
 										'<div class="card-content">' + 
@@ -155,7 +155,7 @@ $(document).ready(function() {
 								'</div>';
 						}
 						document.getElementById("placeholder").style.display = 'block';
-						document.getElementById("bookConfirm").style.display = 'block';
+						document.getElementById("book-confirm").style.display = 'block';
 						$("#category").modal('close');
 						$(".button-collapse").sideNav('hide');
 					}
@@ -166,7 +166,7 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#reserveForm").submit(function(e) {
+	$("#reserve-form").submit(function(e) {
 		e.preventDefault();
 		if (reserveCheck()) {
 
@@ -200,7 +200,7 @@ $(document).ready(function() {
 					}
 					if (response.code == 5) {
 						alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-						document.getElementById("listData").innerHTML = '';
+						document.getElementById("list-data").innerHTML = '';
 						document.getElementById("display").innerHTML = '';
 						count = 0; list = new Array('0', '0', '0');
 						$("#reserve").modal('close');
@@ -211,8 +211,8 @@ $(document).ready(function() {
 						window.setTimeout(function ()
 						{
 							$("#reserve").modal('close');
-							document.getElementById("stuNo").value = document.getElementById("studentNo").value;
-							document.querySelector("#stuNo + label").className = 'active';
+							document.getElementById("stu-number").value = document.getElementById("student-number").value;
+							document.querySelector("#stu-number + label").className = 'active';
 							searchReservation();
 						}, 1000);
 					}
@@ -221,7 +221,7 @@ $(document).ready(function() {
 		}
 	});	
 
-	$("#searchReservation").submit(function(e) {
+	$("#search-reservation").submit(function(e) {
 		e.preventDefault();
 		searchReservation();
 	});
@@ -233,7 +233,7 @@ $(document).ready(function() {
 
 function searchReservation() {
 	document.getElementById("progress").style.display = 'block';
-	var stuNo = document.getElementById("stuNo").value;
+	var stuNo = document.getElementById("stu-number").value;
 	$.ajax({
 		type: 'POST',
 		url: './assets/API/reservation.php',
@@ -279,7 +279,7 @@ function searchReservation() {
 
 							'<div class="section">' + 
 								'<div class="card-title">预约书籍信息：</div>' + 
-								'<div class="row" id="reservedBooks"></div>' + 
+								'<div class="row" id="reserved-books"></div>' + 
 								'<div class="reservation">' + 
 									'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation()">更改</button>' +
 									'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="resetDiv()">返回</button>' +
@@ -289,7 +289,7 @@ function searchReservation() {
 					'</div>';
 				for (var i = 0; i < response[1].books.length; i++) {
 					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
-					document.getElementById("reservedBooks").innerHTML += 
+					document.getElementById("reserved-books").innerHTML += 
 						'<div class="col s12 m4">' + 
 							'<div class="card blue-grey darken-1">' + 
 								'<div class="card-content white-text">' + 
@@ -303,7 +303,7 @@ function searchReservation() {
 								'</div>' + 
 								'<div class="card-action center-align">' + 
 									'<a class="cover" href=' + response[1].books[i].image + '>触碰或点击查看封面图片' + 
-										'<div class="coverImage">' + 
+										'<div class="cover-image">' + 
 											'<img src=' + response[1].books[i].image + ' alt="封面图片">' + 
 										'</div>' + 
 									'</a>' + 
@@ -311,7 +311,7 @@ function searchReservation() {
 							'</div>' + 
 						'</div>';
 				}
-				$("#searchReservation").modal('close');
+				$("#search-reservation").modal('close');
 				$(".button-collapse").sideNav('hide');
 				$("#reservation").modal('open');
 			}
@@ -321,19 +321,19 @@ function searchReservation() {
 }
 
 function selectCategory(val) {
-	if (val == 'CategoryA') {
-		document.getElementById("bookCategoryA").style.display = 'block';
-		document.getElementById("bookCategoryB").style.display = 'none';
+	if (val == 'categoryA') {
+		document.getElementById("book-categoryA").style.display = 'block';
+		document.getElementById("book-categoryB").style.display = 'none';
 	}
-	if (val == 'CategoryB') {
-		document.getElementById("bookCategoryA").style.display = 'none';
-		document.getElementById("bookCategoryB").style.display = 'block';
+	if (val == 'categoryB') {
+		document.getElementById("book-categoryA").style.display = 'none';
+		document.getElementById("book-categoryB").style.display = 'block';
 	}
 }
 
 function Check() {
-	if (!(document.getElementById("CategoryA").checked ||  
-		document.getElementById("CategoryB").checked)) {
+	if (!(document.getElementById("categoryA").checked ||  
+		document.getElementById("categoryB").checked)) {
 			alert('请选择书籍分类！');
 			document.getElementById("loading").style.display = 'none';
 			return false;
@@ -342,12 +342,12 @@ function Check() {
 }
 
 function reserveCheck() {
-	if (document.getElementById("studentName").value == '' || 
-		document.getElementById("studentNo").value == '' || 
+	if (document.getElementById("student-name").value == '' || 
+		document.getElementById("student-number").value == '' || 
 		document.getElementById("dormitory").value == '' || 
 		document.getElementById("contact").value == '' || 
 		document.getElementById("date").value == '' || 
-		document.getElementById("timePeriod").value == '') {
+		document.getElementById("time-period").value == '') {
 			alert('请将预约信息填写完整！');
 			return false;
 	}
@@ -357,7 +357,7 @@ function reserveCheck() {
 
 function confirmChoose() {
 	if (count == 0) {
-		document.getElementById("alertContent").textContent = '请选择预约书籍';
+		document.getElementById("alert-content").textContent = '请选择预约书籍';
 		$("#alert").modal('open');
 		return;
 	}
@@ -365,8 +365,8 @@ function confirmChoose() {
 }
 
 function fullText(val) {
-	document.getElementById("fullTextContent").textContent = val.textContent;
-	$("#fullText").modal('open');
+	document.getElementById("full-text-content").textContent = val.textContent;
+	$("#full-text").modal('open');
 }
 
 function resetDiv() {
@@ -378,7 +378,7 @@ function resetDiv() {
 function modifyReservation() {
 	document.getElementById("loading").style.display = 'flex';
 	document.getElementById("submit").innerText = '确定修改';
-	var stuNo = document.getElementById("stuNo").value;
+	var stuNo = document.getElementById("stu-number").value;
 
 	modifying = 1, count = 0;
 	list = new Array('0', '0', '0');
@@ -391,19 +391,19 @@ function modifyReservation() {
 		success: function(response)
 		{
 			if (response[0].code == 0) {
-				document.getElementById("listData").innerHTML = '';
+				document.getElementById("list-data").innerHTML = '';
 				
-				document.querySelector("#studentName + label").className = 'active';
-				document.getElementById("studentName").value = response[1].stuName;
-				document.querySelector("#studentNo + label").className = 'active';
-				document.getElementById("studentNo").value = response[1].stuNo;
+				document.querySelector("#student-name + label").className = 'active';
+				document.getElementById("student-name").value = response[1].stuName;
+				document.querySelector("#student-number + label").className = 'active';
+				document.getElementById("student-number").value = response[1].stuNo;
 				document.querySelector("#contact + label").className = 'active';
 				document.getElementById("contact").value = response[1].contact;
 
-				$("#studentNo").prop('disabled', true);
+				$("#student-number").prop('disabled', true);
 				$("#dormitory").val(response[1].dormitory);	$("#dormitory").material_select();
 				$("#date").val(response[1].date);	$("#date").material_select();
-				$("#timePeriod").val(response[1].timePeriod);	$("#timePeriod").material_select();
+				$("#time-period").val(response[1].timePeriod);	$("#time-period").material_select();
 
 				for (var i = 0; i < response[1].books.length; i++) {
 					list[list.indexOf('0')] = response[1].books[i].bookID;
@@ -412,7 +412,7 @@ function modifyReservation() {
 
 					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
 					
-					document.getElementById("listData").innerHTML += 
+					document.getElementById("list-data").innerHTML += 
 						'<div class="card horizontal list-card">' + 
 							'<div class="card-image">' + 
 								'<img class="z-depth-3" src=' + response[1].books[i].image + '>' + 
@@ -426,7 +426,7 @@ function modifyReservation() {
 										'<p>' + response[1].books[i].pubdate + '</p>' + 
 									'</div>' + 
 								'</div>' + 
-							'</div><a class="btn-floating waves-effect waves-light red center-align btn-del' +
+							'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
 							'data-id=' + response[1].books[i].bookID + ' onclick="deleteFromList(this)">&times</a>' +
 						'</div>';
 				}
@@ -446,7 +446,7 @@ function commitModification(val) {
 		data: $(val).serialize() + '&count=' + count + 
 		'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] + 
 		'&preList0=' + preList[0] + '&preList1=' + preList[1] + '&preList2=' + preList[2] + 
-		'&studentNo=' + document.getElementById("studentNo").value,
+		'&studentNo=' + document.getElementById("student-number").value,
 		success: function(response)
 		{
 			document.getElementById("loading").style.display = 'none';
@@ -458,7 +458,7 @@ function commitModification(val) {
 			}
 			if (response.code == 3) {
 				alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-				document.getElementById("listData").innerHTML = '';
+				document.getElementById("list-data").innerHTML = '';
 				document.getElementById("display").innerHTML = '';
 				count = 0; list = new Array('0', '0', '0');
 				$("#reserve").modal('close');
@@ -481,13 +481,13 @@ function commitModification(val) {
 
 function addToList(val) {
 	if (count >= 3) {
-		document.getElementById("alertContent").textContent = '列表书籍已达到选择上限';
+		document.getElementById("alert-content").textContent = '列表书籍已达到选择上限';
 		$("#alert").modal('open');
 		return;
 	}
 
 	if (list.indexOf(val.dataset.id) != -1) {
-		document.getElementById("alertContent").textContent = '每种书籍仅限选择一本哦';
+		document.getElementById("alert-content").textContent = '每种书籍仅限选择一本哦';
 		$("#alert").modal('open');
 		return;
 	}
@@ -506,7 +506,7 @@ function addToList(val) {
 		val.outerHTML = '<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>';
 	}
 
-	document.getElementById("listData").innerHTML += 
+	document.getElementById("list-data").innerHTML += 
 		'<div class="card horizontal list-card">' + 
 			'<div class="card-image">' + 
 				'<img class="z-depth-3" src=' + image + '>' + 
@@ -520,7 +520,7 @@ function addToList(val) {
 						'<p>' + pubdate + '</p>' + 
 					'</div>' + 
 				'</div>' + 
-			'</div><a class="btn-floating waves-effect waves-light red center-align btn-del' +
+			'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
 			'data-id=' + val.dataset.id + ' onclick="deleteFromList(this)">x</a>' +
 		'</div>';
 }
