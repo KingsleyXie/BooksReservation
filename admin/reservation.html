@@ -74,15 +74,16 @@
 	<nav>
 		<div class="nav-wrapper">
 			<div class="brand-logo">订单信息</div>
-			<a href="#" data-activates="mobile-menu" class="button-collapse">菜单</a>
+			<a class="button-collapse" data-activates="mobile-menu" href="#">菜单</a>
+
 			<ul class="right hide-on-med-and-down">
 				<li><a href="./">返回书籍管理界面</a>
-				<li><a onclick="logout()" href="#">退出管理系统</a></li>
+				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
 			
 			<ul class="side-nav" id="mobile-menu">
 				<li><a href="./">返回书籍管理界面</a>
-				<li><a onclick="logout()" href="#">退出管理系统</a></li>
+				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
 		</div>
 	</nav>
