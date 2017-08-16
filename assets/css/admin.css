@@ -35,7 +35,7 @@
 .cover {
 	margin-right: 0 !important;
 }
-.cover .coverimage {
+.cover .cover-image {
 	position: absolute;
 	visibility: hidden;
 	z-index: 5;
