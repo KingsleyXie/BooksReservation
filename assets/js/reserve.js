@@ -14,12 +14,10 @@ $(document).ready(function() {
 	$("#all").submit(function(e) {
 		e.preventDefault();
 		document.getElementById("loading").style.display = 'flex';
-		$.ajax({
-			type: 'POST',
-			url: './assets/API/books.php',
-			data: $(this).serialize() + '&type=' + 0,
-			success: function(response)
-			{
+		$.post(
+			'./assets/API/books.php',
+			$(this).serialize() + '&type=' + 0,
+			function(response) {
 				if (response[0].code == 1){
 					Materialize.toast('数据库还是空的，过段时间再来看看吧', 3000);
 				}
@@ -57,18 +55,16 @@ $(document).ready(function() {
 
 				document.getElementById("loading").style.display = 'none';
 			}
-		});
+		);
 	});
 
 	$("#search-form").submit(function(e) {
 		e.preventDefault();
 		document.getElementById("loading").style.display = 'flex';
-		$.ajax({
-			type: 'POST',
-			url: './assets/API/books.php',
-			data: $(this).serialize() + '&type=' + 1,
-			success: function(response)
-			{
+		$.post(
+			'./assets/API/books.php',
+			$(this).serialize() + '&type=' + 1,
+			function(response) {
 				if (response[0].code == 1){
 					Materialize.toast('未找到相关书籍，换个关键词试试吧', 3000);
 				}
@@ -108,19 +104,17 @@ $(document).ready(function() {
 
 				document.getElementById("loading").style.display = 'none';
 			}
-		});
+		);
 	});
 
 	$("#category-form").submit(function(e) {
 		e.preventDefault();
 		document.getElementById("loading").style.display = 'flex';
 		if (Check()) {
-			$.ajax({
-				type: 'POST',
-				url: './assets/API/books.php',
-				data: $(this).serialize() + '&type=' + 2,
-				success: function(response)
-				{
+			$.post(
+				'./assets/API/books.php',
+				$(this).serialize() + '&type=' + 2,
+				function(response) {
 					if (response[0].code == 1){
 						Materialize.toast('未找到相关书籍，换个分类试试吧', 3000);
 					}
@@ -160,7 +154,7 @@ $(document).ready(function() {
 
 					document.getElementById("loading").style.display = 'none';
 				}
-			});
+			);
 		}
 	});
 
@@ -175,13 +169,11 @@ $(document).ready(function() {
 
 			document.getElementById("loading").style.display = 'flex';
 
-			$.ajax({
-				type: 'POST',
-				url: './assets/API/reserve.php',
-				data: $(this).serialize() + '&count=' + count + 
+			$.post(
+				'./assets/API/reserve.php',
+				$(this).serialize() + '&count=' + count + 
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
-				success: function(response)
-				{
+				function(response) {
 					document.getElementById("loading").style.display = 'none';
 
 					if (response.code == 1) {
@@ -215,7 +207,7 @@ $(document).ready(function() {
 						}, 1000);
 					}
 				}
-			});
+			);
 		}
 	});	
 
@@ -232,12 +224,10 @@ $(document).ready(function() {
 function searchReservation() {
 	document.getElementById("progress").style.display = 'block';
 	var stuNo = document.getElementById("stu-number").value;
-	$.ajax({
-		type: 'POST',
-		url: './assets/API/reservation.php',
-		data: ({ 'stuNo': stuNo, 'type': 1 }),
-		success: function(response)
-		{
+	$.post(
+		'./assets/API/reservation.php',
+		{ 'stuNo': stuNo, 'type': 1 },
+		function(response) {
 			if (response[0].code == 1) {
 				Materialize.toast('未查询到订单', 3000);
 			};	
@@ -315,7 +305,7 @@ function searchReservation() {
 			}
 			document.getElementById("progress").style.display = 'none';
 		}
-	});
+	);
 }
 
 function selectCategory(val) {
@@ -382,12 +372,10 @@ function modifyReservation() {
 	list = new Array('0', '0', '0');
 	preList = new Array('0', '0', '0');
 	
-	$.ajax({
-		type: 'POST',
-		url: './assets/API/reservation.php',
-		data: ({ 'stuNo': stuNo, 'type': 1 }),
-		success: function(response)
-		{
+	$.post(
+		'./assets/API/reservation.php',
+		{ 'stuNo': stuNo, 'type': 1 },
+		function(response) {
 			if (response[0].code == 0) {
 				document.getElementById("list-data").innerHTML = '';
 				
@@ -433,20 +421,18 @@ function modifyReservation() {
 				$("#list").modal('open');
 			}
 		}
-	});
+	);
 }
 
 function commitModification(val) {
 	document.getElementById("loading").style.display = 'flex';
-	$.ajax({
-		type:  'POST',
-		url: './assets/API/modify.php',
-		data: $(val).serialize() + '&count=' + count + 
+	$.post(
+		'./assets/API/modify.php',
+		$(val).serialize() + '&count=' + count + 
 		'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] + 
 		'&preList0=' + preList[0] + '&preList1=' + preList[1] + '&preList2=' + preList[2] + 
 		'&studentNo=' + document.getElementById("student-number").value,
-		success: function(response)
-		{
+		function(response) {
 			document.getElementById("loading").style.display = 'none';
 			if (response.code == 1) {
 				alert('请将预约信息填写完整！');
@@ -474,7 +460,7 @@ function commitModification(val) {
 				}, 1000);
 			}
 		}
-	});
+	);
 }
 
 function addToList(val) {
