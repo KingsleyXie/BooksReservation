@@ -1,15 +1,12 @@
 $(document).ready(function() {
 	$(".button-collapse").sideNav();
-	document.getElementById("loading").style.display = 'flex';
-	$.ajax({
-		type: 'POST',
-		url: '../assets/API/reservation.php',
-		data: ({ 'type': 0 }),
-		success: function(response)
-		{
+	$.post(
+		'../assets/API/reservation.php',
+		{'type': 0},
+		function(response) {
 			if (response[0].code == 1) {
 				Materialize.toast('未查询到订单', 3000);
-				document.getElementById("loading").style.display = 'none';
+				$("#loading").hide();
 			};
 			if (response[0].code == 2) {
 				alert('请登录系统！');
@@ -86,25 +83,22 @@ $(document).ready(function() {
 								'</div>' + 
 							'</div>';
 					}
-					document.getElementById("loading").style.display = 'none';
+					$("#loading").hide();
 				}
 			}
 		}
-	});
+	);
 });
 
-
-
 function logout() {
-	$.ajax({
-		type: 'POST',
-		url: '../assets/API/admin.php',
-		data: ({ 'type':2 }),
-		success: function(response) {
+	$.post(
+		'../assets/API/reservation.php',
+		{'type': 2},
+		function(response) {
 			if (response.code == 0) {
 				alert('退出系统成功');
 			}
 			window.location.href = '../';
 		}
-	});
+	);
 }
