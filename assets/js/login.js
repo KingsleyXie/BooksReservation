@@ -1,12 +1,10 @@
 $(document).ready(function() {
-	$('#login-form').submit(function(e) {
+	$("#login-form").submit(function(e) {
 		e.preventDefault();
-		$.ajax({
-			type: 'POST',
-			url: '../assets/API/admin.php',
-			data: $(this).serialize() + '&type=' + 1,
-			success: function(response)
-			{
+		$.post(
+			'../assets/API/admin.php',
+			$(this).serialize() + '&type=' + 1,
+			function(response) {
 				if (response.code == 0) {
 					alert('登录成功！');
 					window.location.href = './';
