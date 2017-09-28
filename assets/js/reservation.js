@@ -90,7 +90,7 @@ $(document).ready(function() {
 
 function logout() {
 	$.post(
-		'../assets/API/reservation.php',
+		'../assets/API/admin.php',
 		{'type': 2},
 		function(response) {
 			if (response.code == 0) {

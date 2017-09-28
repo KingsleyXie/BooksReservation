@@ -260,24 +260,24 @@ function getBook() {
 }
 
 function Check() {
-	if ($("#title").val('') ||
-		$("#author").val('') ||
-		$("#press").val('') ||
-		$("#pubdate").val('') ||
-		$("#remaining-amount").val('') ||
+	if ($("#title").val() == '' ||
+		$("#author").val() == '' ||
+		$("#press").val() == '' ||
+		$("#pubdate").val() == '' ||
+		$("#remaining-amount").val() == '' ||
 		!($("#categoryA").prop("checked") ||  
 		$("#categoryB").prop("checked"))) {
 			alert('请将书籍信息填写完整！');
 			return false;
 	}
 	if ($("#categoryA").prop("checked") && 
-		($("#grade").val('') ||
-		$("#major").val(''))) {
+		($("#grade").val() == '' ||
+		$("#major").val() == '')) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
 	if ($("#categoryB").prop("checked") && 
-		$("#extracurricular-category").val('')) {
+		$("#extracurricular-category").val() == '') {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
@@ -285,24 +285,24 @@ function Check() {
 }
 
 function updCheck() {
-	if ($("#upd-title").val('') ||
-		$("#upd-author").val('') ||
-		$("#upd-press").val('') ||
-		$("#upd-pubdate").val('') ||
-		$("#upd-remaining-amount").val('') ||
+	if ($("#upd-title").val() == '' ||
+		$("#upd-author").val() == '' ||
+		$("#upd-press").val() == '' ||
+		$("#upd-pubdate").val() == '' ||
+		$("#upd-remaining-amount").val() == '' ||
 		!($("#upd-categoryA").prop("checked") ||  
 		$("#upd-categoryB").prop("checked"))) {
 			alert('请将书籍信息填写完整！');
 			return false;
 	}
 	if ($("#upd-categoryA").prop("checked") && 
-		($("#upd-grade").val('') ||
-		$("#upd-major").val(''))) {
+		($("#upd-grade").val() == '' ||
+		$("#upd-major").val() == '')) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
 	if ($("#upd-categoryB").prop("checked") && 
-		$("#upd-extracurricular-category").val('')) {
+		$("#upd-extracurricular-category").val() == '') {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
