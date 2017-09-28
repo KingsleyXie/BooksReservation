@@ -128,7 +128,7 @@ $(document).ready(function() {
 						'</div>';
 					}
 			}
-			document.getElementById("loading").style.display = 'none';
+			$("#loading").hide();
 		}
 	});
 });
@@ -151,41 +151,40 @@ function logout() {
 
 function selectCategory(val) {
 	if (val == "categoryA") {
-		document.getElementById("book-categoryA").style.display = 'block';
-		document.getElementById("book-categoryB").style.display = 'none';
+		$("#book-categoryA").show();
+		$("#book-categoryB").hide();
 	}
 	if (val == "categoryB") {
-		document.getElementById("book-categoryA").style.display = 'none';
-		document.getElementById("book-categoryB").style.display = 'block';
+		$("#book-categoryA").hide();
+		$("#book-categoryB").show();
 	}
 }
 
 function updCategory(val) {
 	if (val == "upd-categoryA") {
-		document.getElementById("upd-book-categoryA").style.display = 'block';
-		document.getElementById("upd-book-categoryB").style.display = 'none';
+		$("#upd-book-categoryA").show();
+		$("#upd-book-categoryB").hide();
 	}
 	if (val == "upd-categoryB") {
-		document.getElementById("upd-book-categoryA").style.display = 'none';
-		document.getElementById("upd-book-categoryB").style.display = 'block';
+		$("#upd-book-categoryA").hide();
+		$("#upd-book-categoryB").show();
 	}
 }
 
 function inputData() {
-	document.getElementById("add-init").style.display = 'none';
-	document.getElementById("book-info").style.display = 'block';
-	document.getElementById("book-category").style.display = 'block';
+	$("#add-init").hide();
+	$("#book-info").show();
+	$("#book-category").show();
 }
 
 function getData() {
-	document.getElementById("progress").style.display = 'block';
+	$("#progress").show();
 	$.ajax({
 		type:'POST',
 		url: '../assets/API/bookInfoAPI.php',
-		data: ({ 'ISBN' : document.getElementById("ISBN").value }),
-		success: function(response)
-		{
-			document.getElementById("progress").style.display = 'none';
+		data: ({ 'ISBN' : $("#ISBN").val() }),
+		success: function(response)	{
+			$("#progress").hide();
 			if (response.code == 1) {
 				alert('未找到书籍信息，请手动录入相关数据');
 				document.getElementById("ISBN").value = '';
@@ -209,16 +208,16 @@ function getData() {
 					document.getElementById("remaining-amount").focus();
 				}, 0);
 
-				document.getElementById("add-init").style.display = 'none';
-				document.getElementById("book-info").style.display = 'block';
-				document.getElementById("book-category").style.display = 'block';
+				$("#add-init").hide();
+				$("#book-info").show();
+				$("#book-category").show();
 			}
 		}
 	});
 }
 
 function getBook() {
-	document.getElementById("upd-progress").style.display = 'block';
+	$("#upd-progress").show();
 	$.ajax({
 		type: 'POST',
 		url: '../assets/API/booksAdmin.php',
@@ -231,11 +230,11 @@ function getBook() {
 			};
 			if (response[0].code == 2) {
 				alert('未找到对应书籍，请检查输入 ID 是否正确！');
-				document.getElementById("upd-progress").style.display = 'none';
+				$("#upd-progress").hide();
 			};
 			if (response[0].code == 0) {
 				var bookCategory = response[1].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB';
-				document.getElementById("upd-progress").style.display = 'none';
+				$("#upd-progress").hide();
 				document.querySelector("#upd-title + label").className = 'active';
 				document.getElementById("upd-title").value = response[1].title;
 				document.querySelector("#upd-author + label").className = 'active';
@@ -265,8 +264,8 @@ function getBook() {
 					document.getElementById("upd-remaining-amount").value = response[1].remainingAmount;
 					document.getElementById("upd-remaining-amount").focus();
 				}, 0);
-				document.getElementById("update-init").style.display = 'none';
-				document.getElementById("upd-books").style.display = 'block';
+				$("#update-init").hide();
+				$("#upd-books").show();
 			}
 		}
 	});
