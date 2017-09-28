@@ -1,10 +1,7 @@
 //The following three lines of code are wrote for reservation or modification
-
-var modifying = 0, count = 0
+var modifying = false, count = 0
 var list = new Array('0', '0', '0'); 
 var preList = new Array('0', '0', '0');
-
-
 
 $(document).ready(function() {
 	$(".modal").modal();
@@ -171,7 +168,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		if (reserveCheck()) {
 
-			if (modifying == 1) {
+			if (modifying) {
 				commitModification(this);
 				return;
 			}
@@ -381,7 +378,7 @@ function modifyReservation() {
 	document.getElementById("submit").innerText = '确定修改';
 	var stuNo = document.getElementById("stu-number").value;
 
-	modifying = 1, count = 0;
+	modifying = true, count = 0;
 	list = new Array('0', '0', '0');
 	preList = new Array('0', '0', '0');
 	

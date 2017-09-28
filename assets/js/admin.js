@@ -184,12 +184,16 @@ function getData() {
 				inputData();
 			}
 			if (response.code == 0) {
-				$("label").addClass("active")
 				$("#title").val(response.title);
+				$("label[for=title]").addClass("active");
 				$("#author").val(response.author);
+				$("label[for=author]").addClass("active");
 				$("#press").val(response.press);
+				$("label[for=press]").addClass("active");
 				$("#pubdate").val(response.pubdate);
+				$("label[for=pubdate]").addClass("active");
 				$("#image").val(response.image);
+				$("label[for=image]").addClass("active");
 				$("#is-multiple-author").prop("checked", response.isMultipleAuthor);
 
 				window.setTimeout(function () {
@@ -219,13 +223,17 @@ function getBook() {
 				$("#upd-progress").hide();
 			};
 			if (response[0].code == 0) {
-				$("label").addClass("active")
 				$("#upd-progress").hide();
 				$("#upd-title").val(response[1].title);
+				$("label[for=upd-title]").addClass("active");
 				$("#upd-author").val(response[1].author);
+				$("label[for=upd-author]").addClass("active");
 				$("#upd-press").val(response[1].press);
+				$("label[for=upd-press]").addClass("active");
 				$("#upd-pubdate").val(response[1].pubdate);
+				$("label[for=upd-pubdate]").addClass("active");
 				$("#upd-image").val(response[1].image);
+				$("label[for=upd-image]").addClass("active");
 				$("#upd-" + (response[1].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
 				if (response[1].bookCategory == "CategoryA") {
