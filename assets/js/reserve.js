@@ -1,7 +1,7 @@
 //The following three lines of code are wrote for reservation or modification
-var modifying = false, count = 0
-var list = new Array('0', '0', '0');
-var preList = new Array('0', '0', '0');
+modifying = false, count = 0
+list = new Array('0', '0', '0');
+preList = new Array('0', '0', '0');
 
 $(document).ready(function() {
 	$(".modal").modal();
@@ -18,23 +18,23 @@ $(document).ready(function() {
 			'./assets/API/books.php',
 			$(this).serialize() + '&type=' + 0,
 			function(response) {
-				if (response[0].code == 1){
+				if (response[0].code == 1) {
 					Materialize.toast('数据库还是空的，过段时间再来看看吧', 3000);
 				}
 				if (response[0].code == 0) {
 					for (var i = 1; i < response.length; i++) {
-
-						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
-						var btnAttr = response[i].remainingAmount == 0 ?
-						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-						response[i].remainingAmount + '</a>';
+						MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
+						btnAttr = response[i].remainingAmount == 0 ?
+							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
+							response[i].remainingAmount + '</a>';
 						
 						$("#display").append(
 						'<div class="card horizontal">' +
 							'<div class="card-image">' +
-								'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' +
+								'<img class="z-depth-3" src=' + response[i].image +
+								' onclick="window.location.href=this.src">' +
 							'</div>' +
 							'<div class="card-stacked">' +
 								'<div class="card-content">' +
@@ -52,7 +52,6 @@ $(document).ready(function() {
 					$("#book-confirm").show();
 					$("#welcome").modal('close');
 				}
-
 				$("#loading").hide();
 			}
 		);
@@ -65,24 +64,24 @@ $(document).ready(function() {
 			'./assets/API/books.php',
 			$(this).serialize() + '&type=' + 1,
 			function(response) {
-				if (response[0].code == 1){
+				if (response[0].code == 1) {
 					Materialize.toast('未找到相关书籍，换个关键词试试吧', 3000);
 				}
 				if (response[0].code == 0) {
 					$("#display").empty();
 					for (var i = 1; i < response.length; i++) {
-
-						var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
-						var btnAttr = response[i].remainingAmount == 0 ?
-						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-						response[i].remainingAmount + '</a>';
+						MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
+						btnAttr = response[i].remainingAmount == 0 ?
+							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
+							response[i].remainingAmount + '</a>';
 						
 						$("#display").append(
 						'<div class="card horizontal">' +
 							'<div class="card-image">' +
-								'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' +
+								'<img class="z-depth-3" src=' + response[i].image +
+								' onclick="window.location.href=this.src">' +
 							'</div>' +
 							'<div class="card-stacked">' +
 								'<div class="card-content">' +
@@ -101,7 +100,6 @@ $(document).ready(function() {
 					$("#search").modal('close');
 					$(".button-collapse").sideNav('hide');
 				}
-
 				$("#loading").hide();
 			}
 		);
@@ -115,24 +113,24 @@ $(document).ready(function() {
 				'./assets/API/books.php',
 				$(this).serialize() + '&type=' + 2,
 				function(response) {
-					if (response[0].code == 1){
+					if (response[0].code == 1) {
 						Materialize.toast('未找到相关书籍，换个分类试试吧', 3000);
 					}
 					if (response[0].code == 0) {
 						$("#display").empty();
 						for (var i = 1; i < response.length; i++) {
-
-							var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
-							var btnAttr = response[i].remainingAmount == 0 ?
-							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-							response[i].remainingAmount + '</a>';
+							MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
+							btnAttr = response[i].remainingAmount == 0 ?
+								'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+								'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+								'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
+								response[i].remainingAmount + '</a>';
 							
 							$("#display").append(
 							'<div class="card horizontal">' +
 								'<div class="card-image">' +
-									'<img class="z-depth-3" src=' + response[i].image + ' onclick="window.location.href=this.src">' +
+									'<img class="z-depth-3" src=' + response[i].image +
+									' onclick="window.location.href=this.src">' +
 								'</div>' +
 								'<div class="card-stacked">' +
 									'<div class="card-content">' +
@@ -151,7 +149,6 @@ $(document).ready(function() {
 						$("#category").modal('close');
 						$(".button-collapse").sideNav('hide');
 					}
-
 					$("#loading").hide();
 				}
 			);
@@ -161,21 +158,16 @@ $(document).ready(function() {
 	$("#reserve-form").submit(function(e) {
 		e.preventDefault();
 		if (reserveCheck()) {
-
 			if (modifying) {
-				commitModification(this);
-				return;
+				commitModification(this); return;
 			}
-
 			$("#loading").css("display", "flex");
-
 			$.post(
 				'./assets/API/reserve.php',
 				$(this).serialize() + '&count=' + count +
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
 				function(response) {
 					$("#loading").hide();
-
 					if (response.code == 1) {
 						alert('请将预约信息填写完整！');
 					}
@@ -192,14 +184,14 @@ $(document).ready(function() {
 						alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
 						$("#list-data").empty();
 						$("#display").empty();
-						count = 0; list = new Array('0', '0', '0');
+						count = 0;
+						list = new Array('0', '0', '0');
 						$("#reserve").modal('close');
 						$("#welcome").modal('open');
 					}
 					if (response.code == 0) {
 						Materialize.toast('订单提交成功！', 3000);
-						window.setTimeout(function ()
-						{
+						window.setTimeout(function () {
 							$("#reserve").modal('close');
 							$("#stu-number").val($("#student-number").val());
 							$("label[for=stu-number]").addClass("active");
@@ -217,13 +209,9 @@ $(document).ready(function() {
 	});
 });
 
-
-
-
-
 function searchReservation() {
 	$("#progress").show();
-	var stuNo = $("#stu-number").val();
+	stuNo = $("#stu-number").val();
 	$.post(
 		'./assets/API/reservation.php',
 		{ 'stuNo': stuNo, 'type': 1 },
@@ -250,7 +238,6 @@ function searchReservation() {
 									'<th>订单更新时间</th>' +
 								'</tr>' +
 							'</thead>' +
-
 							'<tbody>' +
 								'<tr>' +
 									'<td>' + response[1].stuName + '</td>' +
@@ -264,17 +251,17 @@ function searchReservation() {
 								'</tr>' +
 							'</tbody>' +
 						'</table>' +
-
 						'<div class="section">' +
 							'<div class="card-title">预约书籍信息：</div>' +
 							'<div class="row" id="reserved-books"></div>' +
 							'<div class="reservation">' +
 								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation()">更改</button>' +
-								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="resetDiv()">返回</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="$("#reservation").empty();">返回</button>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
 				'</div>');
+
 				for (var i = 0; i < response[1].books.length; i++) {
 					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
 					$("#reserved-books").append(
@@ -320,7 +307,7 @@ function selectCategory(val) {
 }
 
 function Check() {
-	if (!($("#categoryA").prop("checked") || 
+	if (!($("#categoryA").prop("checked") ||
 		$("#categoryB").prop("checked"))) {
 			alert('请选择书籍分类！');
 			$("#loading").hide();
@@ -357,16 +344,10 @@ function fullText(val) {
 	$("#full-text").modal('open');
 }
 
-function resetDiv() {
-	$("#reservation").empty();
-}
-
-
-
 function modifyReservation() {
 	$("#loading").css("display", "flex");
 	$("#submit").text('确定修改');
-	var stuNo = $("#stu-number").val();
+	stuNo = $("#stu-number").val();
 
 	modifying = true, count = 0;
 	list = new Array('0', '0', '0');
@@ -396,7 +377,7 @@ function modifyReservation() {
 					preList[preList.indexOf('0')] = response[1].books[i].bookID;
 					count ++;
 
-					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
+					MultipleAuthor = response[1].books[i].isMultipleAuthor ? ' 等' : '';
 					
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
@@ -453,8 +434,7 @@ function commitModification(val) {
 			}
 			if (response.code == 0) {
 				Materialize.toast('订单修改成功！', 3000);
-				window.setTimeout(function ()
-				{
+				window.setTimeout(function () {
 					$("#reserve").modal('close');
 					searchReservation();
 				}, 1000);
