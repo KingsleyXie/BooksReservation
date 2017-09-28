@@ -13,145 +13,23 @@ $(document).ready(function() {
 
 	$("#all").submit(function(e) {
 		e.preventDefault();
-		$("#loading").css("display", "flex");
-		$.post(
-			'./assets/API/books.php',
-			$(this).serialize() + '&type=' + 0,
-			function(response) {
-				if (response[0].code == 1) {
-					Materialize.toast('数据库还是空的，过段时间再来看看吧', 3000);
-				}
-				if (response[0].code == 0) {
-					for (var i = 1; i < response.length; i++) {
-						MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
-						btnAttr = response[i].remainingAmount == 0 ?
-							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-							response[i].remainingAmount + '</a>';
-						
-						$("#display").append(
-						'<div class="card horizontal">' +
-							'<div class="card-image">' +
-								'<img class="z-depth-3" src=' + response[i].image +
-								' onclick="window.location.href=this.src">' +
-							'</div>' +
-							'<div class="card-stacked">' +
-								'<div class="card-content">' +
-									'<div class="card-title" onclick="fullText(this)">' + response[i].title + '</div>' +
-									'<div class="card-details">' +
-										'<p>作者：' + response[i].author + MultipleAuthor + '</p>' +
-										'<p>出版社：' + response[i].press + '</p>' +
-										'<p>出版时间：' + response[i].pubdate + '</p>' +
-									'</div>' +
-								'</div>' +
-							'</div>' + btnAttr +
-						'</div>');
-					}
-					$("#placeholder").show();
-					$("#book-confirm").show();
-					$("#welcome").modal('close');
-				}
-				$("#loading").hide();
-			}
-		);
+		display(this, 0);
 	});
 
 	$("#search-form").submit(function(e) {
 		e.preventDefault();
-		$("#loading").css("display", "flex");
-		$.post(
-			'./assets/API/books.php',
-			$(this).serialize() + '&type=' + 1,
-			function(response) {
-				if (response[0].code == 1) {
-					Materialize.toast('未找到相关书籍，换个关键词试试吧', 3000);
-				}
-				if (response[0].code == 0) {
-					$("#display").empty();
-					for (var i = 1; i < response.length; i++) {
-						MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
-						btnAttr = response[i].remainingAmount == 0 ?
-							'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-							'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-							'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-							response[i].remainingAmount + '</a>';
-						
-						$("#display").append(
-						'<div class="card horizontal">' +
-							'<div class="card-image">' +
-								'<img class="z-depth-3" src=' + response[i].image +
-								' onclick="window.location.href=this.src">' +
-							'</div>' +
-							'<div class="card-stacked">' +
-								'<div class="card-content">' +
-									'<div class="card-title" onclick="fullText(this)">' + response[i].title + '</div>' +
-									'<div class="card-details">' +
-										'<p>作者：' + response[i].author + MultipleAuthor + '</p>' +
-										'<p>出版社：' + response[i].press + '</p>' +
-										'<p>出版时间：' + response[i].pubdate + '</p>' +
-									'</div>' +
-								'</div>' +
-							'</div>' + btnAttr +
-						'</div>');
-					}
-					$("#placeholder").show();
-					$("#book-confirm").show();
-					$("#search").modal('close');
-					$(".button-collapse").sideNav('hide');
-				}
-				$("#loading").hide();
-			}
-		);
+		display(this, 1);
 	});
 
 	$("#category-form").submit(function(e) {
 		e.preventDefault();
 		$("#loading").css("display", "flex");
-		if (Check()) {
-			$.post(
-				'./assets/API/books.php',
-				$(this).serialize() + '&type=' + 2,
-				function(response) {
-					if (response[0].code == 1) {
-						Materialize.toast('未找到相关书籍，换个分类试试吧', 3000);
-					}
-					if (response[0].code == 0) {
-						$("#display").empty();
-						for (var i = 1; i < response.length; i++) {
-							MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
-							btnAttr = response[i].remainingAmount == 0 ?
-								'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-								'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-								'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-								response[i].remainingAmount + '</a>';
-							
-							$("#display").append(
-							'<div class="card horizontal">' +
-								'<div class="card-image">' +
-									'<img class="z-depth-3" src=' + response[i].image +
-									' onclick="window.location.href=this.src">' +
-								'</div>' +
-								'<div class="card-stacked">' +
-									'<div class="card-content">' +
-										'<div class="card-title" onclick="fullText(this)">' + response[i].title + '</div>' +
-										'<div class="card-details">' +
-											'<p>作者：' + response[i].author + MultipleAuthor + '</p>' +
-											'<p>出版社：' + response[i].press + '</p>' +
-											'<p>出版时间：' + response[i].pubdate + '</p>' +
-										'</div>' +
-									'</div>' +
-								'</div>' + btnAttr +
-							'</div>');
-						}
-						$("#placeholder").show();
-						$("#book-confirm").show();
-						$("#category").modal('close');
-						$(".button-collapse").sideNav('hide');
-					}
-					$("#loading").hide();
-				}
-			);
+		if (!($("#categoryA").prop("checked") ||
+			$("#categoryB").prop("checked"))) {
+				alert('请选择书籍分类！');
+				$("#loading").hide();
+		} else {
+			display(this, 2);
 		}
 	});
 
@@ -208,6 +86,55 @@ $(document).ready(function() {
 		searchReservation();
 	});
 });
+
+function display(data, type) {
+	$("#loading").css("display", "flex");
+	$.post(
+		'./assets/API/books.php',
+		$(data).serialize() + '&type=' + type,
+		function(response) {
+			if (response[0].code == 1) {
+				emptyInfo = ['数据库还是空的，过段时间再来看看吧', '未找到相关书籍，换个关键词试试吧', '未找到相关书籍，换个分类试试吧'];
+				Materialize.toast(emptyInfo[type], 3000);
+			}
+			if (response[0].code == 0) {
+				$("#display").empty();
+				for (var i = 1; i < response.length; i++) {
+					MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
+					btnAttr = response[i].remainingAmount == 0 ?
+						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
+						response[i].remainingAmount + '</a>';
+					
+					$("#display").append(
+					'<div class="card horizontal">' +
+						'<div class="card-image">' +
+							'<img class="z-depth-3" src=' + response[i].image +
+							' onclick="window.location.href=this.src">' +
+						'</div>' +
+						'<div class="card-stacked">' +
+							'<div class="card-content">' +
+								'<div class="card-title" onclick="fullText(this)">' + response[i].title + '</div>' +
+								'<div class="card-details">' +
+									'<p>作者：' + response[i].author + MultipleAuthor + '</p>' +
+									'<p>出版社：' + response[i].press + '</p>' +
+									'<p>出版时间：' + response[i].pubdate + '</p>' +
+								'</div>' +
+							'</div>' +
+						'</div>' + btnAttr +
+					'</div>');
+				}
+				$("#placeholder").show();
+				$("#book-confirm").show();
+				modalID = ['welcome', 'search', 'category'];
+				$("#" + modalID[type]).modal('close');
+				$(".button-collapse").sideNav('hide');
+			}
+			$("#loading").hide();
+		}
+	);
+}
 
 function searchReservation() {
 	$("#progress").show();
@@ -304,16 +231,6 @@ function selectCategory(val) {
 		$("#book-categoryA").hide();
 		$("#book-categoryB").show();
 	}
-}
-
-function Check() {
-	if (!($("#categoryA").prop("checked") ||
-		$("#categoryB").prop("checked"))) {
-			alert('请选择书籍分类！');
-			$("#loading").hide();
-			return false;
-	}
-	return true;
 }
 
 function reserveCheck() {
