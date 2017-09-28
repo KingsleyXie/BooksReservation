@@ -190,7 +190,7 @@ $(document).ready(function() {
 					}
 					if (response.code == 5) {
 						alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-						document.getElementById("list-data").innerHTML = '';
+						$("#list-data").empty();
 						$("#display").empty();
 						count = 0; list = new Array('0', '0', '0');
 						$("#reserve").modal('close');
@@ -201,8 +201,8 @@ $(document).ready(function() {
 						window.setTimeout(function ()
 						{
 							$("#reserve").modal('close');
-							document.getElementById("stu-number").value = document.getElementById("student-number").value;
-							document.querySelector("#stu-number + label").className = 'active';
+							$("#stu-number").val($("#student-number").val());
+							$("label[for=stu-number]").addClass("active");
 							searchReservation();
 						}, 1000);
 					}
@@ -223,7 +223,7 @@ $(document).ready(function() {
 
 function searchReservation() {
 	$("#progress").show();
-	var stuNo = document.getElementById("stu-number").value;
+	var stuNo = $("#stu-number").val();
 	$.post(
 		'./assets/API/reservation.php',
 		{ 'stuNo': stuNo, 'type': 1 },
@@ -232,78 +232,78 @@ function searchReservation() {
 				Materialize.toast('未查询到订单', 3000);
 			};	
 			if (response[0].code == 0) {
-				document.getElementById("reservation").innerHTML =
-					'<div class="card-content">' +
-						'<div class="reservation-title">订单详情</div>' +
-						'<div class="card-title">订单号：' + response[1].reservationNo + '</div>' +
-						'<div class="card-details">' +
-							'<table class="highlight responsive-table">' +
-								'<thead>' +
-									'<tr>' +
-										'<th>姓名</th>' +
-										'<th>学号</th>' +
-										'<th>联系方式</th>' +
-										'<th>宿舍楼</th>' +
-										'<th>领取日期</th>' +
-										'<th>领取时段</th>' +
-										'<th>订单提交时间</th>' +
-										'<th>订单更新时间</th>' +
-									'</tr>' +
-								'</thead>' +
+				$("#reservation").html(
+				'<div class="card-content">' +
+					'<div class="reservation-title">订单详情</div>' +
+					'<div class="card-title">订单号：' + response[1].reservationNo + '</div>' +
+					'<div class="card-details">' +
+						'<table class="highlight responsive-table">' +
+							'<thead>' +
+								'<tr>' +
+									'<th>姓名</th>' +
+									'<th>学号</th>' +
+									'<th>联系方式</th>' +
+									'<th>宿舍楼</th>' +
+									'<th>领取日期</th>' +
+									'<th>领取时段</th>' +
+									'<th>订单提交时间</th>' +
+									'<th>订单更新时间</th>' +
+								'</tr>' +
+							'</thead>' +
 
-								'<tbody>' +
-									'<tr>' +
-										'<td>' + response[1].stuName + '</td>' +
-										'<td>' + response[1].stuNo + '</td>' +
-										'<td>' + response[1].contact + '</td>' +
-										'<td>' + response[1].dormitory + '</td>' +
-										'<td>' + response[1].date + '</td>' +
-										'<td>' + response[1].timePeriod + '</td>' +
-										'<td>' + response[1].sbmTime + '</td>' +
-										'<td>' + response[1].updTime + '</td>' +
-									'</tr>' +
-								'</tbody>' +
-							'</table>' +
+							'<tbody>' +
+								'<tr>' +
+									'<td>' + response[1].stuName + '</td>' +
+									'<td>' + response[1].stuNo + '</td>' +
+									'<td>' + response[1].contact + '</td>' +
+									'<td>' + response[1].dormitory + '</td>' +
+									'<td>' + response[1].date + '</td>' +
+									'<td>' + response[1].timePeriod + '</td>' +
+									'<td>' + response[1].sbmTime + '</td>' +
+									'<td>' + response[1].updTime + '</td>' +
+								'</tr>' +
+							'</tbody>' +
+						'</table>' +
 
-							'<div class="section">' +
-								'<div class="card-title">预约书籍信息：</div>' +
-								'<div class="row" id="reserved-books"></div>' +
-								'<div class="reservation">' +
-									'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation()">更改</button>' +
-									'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="resetDiv()">返回</button>' +
-								'</div>' +
+						'<div class="section">' +
+							'<div class="card-title">预约书籍信息：</div>' +
+							'<div class="row" id="reserved-books"></div>' +
+							'<div class="reservation">' +
+								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation()">更改</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="resetDiv()">返回</button>' +
 							'</div>' +
 						'</div>' +
-					'</div>';
+					'</div>' +
+				'</div>');
 				for (var i = 0; i < response[1].books.length; i++) {
 					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
 					$("#reserved-books").append(
-						'<div class="col s12 m4">' +
-							'<div class="card blue-grey darken-1">' +
-								'<div class="card-content white-text">' +
-									'<div class="card-title">' + response[1].books[i].title +
-									'</div>' +
-									'<div class="card-details">' +
-										'<p>作者：' + response[1].books[i].author + MultipleAuthor + '</p>' +
-										'<p>出版社：' + response[1].books[i].press + '</p>' +
-										'<p>出版日期：' + response[1].books[i].pubdate + '</p>' +
-									'</div>' +
+					'<div class="col s12 m4">' +
+						'<div class="card blue-grey darken-1">' +
+							'<div class="card-content white-text">' +
+								'<div class="card-title">' + response[1].books[i].title +
 								'</div>' +
-								'<div class="card-action center-align">' +
-									'<a class="cover" href=' + response[1].books[i].image + '>触碰或点击查看封面图片' +
-										'<div class="cover-image">' +
-											'<img src=' + response[1].books[i].image + ' alt="封面图片">' +
-										'</div>' +
-									'</a>' +
+								'<div class="card-details">' +
+									'<p>作者：' + response[1].books[i].author + MultipleAuthor + '</p>' +
+									'<p>出版社：' + response[1].books[i].press + '</p>' +
+									'<p>出版日期：' + response[1].books[i].pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
-						'</div>';
+							'<div class="card-action center-align">' +
+								'<a class="cover" href=' + response[1].books[i].image + '>触碰或点击查看封面图片' +
+									'<div class="cover-image">' +
+										'<img src=' + response[1].books[i].image + ' alt="封面图片">' +
+									'</div>' +
+								'</a>' +
+							'</div>' +
+						'</div>' +
+					'</div>');
 				}
 				$("#search-reservation").modal('close');
 				$(".button-collapse").sideNav('hide');
 				$("#reservation").modal('open');
 			}
-			document.getElementById("progress").style.display = 'none';
+			$("#progress").hide();
 		}
 	);
 }
@@ -311,17 +311,17 @@ function searchReservation() {
 function selectCategory(val) {
 	if (val == 'categoryA') {
 		$("#book-categoryA").show();
-		document.getElementById("book-categoryB").style.display = 'none';
+		$("#book-categoryB").hide();
 	}
 	if (val == 'categoryB') {
-		document.getElementById("book-categoryA").style.display = 'none';
+		$("#book-categoryA").hide();
 		$("#book-categoryB").show();
 	}
 }
 
 function Check() {
-	if (!(document.getElementById("categoryA").checked || 
-		document.getElementById("categoryB").checked)) {
+	if (!($("#categoryA").prop("checked") || 
+		$("#categoryB").prop("checked"))) {
 			alert('请选择书籍分类！');
 			$("#loading").hide();
 			return false;
@@ -330,12 +330,12 @@ function Check() {
 }
 
 function reserveCheck() {
-	if (document.getElementById("student-name").value == '' ||
-		document.getElementById("student-number").value == '' ||
-		document.getElementById("dormitory").value == '' ||
-		document.getElementById("contact").value == '' ||
-		document.getElementById("date").value == '' ||
-		document.getElementById("time-period").value == '') {
+	if ($("#student-name").val() == '' ||
+		$("#student-number").val() == '' ||
+		$("#dormitory").val() == '' ||
+		$("#contact").val() == '' ||
+		$("#date").val() == '' ||
+		$("#time-period").val() == '') {
 			alert('请将预约信息填写完整！');
 			return false;
 	}
@@ -345,7 +345,7 @@ function reserveCheck() {
 
 function confirmChoose() {
 	if (count == 0) {
-		document.getElementById("alert-content").textContent = '请选择预约书籍';
+		$("#alert-content").text('请选择预约书籍');
 		$("#alert").modal('open');
 		return;
 	}
@@ -353,20 +353,20 @@ function confirmChoose() {
 }
 
 function fullText(val) {
-	document.getElementById("full-text-content").textContent = val.textContent;
+	$("#full-text-content").text(val.textContent);
 	$("#full-text").modal('open');
 }
 
 function resetDiv() {
-	document.getElementById("reservation").innerHTML = '';
+	$("#reservation").empty();
 }
 
 
 
 function modifyReservation() {
 	$("#loading").css("display", "flex");
-	document.getElementById("submit").innerText = '确定修改';
-	var stuNo = document.getElementById("stu-number").value;
+	$("#submit").text('确定修改');
+	var stuNo = $("#stu-number").val();
 
 	modifying = true, count = 0;
 	list = new Array('0', '0', '0');
@@ -377,14 +377,14 @@ function modifyReservation() {
 		{ 'stuNo': stuNo, 'type': 1 },
 		function(response) {
 			if (response[0].code == 0) {
-				document.getElementById("list-data").innerHTML = '';
+				$("#list-data").empty();
 				
-				document.querySelector("#student-name + label").className = 'active';
-				document.getElementById("student-name").value = response[1].stuName;
-				document.querySelector("#student-number + label").className = 'active';
-				document.getElementById("student-number").value = response[1].stuNo;
-				document.querySelector("#contact + label").className = 'active';
-				document.getElementById("contact").value = response[1].contact;
+				$("label[for=student-name]").addClass("active");
+				$("#student-name").val(response[1].stuName);
+				$("label[for=student-number]").addClass("active");
+				$("#student-number").val(response[1].stuNo);
+				$("label[for=contact]").addClass("active");
+				$("#contact").val(response[1].contact);
 
 				$("#student-number").prop('disabled', true);
 				$("#dormitory").val(response[1].dormitory);	$("#dormitory").material_select();
@@ -431,7 +431,7 @@ function commitModification(val) {
 		$(val).serialize() + '&count=' + count +
 		'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
 		'&preList0=' + preList[0] + '&preList1=' + preList[1] + '&preList2=' + preList[2] +
-		'&studentNo=' + document.getElementById("student-number").value,
+		'&studentNo=' + $("#student-number").val(),
 		function(response) {
 			$("#loading").hide();
 			if (response.code == 1) {
@@ -442,7 +442,7 @@ function commitModification(val) {
 			}
 			if (response.code == 3) {
 				alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-				document.getElementById("list-data").innerHTML = '';
+				$("#list-data").empty();
 				$("#display").empty();
 				count = 0; list = new Array('0', '0', '0');
 				$("#reserve").modal('close');
@@ -465,13 +465,13 @@ function commitModification(val) {
 
 function addToList(val) {
 	if (count >= 3) {
-		document.getElementById("alert-content").textContent = '列表书籍已达到选择上限';
+		$("#alert-content").text('列表书籍已达到选择上限');
 		$("#alert").modal('open');
 		return;
 	}
 
 	if (list.indexOf(val.dataset.id) != -1) {
-		document.getElementById("alert-content").textContent = '每种书籍仅限选择一本哦';
+		$("#alert-content").text('每种书籍仅限选择一本哦');
 		$("#alert").modal('open');
 		return;
 	}
