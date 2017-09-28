@@ -12,6 +12,7 @@ $(document).ready(function() {
 	$("select").material_select();
 
 	$("#welcome").modal('open');
+	$("#loading").hide();
 
 	$("#all").submit(function(e) {
 		e.preventDefault();

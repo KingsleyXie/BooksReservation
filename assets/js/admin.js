@@ -7,74 +7,68 @@ $(document).ready(function() {
 		if(e.keyCode == 13) getData();
 	});
 
-	$("#bookID").bind('keypress',function(e){
+	$("#bookID").bind('keypress',function(e) {
 		if(e.keyCode == 13) getBook();
 	});
 	
 	$("#add").submit(function(e) {
 		e.preventDefault();
-		if (document.getElementById("book-info").style.display == 'block'
+		if ($("#book-info").css("display") == "block"
 			&& Check()
 			&& ConfirmInfo()) {
-			$.ajax({
-				type: 'POST',
-				url: '../assets/API/add.php',
-				data: $(this).serialize(),
-				success: function(response) {
+			$.post(
+				'../assets/API/add.php',
+				$(this).serialize(),
+				function(response) {
 					if (response.code == 1) {
 						alert('请登录系统！');
 						window.location.href = './login';
 					}
 					if (response.code == 0) {
 						Materialize.toast('书籍添加成功！', 3000);
-						window.setTimeout(function () {
+						window.setTimeout(function() {
 							window.location.href = './';
 						}, 3600);
 					} else {
 						alert(response.errMsg);
 					}
 				}
-			});
+			);
 		}
 	});
 
 	$("#update").submit(function(e) {
 		e.preventDefault();
-		if (document.getElementById("upd-books").style.display == 'block'
+		if ($("#upd-books").css("display") == 'block'
 			&& updCheck()
 			&& updConfirmInfo()) {
-			$.ajax({
-				type: 'POST',
-				url: '../assets/API/update.php',
-				data: $(this).serialize(),
-				success: function(response) {
+			$.post(
+				'../assets/API/update.php',
+				$(this).serialize(),
+				function(response) {
 					if (response.code == 1) {
 						alert('请登录系统！');
 						window.location.href = './login.html';
 					}
 					if (response.code == 0) {
 						Materialize.toast('书籍信息更新成功！', 3000);
-						window.setTimeout(function ()
-						{
+						window.setTimeout(function() {
 							window.location.href = './';
 						}, 3600);
 					} else {
 						alert(response.errMsg);
 					}
 				}
-			});
+			);
 		}
 	});
 
-	document.getElementById("loading").style.display = 'flex';
-
-	$.ajax({
-		type: 'POST',
-		url: '../assets/API/booksAdmin.php',
-		success: function(response) {
+	$.get(
+		'../assets/API/booksAdmin.php',
+		function(response) {
 			if (response[0].code == 1) {
 				alert('请登录系统！');
-				window.location.href = 'login.html';
+				window.location.href = './login.html';
 			}
 			if (response[0].code == 2) {
 				Materialize.toast('数据库中暂无书籍信息', 3000);
@@ -130,23 +124,22 @@ $(document).ready(function() {
 			}
 			$("#loading").hide();
 		}
-	});
+	);
 });
 
 
 
 function logout() {
-	$.ajax({
-		type: 'POST',
-		url: '../assets/API/admin.php',
-		data: ({ 'type':2 }),
-		success: function(response) {
+	$.post(
+		'../assets/API/admin.php',
+		{ 'type':2 },
+		function(response) {
 			if (response.code == 0) {
 				alert('退出系统成功');
 			}
 			window.location.href = '../';
 		}
-	});
+	);
 }
 
 function selectCategory(val) {
@@ -179,11 +172,10 @@ function inputData() {
 
 function getData() {
 	$("#progress").show();
-	$.ajax({
-		type:'POST',
-		url: '../assets/API/bookInfoAPI.php',
-		data: ({ 'ISBN' : $("#ISBN").val() }),
-		success: function(response)	{
+	$.post(
+		'../assets/API/bookInfoAPI.php',
+		{ 'ISBN' : $("#ISBN").val() },
+		function(response) {
 			$("#progress").hide();
 			if (response.code == 1) {
 				alert('未找到书籍信息，请手动录入相关数据');
@@ -213,17 +205,15 @@ function getData() {
 				$("#book-category").show();
 			}
 		}
-	});
+	);
 }
 
 function getBook() {
 	$("#upd-progress").show();
-	$.ajax({
-		type: 'POST',
-		url: '../assets/API/booksAdmin.php',
-		data: ({ "bookID": document.getElementById("bookID").value }),
-		success: function(response)
-		{
+	$.post(
+		'../assets/API/booksAdmin.php',
+		{ "bookID": $("#bookID").val() },
+		function(response) {
 			if (response[0].code == 1) {
 				alert('请登录系统！');
 				window.location.href = './login.html';
@@ -268,7 +258,7 @@ function getBook() {
 				$("#upd-books").show();
 			}
 		}
-	});
+	);
 }
 
 function Check() {
