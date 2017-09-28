@@ -10,7 +10,71 @@ $(document).ready(function() {
 	$("#bookID").bind('keypress',function(e) {
 		if(e.keyCode == 13) getBook();
 	});
-	
+
+	$.get(
+		'../assets/API/booksAdmin.php',
+		function(response) {
+			if (response[0].code == 1) {
+				alert('请登录系统！');
+				window.location.href = './login.html';
+			}
+			if (response[0].code == 2) {
+				Materialize.toast('数据库中暂无书籍信息', 3000);
+			}
+
+			if (response[0].code == 0) {
+				for (var i = 1; i < response.length; i++) {
+
+					var rowNo = Math.round((i + 1) / 4);
+					if (i % 4 == 1) {
+						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');
+					}
+
+					var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
+					var Category = response[i].bookCategory == 'CategoryA' ?
+					
+					'<p>分类：教材课本</p><p>年级：' + response[i].grade +
+					'&nbsp;&nbsp;&nbsp;专业：' + response[i].major + '</p>' :
+					
+					'<p>分类：课外书籍</p><p>详细类别：' + response[i].extracurricularCategory + '</p>';
+
+					if (response[i].image == './assets/pictures/defaultCover.png') {
+						response[i].image = '../assets/pictures/defaultCover.png'
+					}
+
+					$("#row" + rowNo).append(
+					'<div class="col s12 m3">' + 
+						'<div class="card blue-grey darken-1">' + 
+							'<div class="card-content white-text">' + 
+								'<div class="card-title">' + response[i].title + '</div>' + 
+								'<div class="card-details">' + 
+									'<p>作者：' + response[i].author + MultipleAuthor + '</p>' + 
+									'<p>出版社：' + response[i].press + '</p>' + 
+									'<p>出版日期：' + response[i].pubdate + '</p>' + 
+									'<div class="admin-info">' + 
+										'<p><strong>书籍 ID：' + response[i].bookID + '</strong></p>' + 
+										'<p>剩余数量：' + response[i].remainingAmount + '</p>' + Category +
+										'<p>入库时间：' + response[i].importTime + '</p>' + 
+										'<p>更新时间：' + response[i].updateTime + '</p>' + 
+									'</div>' + 
+								'</div>' + 
+							'</div>' + 
+							'<div class="card-action center-align">' + 
+								'<a class="cover" href=' + response[i].image + '>' + 
+									'触碰或点击查看封面图片' + 
+									'<div class="cover-image">' + 
+										'<img src=' + response[i].image + ' alt="封面图片" >' + 
+									'</div>' + 
+								'</a>' + 
+							'</div>' + 
+						'</div>' + 
+					'</div>');
+				}
+			}
+			$("#loading").hide();
+		}
+	);
+
 	$("#add").submit(function(e) {
 		e.preventDefault();
 		if ($("#book-info").css("display") == "block"
@@ -62,69 +126,6 @@ $(document).ready(function() {
 			);
 		}
 	});
-
-	$.get(
-		'../assets/API/booksAdmin.php',
-		function(response) {
-			if (response[0].code == 1) {
-				alert('请登录系统！');
-				window.location.href = './login.html';
-			}
-			if (response[0].code == 2) {
-				Materialize.toast('数据库中暂无书籍信息', 3000);
-			}
-
-			if (response[0].code == 0) {
-				for (var i = 1; i < response.length; i++) {
-
-					var rowNo = Math.round((i + 1) / 4);
-					if (i % 4 == 1) {
-						document.getElementById("books").innerHTML += 
-							'<div class="row" id="row' + rowNo + '"></div>';
-					}
-
-					var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
-					var Category = response[i].bookCategory == 'CategoryA' ?
-					'<p>分类：教材课本</p><p>年级：' + response[i].grade +
-					'&nbsp;&nbsp;&nbsp;专业：' + response[i].major + '</p>' :
-					'<p>分类：课外书籍</p><p>详细类别：' + response[i].extracurricularCategory + '</p>';
-
-					if (response[i].image == './assets/pictures/defaultCover.png') {
-						response[i].image = '../assets/pictures/defaultCover.png'
-					}
-
-					document.getElementById("row" + rowNo).innerHTML += 
-						'<div class="col s12 m3">' + 
-							'<div class="card blue-grey darken-1">' + 
-								'<div class="card-content white-text">' + 
-									'<div class="card-title">' + response[i].title + '</div>' + 
-									'<div class="card-details">' + 
-										'<p>作者：' + response[i].author + MultipleAuthor + '</p>' + 
-										'<p>出版社：' + response[i].press + '</p>' + 
-										'<p>出版日期：' + response[i].pubdate + '</p>' + 
-										'<div class="admin-info">' + 
-											'<p><strong>书籍 ID：' + response[i].bookID + '</strong></p>' + 
-											'<p>剩余数量：' + response[i].remainingAmount + '</p>' + Category +
-											'<p>入库时间：' + response[i].importTime + '</p>' + 
-											'<p>更新时间：' + response[i].updateTime + '</p>' + 
-										'</div>' + 
-									'</div>' + 
-								'</div>' + 
-								'<div class="card-action center-align">' + 
-									'<a class="cover" href=' + response[i].image + '>' + 
-										'触碰或点击查看封面图片' + 
-										'<div class="cover-image">' + 
-											'<img src=' + response[i].image + ' alt="封面图片" >' + 
-										'</div>' + 
-									'</a>' + 
-								'</div>' + 
-							'</div>' + 
-						'</div>';
-					}
-			}
-			$("#loading").hide();
-		}
-	);
 });
 
 
@@ -179,25 +180,20 @@ function getData() {
 			$("#progress").hide();
 			if (response.code == 1) {
 				alert('未找到书籍信息，请手动录入相关数据');
-				document.getElementById("ISBN").value = '';
+				$("#ISBN").val('');
 				inputData();
 			}
 			if (response.code == 0) {
-				document.querySelector("#title + label").className = 'active';
-				document.getElementById("title").value = response.title;
-				document.querySelector("#author + label").className = 'active';
-				document.getElementById("author").value = response.author;
-				document.querySelector("#press + label").className = 'active';
-				document.getElementById("press").value = response.press;
-				document.querySelector("#pubdate + label").className = 'active';
-				document.getElementById("pubdate").value = response.pubdate;
-				document.querySelector("#image + label").className = 'active';
-				document.getElementById("image").value = response.image;
+				$("label").addClass("active")
+				$("#title").val(response.title);
+				$("#author").val(response.author);
+				$("#press").val(response.press);
+				$("#pubdate").val(response.pubdate);
+				$("#image").val(response.image);
+				$("#is-multiple-author").prop("checked", response.isMultipleAuthor);
 
-				var isMA = response.isMultipleAuthor == 1 ? true: false;
-				document.getElementById("is-multiple-author").checked = isMA;
 				window.setTimeout(function () {
-					document.getElementById("remaining-amount").focus();
+					$("#remaining-amount").focus();
 				}, 0);
 
 				$("#add-init").hide();
@@ -223,19 +219,14 @@ function getBook() {
 				$("#upd-progress").hide();
 			};
 			if (response[0].code == 0) {
-				var bookCategory = response[1].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB';
+				$("label").addClass("active")
 				$("#upd-progress").hide();
-				document.querySelector("#upd-title + label").className = 'active';
-				document.getElementById("upd-title").value = response[1].title;
-				document.querySelector("#upd-author + label").className = 'active';
-				document.getElementById("upd-author").value = response[1].author;
-				document.querySelector("#upd-press + label").className = 'active';
-				document.getElementById("upd-press").value = response[1].press;
-				document.querySelector("#upd-pubdate + label").className = 'active';
-				document.getElementById("upd-pubdate").value = response[1].pubdate;
-				document.querySelector("#upd-image + label").className = 'active';
-				document.getElementById("upd-image").value = response[1].image;
-				document.getElementById("upd-" + bookCategory).checked = true;
+				$("#upd-title").val(response[1].title);
+				$("#upd-author").val(response[1].author);
+				$("#upd-press").val(response[1].press);
+				$("#upd-pubdate").val(response[1].pubdate);
+				$("#upd-image").val(response[1].image);
+				$("#upd-" + (response[1].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
 				if (response[1].bookCategory == "CategoryA") {
 					updCategory('upd-categoryA');
@@ -248,11 +239,10 @@ function getBook() {
 					$("#upd-extracurricular-category").material_select();
 				}
 
-				var isMA = response[1].isMultipleAuthor == 1 ? true: false;
-				document.getElementById("upd-is-multiple-author").checked = isMA;
+				$("#upd-is-multiple-author").prop("checked", response[1].isMultipleAuthor);
 				window.setTimeout(function () {
-					document.getElementById("upd-remaining-amount").value = response[1].remainingAmount;
-					document.getElementById("upd-remaining-amount").focus();
+					$("#upd-remaining-amount").val(response[1].remainingAmount);
+					$("#upd-remaining-amount").focus();
 				}, 0);
 				$("#update-init").hide();
 				$("#upd-books").show();
@@ -262,24 +252,24 @@ function getBook() {
 }
 
 function Check() {
-	if (document.getElementById("title").value == '' || 
-		document.getElementById("author").value == '' || 
-		document.getElementById("press").value == '' || 
-		document.getElementById("pubdate").value == '' || 
-		document.getElementById("remaining-amount").value == '' || 
-		!(document.getElementById("categoryA").checked ||  
-		document.getElementById("categoryB").checked)) {
+	if ($("#title").val('') ||
+		$("#author").val('') ||
+		$("#press").val('') ||
+		$("#pubdate").val('') ||
+		$("#remaining-amount").val('') ||
+		!($("#categoryA").prop("checked") ||  
+		$("#categoryB").prop("checked"))) {
 			alert('请将书籍信息填写完整！');
 			return false;
 	}
-	if (document.getElementById("categoryA").checked && 
-		(document.getElementById("grade").value == '' || 
-		document.getElementById("major").value == '')) {
+	if ($("#categoryA").prop("checked") && 
+		($("#grade").val('') ||
+		$("#major").val(''))) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
-	if (document.getElementById("categoryB").checked && 
-		document.getElementById("extracurricular-category").value == '') {
+	if ($("#categoryB").prop("checked") && 
+		$("#extracurricular-category").val('')) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
@@ -287,24 +277,24 @@ function Check() {
 }
 
 function updCheck() {
-	if (document.getElementById("upd-title").value == '' || 
-		document.getElementById("upd-author").value == '' || 
-		document.getElementById("upd-press").value == '' || 
-		document.getElementById("upd-pubdate").value == '' || 
-		document.getElementById("upd-remaining-amount").value == '' || 
-		!(document.getElementById("upd-categoryA").checked ||  
-		document.getElementById("upd-categoryB").checked)) {
+	if ($("#upd-title").val('') ||
+		$("#upd-author").val('') ||
+		$("#upd-press").val('') ||
+		$("#upd-pubdate").val('') ||
+		$("#upd-remaining-amount").val('') ||
+		!($("#upd-categoryA").prop("checked") ||  
+		$("#upd-categoryB").prop("checked"))) {
 			alert('请将书籍信息填写完整！');
 			return false;
 	}
-	if (document.getElementById("upd-categoryA").checked && 
-		(document.getElementById("upd-grade").value == '' || 
-		document.getElementById("upd-major").value == '')) {
+	if ($("#upd-categoryA").prop("checked") && 
+		($("#upd-grade").val('') ||
+		$("#upd-major").val(''))) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
-	if (document.getElementById("upd-categoryB").checked && 
-		document.getElementById("upd-extracurricular-category").value == '') {
+	if ($("#upd-categoryB").prop("checked") && 
+		$("#upd-extracurricular-category").val('')) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
@@ -312,44 +302,44 @@ function updCheck() {
 }
 
 function ConfirmInfo() {
-	var isMA = document.getElementById("is-multiple-author").checked ? '是' : '否';
-	if (document.getElementById("categoryA").checked) {
+	var isMA = $("#is-multiple-author").prop("checked") ? '是' : '否';
+	if ($("#categoryA").prop("checked")) {
 		var cataInfo = '\n书籍分类：教材课本' +
-		'\n年级：' + document.getElementById("grade").value +
-		'\n专业：' + document.getElementById("major").value;
+		'\n年级：' + $("#grade").val() +
+		'\n专业：' + $("#major").val();
 	}
-	if (document.getElementById("categoryB").checked) {
+	if ($("#categoryB").prop("checked")) {
 		var cataInfo = '\n书籍分类：课外书籍' +
-		'\n详细类别：' + document.getElementById("extracurricular-category").value;
+		'\n详细类别：' + $("#extracurricular-category").val();
 	}
 	var confirmPrompt = '请再次确认该书籍信息：\n' +
-		'\n书名：' + document.getElementById("title").value +
-		'\n作者：' + document.getElementById("author").value +
+		'\n书名：' + $("#title").val() +
+		'\n作者：' + $("#author").val() +
 		'\n是否有多位作者：' + isMA +
-		'\n出版社：' + document.getElementById("press").value +
-		'\n剩余数量：' + document.getElementById("remaining-amount").value +
-		'\n图片链接：' + document.getElementById("image").value + cataInfo;
+		'\n出版社：' + $("#press").val() +
+		'\n剩余数量：' + $("#remaining-amount").val() +
+		'\n图片链接：' + $("#image").val() + cataInfo;
 	return confirm(confirmPrompt);
 }
 
 function updConfirmInfo() {
-	var isMA = document.getElementById("upd-is-multiple-author").checked ? '是' : '否';
-	if (document.getElementById("upd-categoryA").checked) {
+	var isMA = $("#upd-is-multiple-author").prop("checked") ? '是' : '否';
+	if ($("#upd-categoryA").prop("checked")) {
 		var cataInfo = '\n书籍分类：教材课本' +
-		'\n年级：' + document.getElementById("upd-grade").value +
-		'\n专业：' + document.getElementById("upd-major").value;
+		'\n年级：' + $("#upd-grade").val() +
+		'\n专业：' + $("#upd-major").val();
 	}
-	if (document.getElementById("upd-categoryB").checked) {
+	if ($("#upd-categoryB").prop("checked")) {
 		var cataInfo = '\n书籍分类：课外书籍' +
-		'\n详细类别：' + document.getElementById("upd-extracurricular-category").value;
+		'\n详细类别：' + $("#upd-extracurricular-category").val();
 	}
 	var confirmPrompt = '请再次确认该书籍信息：\n' +
-		'\n书籍 ID：' + document.getElementById("bookID").value +
-		'\n书名：' + document.getElementById("upd-title").value +
-		'\n作者：' + document.getElementById("upd-author").value +
+		'\n书籍 ID：' + $("#bookID").val() +
+		'\n书名：' + $("#upd-title").val() +
+		'\n作者：' + $("#upd-author").val() +
 		'\n是否有多位作者：' + isMA +
-		'\n出版社：' + document.getElementById("upd-press").value +
-		'\n剩余数量：' + document.getElementById("upd-remaining-amount").value +
-		'\n图片链接：' + document.getElementById("upd-image").value + cataInfo;
+		'\n出版社：' + $("#upd-press").val() +
+		'\n剩余数量：' + $("#upd-remaining-amount").val() +
+		'\n图片链接：' + $("#upd-image").val() + cataInfo;
 	return confirm(confirmPrompt);
 }
