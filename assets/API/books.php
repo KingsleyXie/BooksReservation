@@ -2,67 +2,99 @@
 header('Content-Type: application/json');
 require_once('./config.php');
 
-if (!isset($_POST['type'])) {
-	header('Location: http://p1.img.cctvpic.com/20120409/images/1333902721891_1333902721891_r.jpg');
-	return;
-}
+existCheck('type');
 
 // type value - 0: all, 1: search, 2: category
-
-$loadImg = false;
-if (isset($_POST['loadImg'])) $loadImg = true;
+$loadImg = isset($_POST['loadImg']) ? true : false;
 
 $defaultCover = "./assets/pictures/defaultCover.png";
 
 switch ($_POST['type']) {
-	case 0:
-		$sql = 'SELECT * from books ORDER BY remainingAmount > 0 DESC, bookID DESC';
+	case '0':
+		$sql = '
+		SELECT * FROM books
+		ORDER BY
+			remainingAmount > 0 DESC,
+			bookID DESC';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute();
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		break;
 	
-	case 1:
-		$sql = 'SELECT * from books WHERE (title LIKE ?) OR (author LIKE ?) ORDER BY remainingAmount > 0 DESC, bookID DESC';
+	case '1':
+		existCheck('keyWord');
+
+		$sql = '
+		SELECT * FROM books
+		WHERE (title LIKE ?) OR (author LIKE ?)
+		ORDER BY
+			remainingAmount > 0 DESC,
+			bookID DESC';
 		$stmt = $connect->prepare($sql);
-		$stmt->execute(array('%' . $_POST['keyWord'] . '%', '%' . $_POST['keyWord'] . '%'));
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		$stmt->execute([
+			'%' . $_POST['keyWord'] . '%',
+			'%' . $_POST['keyWord'] . '%'
+		]);
 		break;
 
-	case 2:
+	case '2':
+		existCheck('bookCategory', 'grade', 'major');
+
 		if ($_POST['bookCategory'] == 'CategoryA') {
-			$sql = 'SELECT * from books WHERE (bookCategory = \'CategoryA\') AND ((grade = ?) OR (\'all\' = ?)) AND ((major = ?) OR (\'all\' = ?)) ORDER BY remainingAmount > 0 DESC, bookID DESC';
+			$sql = '
+			SELECT * FROM books
+			WHERE
+				(bookCategory = "CategoryA")
+				AND ((grade = ?) OR ("all" = ?))
+				AND ((major = ?) OR ("all" = ?))
+			ORDER BY
+				remainingAmount > 0 DESC,
+				bookID DESC';
 			$stmt = $connect->prepare($sql);
-			$stmt->execute(array($_POST['grade'], $_POST['grade'], $_POST['major'], $_POST['major']));
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt->execute([
+				$_POST['grade'],
+				$_POST['grade'],
+				$_POST['major'],
+				$_POST['major']
+			]);
 		}
 
 		if ($_POST['bookCategory'] == 'CategoryB') {
-			$sql = 'SELECT * from books WHERE (bookCategory = \'CategoryB\') AND ((extracurricularCategory = ?) OR (\'all\' = ?)) ORDER BY remainingAmount > 0 DESC, bookID DESC';
+			$sql = '
+			SELECT * FROM books
+			WHERE
+				(bookCategory = "CategoryB")
+				AND ((extracurricularCategory = ?) OR ("all" = ?))
+			ORDER BY
+				remainingAmount > 0 DESC,
+				bookID DESC';
 			$stmt = $connect->prepare($sql);
-			$stmt->execute(array($_POST['extracurricularCategory'], $_POST['extracurricularCategory']));
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$stmt->execute([
+				$_POST['extracurricularCategory'],
+				$_POST['extracurricularCategory']
+			]);
 		}
 		break;
 
 	default:
-		response(3, '请求错误');
-		break;
+		response(2, '请求错误');
 }
 
-if (empty($result)) {
-	$response[0] = array('code' => 1);
-}
-else {
-	$response[0] = array('code' => 0);
-}
-
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$response[0] = empty($result) ? ['code' => 1] : ['code' => 0];
 
 $index = 1;
-foreach($result as $books) {
-	$response[$index] = array('bookID' => htmlspecialchars($books['bookID']), 'title' => htmlspecialchars($books['title']), 'author' => htmlspecialchars($books['author']), 'isMultipleAuthor' => htmlspecialchars($books['isMultipleAuthor']), 'press' => htmlspecialchars($books['press']), 'pubdate' => htmlspecialchars($books['pubdate']), 'image' => ($loadImg ? htmlspecialchars($books['image']) : $defaultCover), 'remainingAmount' => htmlspecialchars($books['remainingAmount']));
+foreach($result as $book) {
+	$response[$index] = [
+		'bookID' => htmlspecialchars($book['bookID']),
+		'title' => htmlspecialchars($book['title']),
+		'author' => htmlspecialchars($book['author']),
+		'isMultipleAuthor' => htmlspecialchars($book['isMultipleAuthor']),
+		'press' => htmlspecialchars($book['press']),
+		'pubdate' => htmlspecialchars($book['pubdate']),
+		'image' => ($loadImg ? htmlspecialchars($book['image']) : $defaultCover),
+		'remainingAmount' => htmlspecialchars($book['remainingAmount'])
+	];
 	$index++;
 }
-
 
 echo json_encode($response);

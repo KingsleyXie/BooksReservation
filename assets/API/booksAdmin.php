@@ -10,11 +10,11 @@ if (!isset($_SESSION['username'])) {
 }
 
 if (isset($_POST['bookID'])) {
-	$sql = 'SELECT * from books WHERE bookID = ?';
+	$sql = 'SELECT * FROM books WHERE bookID = ?';
 	$stmt = $connect->prepare($sql);
 	$stmt->execute(array($_POST['bookID']));
 } else {
-	$sql = 'SELECT * from books ORDER BY bookID DESC';
+	$sql = 'SELECT * FROM books ORDER BY bookID DESC';
 	$stmt = $connect->prepare($sql);
 	$stmt->execute();
 }
