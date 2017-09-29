@@ -1,23 +1,16 @@
 $(document).ready(function() {
 	$(".button-collapse").sideNav();
+	
 	$.post(
-		'../assets/API/reservation.php',
+		'../assets/API/reservations.php',
 		'operation=all',
 		function(response) {
-			if (response[0].code == 1) {
-				Materialize.toast('未查询到订单', 3000);
-				$("#loading").hide();
-			};
-			if (response[0].code == 2) {
-				alert('请登录系统！');
-				window.location.href = './login';
-			};
-			if (response[0].code == 0) {
-				for (var index = 1; index < response.length; index++) {
+			if (response.code == 0) {
+				$.each(response, function(index, reservation) {
 					$("#reservation").append(
 					'<div class="card">' +
 						'<div class="card-content">' +
-							'<div class="card-title">订单号：' + response[index].reservationNo + '</div>' +
+							'<div class="card-title">订单号：' + reservation.reservationNo + '</div>' +
 							'<div class="card-details">' +
 								'<table class="highlight responsive-table">' +
 									'<thead>' +
@@ -34,32 +27,32 @@ $(document).ready(function() {
 									'</thead>' +
 									'<tbody>' +
 										'<tr>' +
-											'<td>' + response[index].stuName + '</td>' +
-											'<td>' + response[index].stuNo + '</td>' +
-											'<td>' + response[index].contact + '</td>' +
-											'<td>' + response[index].dormitory + '</td>' +
-											'<td>' + response[index].date + '</td>' +
-											'<td>' + response[index].timePeriod + '</td>' +
-											'<td>' + response[index].sbmTime + '</td>' +
-											'<td>' + response[index].updTime + '</td>' +
+											'<td>' + reservation.stuName + '</td>' +
+											'<td>' + reservation.stuNo + '</td>' +
+											'<td>' + reservation.contact + '</td>' +
+											'<td>' + reservation.dormitory + '</td>' +
+											'<td>' + reservation.date + '</td>' +
+											'<td>' + reservation.timePeriod + '</td>' +
+											'<td>' + reservation.sbmTime + '</td>' +
+											'<td>' + reservation.updTime + '</td>' +
 										'</tr>' +
 									'</tbody>' +
 								'</table>' +
 								'<div class="section">' +
 									'<div class="card-title">预约书籍信息：</div>' +
-									'<div class="row" id="reserved-books-for' + response[index].reservationNo + '"></div>' +
+									'<div class="row" id="reserved-books-for' + reservation.reservationNo + '"></div>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
 					'</div>');
 
-					$.each(response[index].books, function(i, book) {
-						var MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
+					$.each(reservation.books, function(i, book) {
+						MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 						if (book.image == './assets/pictures/defaultCover.png') {
 								book.image = '../assets/pictures/defaultCover.png'
 						}
 
-						$("#reserved-books-for" + response[index].reservationNo).append(
+						$("#reserved-books-for" + reservation.reservationNo).append(
 						'<div class="col s12 m4">' +
 							'<div class="card blue-grey darken-1">' +
 								'<div class="card-content white-text">' +
@@ -81,9 +74,11 @@ $(document).ready(function() {
 							'</div>' +
 						'</div>');
 					});
-					$("#loading").hide();
-				}
+				});
+			} else {
+				Materialize.toast(response.errMsg, 3000);
 			}
+			$("#loading").hide();
 		}
 	);
 });

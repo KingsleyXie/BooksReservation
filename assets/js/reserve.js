@@ -130,17 +130,14 @@ function searchReservation() {
 	$("#progress").show();
 	stuNo = $("#stu-number").val();
 	$.post(
-		'./assets/API/reservation.php',
+		'./assets/API/reservations.php',
 		'operation=search&stuNo=' + stuNo,
 		function(response) {
-			if (response[0].code == 1) {
-				Materialize.toast('未查询到订单', 3000);
-			};	
-			if (response[0].code == 0) {
+			if (response.code == 0) {
 				$("#reservation").html(
 				'<div class="card-content">' +
 					'<div class="reservation-title">订单详情</div>' +
-					'<div class="card-title">订单号：' + response[1].reservationNo + '</div>' +
+					'<div class="card-title">订单号：' + response[0].reservationNo + '</div>' +
 					'<div class="card-details">' +
 						'<table class="highlight responsive-table">' +
 							'<thead>' +
@@ -157,14 +154,14 @@ function searchReservation() {
 							'</thead>' +
 							'<tbody>' +
 								'<tr>' +
-									'<td>' + response[1].stuName + '</td>' +
-									'<td>' + response[1].stuNo + '</td>' +
-									'<td>' + response[1].contact + '</td>' +
-									'<td>' + response[1].dormitory + '</td>' +
-									'<td>' + response[1].date + '</td>' +
-									'<td>' + response[1].timePeriod + '</td>' +
-									'<td>' + response[1].sbmTime + '</td>' +
-									'<td>' + response[1].updTime + '</td>' +
+									'<td>' + response[0].stuName + '</td>' +
+									'<td>' + response[0].stuNo + '</td>' +
+									'<td>' + response[0].contact + '</td>' +
+									'<td>' + response[0].dormitory + '</td>' +
+									'<td>' + response[0].date + '</td>' +
+									'<td>' + response[0].timePeriod + '</td>' +
+									'<td>' + response[0].sbmTime + '</td>' +
+									'<td>' + response[0].updTime + '</td>' +
 								'</tr>' +
 							'</tbody>' +
 						'</table>' +
@@ -179,33 +176,35 @@ function searchReservation() {
 					'</div>' +
 				'</div>');
 
-				for (var i = 0; i < response[1].books.length; i++) {
-					var MultipleAuthor = response[1].books[i].isMultipleAuthor == 1 ? ' 等' : '';
+				$.each(response[0].books, function(i, book) {
+					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 					$("#reserved-books").append(
 					'<div class="col s12 m4">' +
 						'<div class="card blue-grey darken-1">' +
 							'<div class="card-content white-text">' +
-								'<div class="card-title">' + response[1].books[i].title +
+								'<div class="card-title">' + book.title +
 								'</div>' +
 								'<div class="card-details">' +
-									'<p>作者：' + response[1].books[i].author + MultipleAuthor + '</p>' +
-									'<p>出版社：' + response[1].books[i].press + '</p>' +
-									'<p>出版日期：' + response[1].books[i].pubdate + '</p>' +
+									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
+									'<p>出版社：' + book.press + '</p>' +
+									'<p>出版日期：' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
 							'<div class="card-action center-align">' +
-								'<a class="cover" href=' + response[1].books[i].image + '>触碰或点击查看封面图片' +
+								'<a class="cover" href=' + book.image + '>触碰或点击查看封面图片' +
 									'<div class="cover-image">' +
-										'<img src=' + response[1].books[i].image + ' alt="封面图片">' +
+										'<img src=' + book.image + ' alt="封面图片">' +
 									'</div>' +
 								'</a>' +
 							'</div>' +
 						'</div>' +
 					'</div>');
-				}
+				});
 				$("#search-reservation").modal('close');
 				$(".button-collapse").sideNav('hide');
 				$("#reservation").modal('open');
+			} else {
+				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#progress").hide();
 		}
@@ -265,53 +264,55 @@ function modifyReservation() {
 	preList = ['0', '0', '0'];
 	
 	$.post(
-		'./assets/API/reservation.php',
+		'./assets/API/reservations.php',
 		'operation=search&stuNo=' + stuNo,
 		function(response) {
-			if (response[0].code == 0) {
+			if (response.code == 0) {
 				$("#list-data").empty();
 				
 				$("label[for=student-name]").addClass("active");
-				$("#student-name").val(response[1].stuName);
+				$("#student-name").val(response[0].stuName);
 				$("label[for=student-number]").addClass("active");
-				$("#student-number").val(response[1].stuNo);
+				$("#student-number").val(response[0].stuNo);
 				$("label[for=contact]").addClass("active");
-				$("#contact").val(response[1].contact);
+				$("#contact").val(response[0].contact);
 
 				$("#student-number").prop('disabled', true);
-				$("#dormitory").val(response[1].dormitory);	$("#dormitory").material_select();
-				$("#date").val(response[1].date);	$("#date").material_select();
-				$("#time-period").val(response[1].timePeriod);	$("#time-period").material_select();
+				$("#dormitory").val(response[0].dormitory).material_select();
+				$("#date").val(response[0].date).material_select();
+				$("#time-period").val(response[0].timePeriod).material_select();
 
-				for (var i = 0; i < response[1].books.length; i++) {
-					list[list.indexOf('0')] = response[1].books[i].bookID;
-					preList[preList.indexOf('0')] = response[1].books[i].bookID;
+				$.each(response[0].books, function(i, book) {
+					list[list.indexOf('0')] = book.bookID;
+					preList[preList.indexOf('0')] = book.bookID;
 					count ++;
 
-					MultipleAuthor = response[1].books[i].isMultipleAuthor ? ' 等' : '';
+					MultipleAuthor = book.isMultipleAuthor ? ' 等' : '';
 					
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + response[1].books[i].image + '>' +
+							'<img class="z-depth-3" src=' + book.image + '>' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="fullText(this)">' + response[1].books[i].title + '</div>' +
+								'<div class="card-title" onclick="fullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
-									'<p>' + response[1].books[i].author + MultipleAuthor + '</p>' +
-									'<p>' + response[1].books[i].press + '</p>' +
-									'<p>' + response[1].books[i].pubdate + '</p>' +
+									'<p>' + book.author + MultipleAuthor + '</p>' +
+									'<p>' + book.press + '</p>' +
+									'<p>' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
 						'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
-						'data-id=' + response[1].books[i].bookID + ' onclick="deleteFromList(this)">&times</a>' +
+						'data-id=' + book.bookID + ' onclick="deleteFromList(this)">&times</a>' +
 					'</div>');
-				}
+				});
 				$("#reservation").modal('close');
-				$("#loading").hide();
 				$("#list").modal('open');
+			} else {
+				Materialize.toast(response.errMsg, 3000);
 			}
+			$("#loading").hide();
 		}
 	);
 }
