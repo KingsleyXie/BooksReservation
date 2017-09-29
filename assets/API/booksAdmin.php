@@ -13,25 +13,33 @@ if (isset($_POST['bookID'])) {
 	$sql = 'SELECT * from books WHERE bookID = ?';
 	$stmt = $connect->prepare($sql);
 	$stmt->execute(array($_POST['bookID']));
-}
-else {
+} else {
 	$sql = 'SELECT * from books ORDER BY bookID DESC';
 	$stmt = $connect->prepare($sql);
 	$stmt->execute();
 }
-
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (empty($result)) {
-	$response[0] = array('code' => 2);
-}
-else {
-	$response[0] = array('code' => 0);
-}
+$response[0] = empty($result) ? ['code' => 2] : ['code' => 0];
 
 $index = 1;
-foreach($result as $books) {
-	$response[$index] = array('bookID' => htmlspecialchars($books['bookID']), 'title' => htmlspecialchars($books['title']), 'author' => htmlspecialchars($books['author']), 'isMultipleAuthor' => htmlspecialchars($books['isMultipleAuthor']), 'press' => htmlspecialchars($books['press']), 'pubdate' => htmlspecialchars($books['pubdate']), 'image' => htmlspecialchars($books['image']), 'bookCategory' => htmlspecialchars($books['bookCategory']), 'grade' => htmlspecialchars($books['grade']), 'major' => htmlspecialchars($books['major']), 'extracurricularCategory' => htmlspecialchars($books['extracurricularCategory']), 'remainingAmount' => htmlspecialchars($books['remainingAmount']), 'importTime' => htmlspecialchars($books['importTime']), 'updateTime' => htmlspecialchars($books['updateTime']));
+foreach($result as $book) {
+	$response[$index] = [
+		'bookID' => htmlspecialchars($book['bookID']),
+		'title' => htmlspecialchars($book['title']),
+		'author' => htmlspecialchars($book['author']),
+		'isMultipleAuthor' => htmlspecialchars($book['isMultipleAuthor']),
+		'press' => htmlspecialchars($book['press']),
+		'pubdate' => htmlspecialchars($book['pubdate']),
+		'image' => htmlspecialchars($book['image']),
+		'bookCategory' => htmlspecialchars($book['bookCategory']),
+		'grade' => htmlspecialchars($book['grade']),
+		'major' => htmlspecialchars($book['major']),
+		'extracurricularCategory' => htmlspecialchars($book['extracurricularCategory']),
+		'remainingAmount' => htmlspecialchars($book['remainingAmount']),
+		'importTime' => htmlspecialchars($book['importTime']),
+		'updateTime' => htmlspecialchars($book['updateTime'])
+	];
 	$index++;
 }
 echo json_encode($response);

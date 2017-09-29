@@ -3,37 +3,81 @@ session_start();
 header('Content-Type: application/json');
 require_once('./config.php');
 
-if (!isset($_SESSION['username'])) response(1, '请登录系统！');
+if (!isset($_SESSION['username']))
+	response(1, '请登录系统！');
 
-$isMA = 0;
-if (isset($_POST['updIsMultipleAuthor'])) {
-	$isMA = 1;
-}
+existCheck('updImage', 'updBookCategory');
 
-if (!isset($_POST['updImage'])) {
-	$_POST['updImage'] = "./assets/pictures/defaultCover.png";
-}
+$isMA = isset($_POST['updIsMultipleAuthor']) ? 1 : 0;
+$_POST['updImage'] = empty($_POST['updImage']) ? './assets/pictures/defaultCover.png' : $_POST['updImage'];
 
 if ($_POST['updBookCategory'] == 'CategoryA') {
-	if (!(isset($_POST['updTitle']) AND isset($_POST['updAuthor']) AND isset($_POST['updPress']) AND isset($_POST['updPubdate']) AND isset($_POST['updGrade']) AND isset($_POST['updMajor']) AND isset($_POST['updRemainingAmount']))) response(2, '请将书籍信息填写完整！');
+	existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updGrade', 'updMajor', 'updRemainingAmount');
 
-	$sql = 'UPDATE `books` SET `title`=?,`author`=?,`isMultipleAuthor`=?,`press`=?,`pubdate`=?,`image`=?,`bookCategory`=?,`grade`=?,`major`=?,`remainingAmount`=? WHERE  `bookID` = ?';
+	$sql = '
+	UPDATE `books`
+	SET
+	`title` = ?,
+	`author` = ?,
+	`isMultipleAuthor` = ?,
+	`press` = ?,
+	`pubdate` = ?,
+	`image` = ?,
+	`bookCategory` = ?,
+	`grade` = ?,
+	`major` = ?,
+	`remainingAmount` = ?
+	WHERE `bookID` = ?';
 	$stmt = $connect->prepare($sql);
-	$stmt->execute(array($_POST['updTitle'], $_POST['updAuthor'], $isMA, $_POST['updPress'], $_POST['updPubdate'], $_POST['updImage'], $_POST['updBookCategory'], $_POST['updGrade'], $_POST['updMajor'], $_POST['updRemainingAmount'], $_POST['bookID']));
+	$stmt->execute([
+		$_POST['updTitle'],
+		$_POST['updAuthor'],
+		$isMA,
+		$_POST['updPress'],
+		$_POST['updPubdate'],
+		$_POST['updImage'],
+		$_POST['updBookCategory'],
+		$_POST['updGrade'],
+		$_POST['updMajor'],
+		$_POST['updRemainingAmount'],
+		$_POST['bookID']
+	]);
 }
 
 if ($_POST['updBookCategory'] == 'CategoryB') {
-	if (!(isset($_POST['updTitle']) AND isset($_POST['updAuthor']) AND isset($_POST['updPress']) AND isset($_POST['updPubdate']) AND isset($_POST['updExtracurricularCategory']) AND isset($_POST['updRemainingAmount']))) response(2, '请将书籍信息填写完整！');
-	
-	$sql = 'UPDATE `books` SET `title`=?,`author`=?,`isMultipleAuthor`=?,`press`=?,`pubdate`=?,`image`=?,`bookCategory`=?,`extracurricularCategory`=?,`remainingAmount`=? WHERE  `bookID` = ?';
+	existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updExtracurricularCategory', 'updRemainingAmount');
+
+	$sql = '
+	UPDATE `books`
+	SET
+	`title` = ?,
+	`author` = ?,
+	`isMultipleAuthor` = ?,
+	`press` = ?,
+	`pubdate` = ?,
+	`image` = ?,
+	`bookCategory` = ?,
+	`extracurricularCategory` = ?,
+	`remainingAmount` = ?
+	WHERE  `bookID` = ?';
 	$stmt = $connect->prepare($sql);
-	$stmt->execute(array($_POST['updTitle'], $_POST['updAuthor'], $isMA, $_POST['updPress'], $_POST['updPubdate'], $_POST['updImage'], $_POST['updBookCategory'], $_POST['updExtracurricularCategory'], $_POST['updRemainingAmount'], $_POST['bookID']));
+	$stmt->execute([
+		$_POST['updTitle'],
+		$_POST['updAuthor'],
+		$isMA,
+		$_POST['updPress'],
+		$_POST['updPubdate'],
+		$_POST['updImage'],
+		$_POST['updBookCategory'],
+		$_POST['updExtracurricularCategory'],
+		$_POST['updRemainingAmount'],
+		$_POST['bookID']
+	]);
 }
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-if (empty($result)) {
+
+if (empty($result))
 	response(0);
-}
-else {
-	response(3, '更新书籍信息失败，请联系管理员');
-}
+else
+	response(2, '更新书籍信息失败，请联系管理员');
