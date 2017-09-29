@@ -5,22 +5,14 @@ require_once('./config.php');
 existCheck('count', 'list0', 'list1', 'list2', 'preList0', 'preList1', 'preList2');
 blankCheck('studentName', 'studentNo', 'dormitory', 'contact', 'date', 'timePeriod');
 
-//Duplication Check
-if (
-	($_POST['count'] <= 0 OR $_POST['count'] > 3)
-	OR (
-		($_POST['count'] == 2)
-		AND ($_POST['list0'] == $_POST['list1'])
-	)
-	OR (
-		($_POST['count'] == 3)
-		AND (
-			($_POST['list0'] == $_POST['list1'])
-			OR ($_POST['list1'] == $_POST['list2'])
-			OR ($_POST['list0'] == $_POST['list2'])
-		)
-	)
-) response(3, '错误请求');
+$arr = array_filter(
+	[$_POST['list0'], $_POST['list1'], $_POST['list2'],
+	$_POST['preList0'], $_POST['preList1'], $_POST['preList2']],
+	function($val) {
+		return $val != '0';
+	}
+);
+if ($arr != array_unique($arr)) response(5, '错误请求');
 
 $sql = '
 SELECT * FROM books
