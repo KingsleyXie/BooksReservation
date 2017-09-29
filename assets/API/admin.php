@@ -6,6 +6,8 @@ require_once('./config.php');
 existCheck('operation');
 
 switch ($_POST['operation']) {
+	
+	/*Module 1: Login */
 	case 'login':
 		existCheck('username', 'password');
 		//Default username and password(Hash Method: SHA256) are both 'test', please remember to change it when you  deploy it online
@@ -15,9 +17,199 @@ switch ($_POST['operation']) {
 		$_SESSION['username'] = 'admin';
 		response(0);
 	
+	/* Module 2: Logout */
 	case 'logout':
-		unset ($_SESSION['username']);
+		unset($_SESSION['username']);
 		response(0);
+
+	/* Module 3: Add A Book To Database */
+	case 'add':
+		if (!isset($_SESSION['username']))
+			response(1, '请登录系统！');
+
+		existCheck('image', 'bookCategory');
+
+		$isMA = isset($_POST['isMultipleAuthor']) ? 1 : 0;
+		$_POST['image'] = empty($_POST['image']) ? './assets/pictures/defaultCover.png' : $_POST['image'];
+
+		if ($_POST['bookCategory'] == 'CategoryA') {
+			existCheck('title', 'author', 'press', 'pubdate', 'grade', 'major', 'remainingAmount');
+
+			$sql = '
+			INSERT INTO `books`
+			(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `grade`, `major`, `remainingAmount`)
+			VALUES
+			(?,?,?,?,?,?,?,?,?,?,?)';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute([
+				$_POST['ISBN'],
+				$_POST['title'],
+				$_POST['author'],
+				$isMA,
+				$_POST['press'],
+				$_POST['pubdate'],
+				$_POST['image'],
+				$_POST['bookCategory'],
+				$_POST['grade'],
+				$_POST['major'],
+				$_POST['remainingAmount']
+			]);
+		}
+
+		if ($_POST['bookCategory'] == 'CategoryB') {
+			existCheck('title', 'author', 'press', 'pubdate', 'extracurricularCategory', 'remainingAmount');
+			
+			$sql = '
+			INSERT INTO `books`
+			(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `extracurricularCategory`, `remainingAmount`)
+			VALUES (?,?,?,?,?,?,?,?,?,?)';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute([
+				$_POST['ISBN'],
+				$_POST['title'],
+				$_POST['author'],
+				$isMA,
+				$_POST['press'],
+				$_POST['pubdate'],
+				$_POST['image'],
+				$_POST['bookCategory'],
+				$_POST['extracurricularCategory'],
+				$_POST['remainingAmount']
+			]);
+		}
+
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if (empty($result))
+			response(0);
+		else
+			response(2, '添加书籍失败，请联系管理员');
+
+	/* Module 4: Update A Book's Information */
+	case 'update':
+
+		if (!isset($_SESSION['username']))
+			response(1, '请登录系统！');
+
+		existCheck('updImage', 'updBookCategory');
+
+		$isMA = isset($_POST['updIsMultipleAuthor']) ? 1 : 0;
+		$_POST['updImage'] = empty($_POST['updImage']) ? './assets/pictures/defaultCover.png' : $_POST['updImage'];
+
+		if ($_POST['updBookCategory'] == 'CategoryA') {
+			existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updGrade', 'updMajor', 'updRemainingAmount');
+
+			$sql = '
+			UPDATE `books`
+			SET
+			`title` = ?,
+			`author` = ?,
+			`isMultipleAuthor` = ?,
+			`press` = ?,
+			`pubdate` = ?,
+			`image` = ?,
+			`bookCategory` = ?,
+			`grade` = ?,
+			`major` = ?,
+			`remainingAmount` = ?
+			WHERE `bookID` = ?';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute([
+				$_POST['updTitle'],
+				$_POST['updAuthor'],
+				$isMA,
+				$_POST['updPress'],
+				$_POST['updPubdate'],
+				$_POST['updImage'],
+				$_POST['updBookCategory'],
+				$_POST['updGrade'],
+				$_POST['updMajor'],
+				$_POST['updRemainingAmount'],
+				$_POST['bookID']
+			]);
+		}
+
+		if ($_POST['updBookCategory'] == 'CategoryB') {
+			existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updExtracurricularCategory', 'updRemainingAmount');
+
+			$sql = '
+			UPDATE `books`
+			SET
+			`title` = ?,
+			`author` = ?,
+			`isMultipleAuthor` = ?,
+			`press` = ?,
+			`pubdate` = ?,
+			`image` = ?,
+			`bookCategory` = ?,
+			`extracurricularCategory` = ?,
+			`remainingAmount` = ?
+			WHERE  `bookID` = ?';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute([
+				$_POST['updTitle'],
+				$_POST['updAuthor'],
+				$isMA,
+				$_POST['updPress'],
+				$_POST['updPubdate'],
+				$_POST['updImage'],
+				$_POST['updBookCategory'],
+				$_POST['updExtracurricularCategory'],
+				$_POST['updRemainingAmount'],
+				$_POST['bookID']
+			]);
+		}
+
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		if (empty($result))
+			response(0);
+		else
+			response(2, '更新书籍信息失败，请联系管理员');
+
+	/* Module 5: Get Detailed Books' Information */
+	case 'books':
+		if (!isset($_SESSION['username'])) {
+			$response[0] = array('code' => 1);
+			echo json_encode($response);
+			return;
+		}
+
+		if (isset($_POST['bookID'])) {
+			$sql = 'SELECT * FROM books WHERE bookID = ?';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute(array($_POST['bookID']));
+		} else {
+			$sql = 'SELECT * FROM books ORDER BY bookID DESC';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute();
+		}
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+		$response[0] = empty($result) ? ['code' => 2] : ['code' => 0];
+
+		$index = 1;
+		foreach($result as $book) {
+			$response[$index] = [
+				'bookID' => htmlspecialchars($book['bookID']),
+				'title' => htmlspecialchars($book['title']),
+				'author' => htmlspecialchars($book['author']),
+				'isMultipleAuthor' => htmlspecialchars($book['isMultipleAuthor']),
+				'press' => htmlspecialchars($book['press']),
+				'pubdate' => htmlspecialchars($book['pubdate']),
+				'image' => htmlspecialchars($book['image']),
+				'bookCategory' => htmlspecialchars($book['bookCategory']),
+				'grade' => htmlspecialchars($book['grade']),
+				'major' => htmlspecialchars($book['major']),
+				'extracurricularCategory' => htmlspecialchars($book['extracurricularCategory']),
+				'remainingAmount' => htmlspecialchars($book['remainingAmount']),
+				'importTime' => htmlspecialchars($book['importTime']),
+				'updateTime' => htmlspecialchars($book['updateTime'])
+			];
+			$index++;
+		}
+		echo json_encode($response);
+		return;
 }
 
-response(2, '请求有误');
+response(6, '请求有误');

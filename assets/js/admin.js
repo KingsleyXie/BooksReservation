@@ -11,8 +11,9 @@ $(document).ready(function() {
 		if(e.keyCode == 13) getBook();
 	});
 
-	$.get(
-		'../assets/API/booksAdmin.php',
+	$.post(
+		'../assets/API/admin.php',
+		'operation=books',
 		function(response) {
 			if (response[0].code == 1) {
 				alert('请登录系统！');
@@ -81,8 +82,8 @@ $(document).ready(function() {
 			&& Check()
 			&& ConfirmInfo()) {
 			$.post(
-				'../assets/API/add.php',
-				$(this).serialize(),
+				'../assets/API/admin.php',
+				$(this).serialize() + '&operation=add',
 				function(response) {
 					if (response.code == 1) {
 						alert('请登录系统！');
@@ -107,8 +108,8 @@ $(document).ready(function() {
 			&& updCheck()
 			&& updConfirmInfo()) {
 			$.post(
-				'../assets/API/update.php',
-				$(this).serialize(),
+				'../assets/API/admin.php',
+				$(this).serialize() + '&operation=update',
 				function(response) {
 					if (response.code == 1) {
 						alert('请登录系统！');
@@ -174,7 +175,7 @@ function inputData() {
 function getData() {
 	$("#progress").show();
 	$.post(
-		'../assets/API/bookInfoAPI.php',
+		'../assets/API/ISBN_API.php',
 		{ 'ISBN' : $("#ISBN").val() },
 		function(response) {
 			$("#progress").hide();
@@ -194,7 +195,7 @@ function getData() {
 				$("label[for=pubdate]").addClass("active");
 				$("#image").val(response.image);
 				$("label[for=image]").addClass("active");
-				$("#is-multiple-author").prop("checked", response.isMultipleAuthor);
+				$("#is-multiple-author").prop("checked", parseInt(response.isMultipleAuthor));
 
 				window.setTimeout(function () {
 					$("#remaining-amount").focus();
@@ -211,8 +212,8 @@ function getData() {
 function getBook() {
 	$("#upd-progress").show();
 	$.post(
-		'../assets/API/booksAdmin.php',
-		{ "bookID": $("#bookID").val() },
+		'../assets/API/admin.php',
+		'operation=books&bookID=' + $("#bookID").val(),
 		function(response) {
 			if (response[0].code == 1) {
 				alert('请登录系统！');
@@ -247,7 +248,7 @@ function getBook() {
 					$("#upd-extracurricular-category").material_select();
 				}
 
-				$("#upd-is-multiple-author").prop("checked", response[1].isMultipleAuthor);
+				$("#upd-is-multiple-author").prop("checked", parseInt(response[1].isMultipleAuthor));
 				window.setTimeout(function () {
 					$("#upd-remaining-amount").val(response[1].remainingAmount);
 					$("#upd-remaining-amount").focus();
