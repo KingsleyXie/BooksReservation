@@ -22,6 +22,7 @@ $(document).ready(function() {
 
 			if (response.code == 0) {
 				$.each(response, function(i, book) {
+					if (i == 'code') return true;
 					rowNo = Math.round((parseInt(i) + 2) / 4);
 					if (i % 4 == 0)
 						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');

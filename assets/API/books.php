@@ -16,6 +16,7 @@ switch ($_POST['operation']) {
 			bookID DESC';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute();
+		$emptyMsg = '数据库还是空的，过段时间再来看看吧';
 		break;
 	
 	case 'search':
@@ -32,6 +33,7 @@ switch ($_POST['operation']) {
 			'%' . $_POST['keyWord'] . '%',
 			'%' . $_POST['keyWord'] . '%'
 		]);
+		$emptyMsg = '未找到相关书籍，换个关键词试试吧';
 		break;
 
 	case 'category':
@@ -71,18 +73,18 @@ switch ($_POST['operation']) {
 				$_POST['extracurricularCategory']
 			]);
 		}
+		$emptyMsg = '未找到相关书籍，换个分类试试吧';
 		break;
 
 	default:
-		response(2, '请求错误');
+		response(1, '请求有误');
 }
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$response[0] = empty($result) ? ['code' => 1] : ['code' => 0];
+$response = empty($result) ? response(2, $emptyMsg) : ['code' => 0];
 
-$index = 1;
 foreach($result as $book) {
-	$response[$index] = [
+	array_push($response, [
 		'bookID' => htmlspecialchars($book['bookID']),
 		'title' => htmlspecialchars($book['title']),
 		'author' => htmlspecialchars($book['author']),
@@ -91,8 +93,7 @@ foreach($result as $book) {
 		'pubdate' => htmlspecialchars($book['pubdate']),
 		'image' => ($loadImg ? htmlspecialchars($book['image']) : $defaultCover),
 		'remainingAmount' => htmlspecialchars($book['remainingAmount'])
-	];
-	$index++;
+	]);
 }
 
 echo json_encode($response);

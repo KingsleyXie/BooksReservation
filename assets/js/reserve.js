@@ -81,49 +81,45 @@ $(document).ready(function() {
 function display(data, type) {
 	$("#loading").css("display", "flex");
 	operation = ['all', 'search', 'category'][type];
-	$.post(
+    $.post(
 		'./assets/API/books.php',
 		$(data).serialize() + '&operation=' + operation,
 		function(response) {
-			if (response[0].code == 1) {
-				Materialize.toast([
-					'数据库还是空的，过段时间再来看看吧',
-					'未找到相关书籍，换个关键词试试吧',
-					'未找到相关书籍，换个分类试试吧'
-				][type], 3000);
-			}
-			if (response[0].code == 0) {
+			if (response.code == 0) {
 				$("#display").empty();
-				for (var i = 1; i < response.length; i++) {
-					MultipleAuthor = response[i].isMultipleAuthor ? ' 等' : '';
-					btnAttr = response[i].remainingAmount == 0 ?
+				$.each(response, function(i, book) {
+					if (i == 'code') return true;
+					MultipleAuthor = book.isMultipleAuthor ? ' 等' : '';
+					btnAttr = book.remainingAmount == 0 ?
 						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
 						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-						'data-id=' + response[i].bookID + ' onclick="addToList(this)">' +
-						response[i].remainingAmount + '</a>';
+						'data-id=' + book.bookID + ' onclick="addToList(this)">' +
+						book.remainingAmount + '</a>';
 					
 					$("#display").append(
 					'<div class="card horizontal">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + response[i].image +
+							'<img class="z-depth-3" src=' + book.image +
 							' onclick="window.location.href=this.src">' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="fullText(this)">' + response[i].title + '</div>' +
+								'<div class="card-title" onclick="fullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
-									'<p>作者：' + response[i].author + MultipleAuthor + '</p>' +
-									'<p>出版社：' + response[i].press + '</p>' +
-									'<p>出版时间：' + response[i].pubdate + '</p>' +
+									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
+									'<p>出版社：' + book.press + '</p>' +
+									'<p>出版时间：' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
 						'</div>' + btnAttr +
 					'</div>');
-				}
+				});
 				$("#placeholder").show();
 				$("#book-confirm").show();
 				$("#" + ['welcome', 'search', 'category'][type]).modal('close');
 				$(".button-collapse").sideNav('hide');
+			} else {
+				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#loading").hide();
 		}
