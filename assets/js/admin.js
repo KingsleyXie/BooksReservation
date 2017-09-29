@@ -15,62 +15,57 @@ $(document).ready(function() {
 		'../assets/API/admin.php',
 		'operation=books',
 		function(response) {
-			if (response[0].code == 1) {
+			if (response.code == 6) {
 				alert('请登录系统！');
 				window.location.href = './login.html';
 			}
-			if (response[0].code == 2) {
-				Materialize.toast('数据库中暂无书籍信息', 3000);
-			}
 
-			if (response[0].code == 0) {
-				for (var i = 1; i < response.length; i++) {
-
-					var rowNo = Math.round((i + 1) / 4);
-					if (i % 4 == 1) {
+			if (response.code == 0) {
+				$.each(response, function(i, book) {
+					rowNo = Math.round((parseInt(i) + 2) / 4);
+					if (i % 4 == 0)
 						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');
-					}
 
-					var MultipleAuthor = response[i].isMultipleAuthor == 1 ? ' 等' : '';
-					var Category = response[i].bookCategory == 'CategoryA' ?
-					
-					'<p>分类：教材课本</p><p>年级：' + response[i].grade +
-					'&nbsp;&nbsp;&nbsp;专业：' + response[i].major + '</p>' :
-					
-					'<p>分类：课外书籍</p><p>详细类别：' + response[i].extracurricularCategory + '</p>';
+					MultipleAuthor = book.isMultipleAuthor == '1' ? ' 等' : '';
+					Category = book.bookCategory == 'CategoryA' ?
+						'<p>分类：教材课本</p><p>年级：' + book.grade +
+						'&nbsp;&nbsp;&nbsp;专业：' + book.major + '</p>' :
+						'<p>分类：课外书籍</p><p>详细类别：' + book.extracurricularCategory + '</p>';
 
-					if (response[i].image == './assets/pictures/defaultCover.png') {
-						response[i].image = '../assets/pictures/defaultCover.png'
+					if (book.image == './assets/pictures/defaultCover.png') {
+						book.image = '../assets/pictures/defaultCover.png'
 					}
 
 					$("#row" + rowNo).append(
 					'<div class="col s12 m3">' + 
 						'<div class="card blue-grey darken-1">' + 
 							'<div class="card-content white-text">' + 
-								'<div class="card-title">' + response[i].title + '</div>' + 
+								'<div class="card-title">' + book.title + '</div>' + 
 								'<div class="card-details">' + 
-									'<p>作者：' + response[i].author + MultipleAuthor + '</p>' + 
-									'<p>出版社：' + response[i].press + '</p>' + 
-									'<p>出版日期：' + response[i].pubdate + '</p>' + 
+									'<p>作者：' + book.author + MultipleAuthor + '</p>' + 
+									'<p>出版社：' + book.press + '</p>' + 
+									'<p>出版日期：' + book.pubdate + '</p>' + 
 									'<div class="admin-info">' + 
-										'<p><strong>书籍 ID：' + response[i].bookID + '</strong></p>' + 
-										'<p>剩余数量：' + response[i].remainingAmount + '</p>' + Category +
-										'<p>入库时间：' + response[i].importTime + '</p>' + 
-										'<p>更新时间：' + response[i].updateTime + '</p>' + 
+										'<p>书籍 ID：' + book.bookID + '</p>' + 
+										'<p>剩余数量：' + book.remainingAmount + '</p>' + Category +
+										'<p>入库时间：' + book.importTime + '</p>' + 
+										'<p>更新时间：' + book.updateTime + '</p>' + 
 									'</div>' + 
 								'</div>' + 
 							'</div>' + 
 							'<div class="card-action center-align">' + 
-								'<a class="cover" href=' + response[i].image + '>' + 
+								'<a class="cover" href=' + book.image + '>' + 
 									'触碰或点击查看封面图片' + 
 									'<div class="cover-image">' + 
-										'<img src=' + response[i].image + ' alt="封面图片" >' + 
+										'<img src=' + book.image + ' alt="封面图片" >' + 
 									'</div>' + 
 								'</a>' + 
 							'</div>' + 
 						'</div>' + 
 					'</div>');
-				}
+				});
+			} else {
+				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#loading").hide();
 		}
@@ -85,17 +80,13 @@ $(document).ready(function() {
 				'../assets/API/admin.php',
 				$(this).serialize() + '&operation=add',
 				function(response) {
-					if (response.code == 1) {
-						alert('请登录系统！');
-						window.location.href = './login';
-					}
 					if (response.code == 0) {
 						Materialize.toast('书籍添加成功！', 3000);
 						window.setTimeout(function() {
 							window.location.href = './';
 						}, 3600);
 					} else {
-						alert(response.errMsg);
+						Materialize.toast(response.errMsg, 3000);
 					}
 				}
 			);
@@ -111,17 +102,13 @@ $(document).ready(function() {
 				'../assets/API/admin.php',
 				$(this).serialize() + '&operation=update',
 				function(response) {
-					if (response.code == 1) {
-						alert('请登录系统！');
-						window.location.href = './login.html';
-					}
 					if (response.code == 0) {
 						Materialize.toast('书籍信息更新成功！', 3000);
 						window.setTimeout(function() {
 							window.location.href = './';
 						}, 3600);
 					} else {
-						alert(response.errMsg);
+						Materialize.toast(response.errMsg, 3000);
 					}
 				}
 			);
@@ -129,16 +116,13 @@ $(document).ready(function() {
 	});
 });
 
-
-
 function logout() {
 	$.post(
 		'../assets/API/admin.php',
 		'operation=logout',
 		function(response) {
-			if (response.code == 0) {
+			if (response.code == 0)
 				alert('退出系统成功');
-			}
 			window.location.href = '../';
 		}
 	);
@@ -176,7 +160,7 @@ function getData() {
 	$("#progress").show();
 	$.post(
 		'../assets/API/ISBN_API.php',
-		{ 'ISBN' : $("#ISBN").val() },
+		'ISBN=' + $("#ISBN").val(),
 		function(response) {
 			$("#progress").hide();
 			if (response.code == 1) {
@@ -215,46 +199,40 @@ function getBook() {
 		'../assets/API/admin.php',
 		'operation=books&bookID=' + $("#bookID").val(),
 		function(response) {
-			if (response[0].code == 1) {
-				alert('请登录系统！');
-				window.location.href = './login.html';
-			};
-			if (response[0].code == 2) {
-				alert('未找到对应书籍，请检查输入 ID 是否正确！');
+			if (response.code == 0) {
 				$("#upd-progress").hide();
-			};
-			if (response[0].code == 0) {
-				$("#upd-progress").hide();
-				$("#upd-title").val(response[1].title);
+				$("#upd-title").val(response[0].title);
 				$("label[for=upd-title]").addClass("active");
-				$("#upd-author").val(response[1].author);
+				$("#upd-author").val(response[0].author);
 				$("label[for=upd-author]").addClass("active");
-				$("#upd-press").val(response[1].press);
+				$("#upd-press").val(response[0].press);
 				$("label[for=upd-press]").addClass("active");
-				$("#upd-pubdate").val(response[1].pubdate);
+				$("#upd-pubdate").val(response[0].pubdate);
 				$("label[for=upd-pubdate]").addClass("active");
-				$("#upd-image").val(response[1].image);
+				$("#upd-image").val(response[0].image);
 				$("label[for=upd-image]").addClass("active");
-				$("#upd-" + (response[1].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
+				$("#upd-" + (response[0].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
-				if (response[1].bookCategory == "CategoryA") {
+				if (response[0].bookCategory == "CategoryA") {
 					updCategory('upd-categoryA');
-					$("#upd-grade").val(response[1].grade);	$("#upd-grade").material_select();
-					$("#upd-major").val(response[1].major);	$("#upd-major").material_select();
+					$("#upd-grade").val(response[0].grade).material_select();
+					$("#upd-major").val(response[0].major).material_select();
 				}
-				if (response[1].bookCategory == "CategoryB") {
+				if (response[0].bookCategory == "CategoryB") {
 					updCategory('upd-categoryB');
-					$("#upd-extracurricular-category").val(response[1].extracurricularCategory);
-					$("#upd-extracurricular-category").material_select();
+					$("#upd-extracurricular-category").val(response[0].extracurricularCategory).material_select();
 				}
 
-				$("#upd-is-multiple-author").prop("checked", parseInt(response[1].isMultipleAuthor));
+				$("#upd-is-multiple-author").prop("checked", parseInt(response[0].isMultipleAuthor));
 				window.setTimeout(function () {
-					$("#upd-remaining-amount").val(response[1].remainingAmount);
+					$("#upd-remaining-amount").val(response[0].remainingAmount);
 					$("#upd-remaining-amount").focus();
 				}, 0);
 				$("#update-init").hide();
 				$("#upd-books").show();
+			} else {
+				Materialize.toast(response.errMsg, 3000);
+				$("#upd-progress").hide();
 			}
 		}
 	);
