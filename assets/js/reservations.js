@@ -7,7 +7,8 @@ $(document).ready(function() {
 		function(response) {
 			if (response.code == 0) {
 				$.each(response, function(index, reservation) {
-					$("#reservation").append(
+					if (index == 'code') return true;
+					$("#reservations").append(
 					'<div class="card">' +
 						'<div class="card-content">' +
 							'<div class="card-title">订单号：' + reservation.reservationNo + '</div>' +

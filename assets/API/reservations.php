@@ -13,15 +13,11 @@ switch ($_POST['operation']) {
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([$_POST['stuNo']]);
 		$stu = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($stu)) {
-			$response[0] = array('code' => 1);
-			echo json_encode($response);
-			return;
-		}
+		if (empty($stu)) response(1, '未查询到相关订单');
 
 		$sql = 'SELECT * FROM reservations WHERE studentID = ?';
 		$stmt = $connect->prepare($sql);
-		$stmt->execute(array($stu[0]['studentID']));
+		$stmt->execute([$stu[0]['studentID']]);
 		$reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		$sql = '
@@ -38,22 +34,8 @@ switch ($_POST['operation']) {
 		]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-		$bookIndex = 0;
-		foreach($result as $book) {
-			$books[$bookIndex] = [
-				'bookID' => $book['bookID'],
-				'title' => $book['title'],
-				'author' => $book['author'],
-				'isMultipleAuthor' => $book['isMultipleAuthor'],
-				'press' => $book['press'],
-				'pubdate' => $book['pubdate'],
-				'image' => $book['image']
-			];
-			$bookIndex++;
-		}
-
-		$response[0] = array('code' => 0);
-		$response[1] = [
+		$response = ['code' => 0];
+		$response[0] = [
 			'reservationNo' => $reservation[0]['reservationNo'],
 			'stuName' => $stu[0]['studentName'],
 			'stuNo' => $stu[0]['studentNo'],
@@ -63,32 +45,35 @@ switch ($_POST['operation']) {
 			'timePeriod' => $reservation[0]['timePeriod'],
 			'sbmTime' => $reservation[0]['submitTime'],
 			'updTime' => $reservation[0]['updateTime'],
-			'books' => $books
+			'books' => []
 		];
-		unset($books);
+		foreach($result as $book) {
+			array_push($response[0]['books'], [
+				'bookID' => $book['bookID'],
+				'title' => $book['title'],
+				'author' => $book['author'],
+				'isMultipleAuthor' => $book['isMultipleAuthor'],
+				'press' => $book['press'],
+				'pubdate' => $book['pubdate'],
+				'image' => $book['image']
+			]);
+		}
 		echo json_encode($response);
 		exit(0);
 
 	//Get All Reservations' Information
 	case 'all':
 		if (!isset($_SESSION['username'])) {
-			$response[0] = array('code' => 2);
-			echo json_encode($response);
-			return;
+			response(2, '请登录系统！');
 		}
 
 		$sql = 'SELECT * FROM students ORDER BY importTime DESC';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute();
 		$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($students)) {
-			$response[0] = array('code' => 1);
-			echo json_encode($response);
-			return;
-		}
+		if (empty($students)) response(3, '暂无订单数据');
 
-		$response[0] = array('code' => 0);
-		$index = 1;
+		$response = ['code' => 0];
 		foreach ($students as $stu) {
 			$sql = 'SELECT * FROM reservations WHERE studentID = ?';
 			$stmt = $connect->prepare($sql);
@@ -109,21 +94,7 @@ switch ($_POST['operation']) {
 			]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			$bookIndex = 0;
-			foreach($result as $book) {
-				$books[$bookIndex] = [
-					'bookID' => $book['bookID'],
-					'title' => $book['title'],
-					'author' => $book['author'],
-					'isMultipleAuthor' => $book['isMultipleAuthor'],
-					'press' => $book['press'],
-					'pubdate' => $book['pubdate'],
-					'image' => $book['image']
-				];
-				$bookIndex++;
-			}
-
-			$response[$index] = [
+			array_push($response, [
 				'reservationNo' => $reservation[0]['reservationNo'],
 				'stuName' => $stu['studentName'],
 				'stuNo' => $stu['studentNo'],
@@ -133,10 +104,21 @@ switch ($_POST['operation']) {
 				'timePeriod' => $reservation[0]['timePeriod'],
 				'sbmTime' => $reservation[0]['submitTime'],
 				'updTime' => $reservation[0]['updateTime'],
-				'books' => $books
-			];
+				'books' => []
+			]);
+
+			foreach($result as $book) {
+				array_push($response[count($response) - 2]['books'], [
+					'bookID' => $book['bookID'],
+					'title' => $book['title'],
+					'author' => $book['author'],
+					'isMultipleAuthor' => $book['isMultipleAuthor'],
+					'press' => $book['press'],
+					'pubdate' => $book['pubdate'],
+					'image' => $book['image']
+				]);
+			}
 			unset($books);
-			$index ++;
 		}
 		echo json_encode($response);
 		exit(0);
