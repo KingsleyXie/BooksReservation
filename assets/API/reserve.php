@@ -15,7 +15,7 @@ switch ($_POST['operation']) {
 				return $val != '0';
 			}
 		);
-		if ($arr != array_unique($arr)) response(3, '错误请求');
+		if ($arr != array_unique($arr)) response(1, '错误请求');
 
 		$sql = 'SELECT * FROM students WHERE studentNo = ?';
 		$stmt = $connect->prepare($sql);
@@ -42,16 +42,14 @@ switch ($_POST['operation']) {
 			$time=date('Y.m.d H:i:s');
 			$logFile = fopen('../collision.log', 'a');
 			$logText =
-				"[" . $time . "]\tstudentNo:" .
-				$_POST['studentNo'] .
+				"[" . $time . "]\tstudentNo:" . $_POST['studentNo'] .
 				"\tlist0:" . $_POST['list0'] .
 				"\tlist1:" . $_POST['list1'] .
-				"\tlist2:" . $_POST['list2'] .
-				"\n\n";
+				"\tlist2:" . $_POST['list2'] . "\n";
 			fwrite($logFile, $logText);
 			fclose($logFile);
 
-			response(5, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
+			response(3, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
 		}
 
 		$sql = '
@@ -151,16 +149,14 @@ switch ($_POST['operation']) {
 			$time=date('Y.m.d H:i:s');
 			$logFile = fopen('../collision.log', 'a');
 			$logText =
-				"[" . $time . "]\tstudentNo:" .
-				$_POST['studentNo'] .
+				"[" . $time . "]\tstudentNo:" . $_POST['studentNo'] .
 				"\tlist0:" . $_POST['list0'] .
 				"\tlist1:" . $_POST['list1'] .
-				"\tlist2:" . $_POST['list2'] .
-				"\n\n";
+				"\tlist2:" . $_POST['list2'] . "\n";
 			fwrite($logFile, $logText);
 			fclose($logFile);
 
-			response(3, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
+			response(7, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
 		}
 
 		$sql = '
@@ -241,6 +237,6 @@ switch ($_POST['operation']) {
 					response(0);
 			}
 		}
-		response(4, '订单修改失败，请联系管理员或重试');
+		response(8, '订单修改失败，请联系管理员或重试');
 		break;
 }

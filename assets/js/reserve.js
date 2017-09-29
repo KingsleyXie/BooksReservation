@@ -46,27 +46,6 @@ $(document).ready(function() {
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
 				function(response) {
 					$("#loading").hide();
-					if (response.code == 1) {
-						alert('请将预约信息填写完整！');
-					}
-					if (response.code == 2) {
-						alert('该学号已存在预约订单！');
-					}
-					if (response.code == 3) {
-						alert('不要调皮哦');
-					}
-					if (response.code == 4) {
-						alert('订单提交失败，请联系管理员或重试');
-					}
-					if (response.code == 5) {
-						alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-						$("#list-data").empty();
-						$("#display").empty();
-						count = 0;
-						list = ['0', '0', '0'];
-						$("#reserve").modal('close');
-						$("#welcome").modal('open');
-					}
 					if (response.code == 0) {
 						Materialize.toast('订单提交成功！', 3000);
 						window.setTimeout(function () {
@@ -75,6 +54,18 @@ $(document).ready(function() {
 							$("label[for=stu-number]").addClass("active");
 							searchReservation();
 						}, 1000);
+					} else {
+						if (response.code == 3) {
+							alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
+							$("#list-data").empty();
+							$("#display").empty();
+							count = 0;
+							list = ['0', '0', '0'];
+							$("#reserve").modal('close');
+							$("#welcome").modal('open');
+						} else {
+							Materialize.toast(response.errMsg, 3000);
+						}
 					}
 				}
 			);
@@ -339,29 +330,23 @@ function commitModification(val) {
 		'&studentNo=' + $("#student-number").val(),
 		function(response) {
 			$("#loading").hide();
-			if (response.code == 1) {
-				alert('请将预约信息填写完整！');
-			}
-			if (response.code == 2) {
-				alert('不要调皮哦');
-			}
-			if (response.code == 3) {
-				alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-				$("#list-data").empty();
-				$("#display").empty();
-				count = 0; list = ['0', '0', '0'];
-				$("#reserve").modal('close');
-				$("#welcome").modal('open');
-			}
-			if (response.code == 4) {
-				alert('订单修改失败，请联系管理员或重试');
-			}
 			if (response.code == 0) {
 				Materialize.toast('订单修改成功！', 3000);
 				window.setTimeout(function () {
 					$("#reserve").modal('close');
 					searchReservation();
 				}, 1000);
+			} else {
+				if (response.code == 7) {
+					alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
+					$("#list-data").empty();
+					$("#display").empty();
+					count = 0; list = ['0', '0', '0'];
+					$("#reserve").modal('close');
+					$("#welcome").modal('open');
+				} else {
+					Materialize.toast(response.errMsg, 3000);
+				}
 			}
 		}
 	);
