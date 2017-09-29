@@ -1,7 +1,7 @@
 //The following three lines of code are wrote for reservation or modification
 modifying = false, count = 0
-list = new Array('0', '0', '0');
-preList = new Array('0', '0', '0');
+list = ['0', '0', '0'];
+preList = ['0', '0', '0'];
 
 $(document).ready(function() {
 	$(".modal").modal();
@@ -63,7 +63,7 @@ $(document).ready(function() {
 						$("#list-data").empty();
 						$("#display").empty();
 						count = 0;
-						list = new Array('0', '0', '0');
+						list = ['0', '0', '0'];
 						$("#reserve").modal('close');
 						$("#welcome").modal('open');
 					}
@@ -185,8 +185,8 @@ function searchReservation() {
 							'<div class="card-title">预约书籍信息：</div>' +
 							'<div class="row" id="reserved-books"></div>' +
 							'<div class="reservation">' +
-								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation()">更改</button>' +
-								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="$("#reservation").empty();">返回</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation();">更改</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="back();">返回</button>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
@@ -259,6 +259,10 @@ function confirmChoose() {
 	$("#reserve").modal('open');
 }
 
+function back() {
+	$("#reservation").modal('close');
+}
+
 function fullText(val) {
 	$("#full-text-content").text(val.textContent);
 	$("#full-text").modal('open');
@@ -270,8 +274,8 @@ function modifyReservation() {
 	stuNo = $("#stu-number").val();
 
 	modifying = true, count = 0;
-	list = new Array('0', '0', '0');
-	preList = new Array('0', '0', '0');
+	list = ['0', '0', '0'];
+	preList = ['0', '0', '0'];
 	
 	$.post(
 		'./assets/API/reservation.php',
@@ -345,7 +349,7 @@ function commitModification(val) {
 				alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
 				$("#list-data").empty();
 				$("#display").empty();
-				count = 0; list = new Array('0', '0', '0');
+				count = 0; list = ['0', '0', '0'];
 				$("#reserve").modal('close');
 				$("#welcome").modal('open');
 			}
