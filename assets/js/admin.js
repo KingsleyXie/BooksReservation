@@ -133,7 +133,7 @@ $(document).ready(function() {
 function logout() {
 	$.post(
 		'../assets/API/admin.php',
-		{ 'type':2 },
+		'operation=logout',
 		function(response) {
 			if (response.code == 0) {
 				alert('退出系统成功');

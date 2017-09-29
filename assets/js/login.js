@@ -3,7 +3,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		$.post(
 			'../assets/API/admin.php',
-			$(this).serialize() + '&type=' + 1,
+			$(this).serialize() + '&operation=login',
 			function(response) {
 				if (response.code == 0) {
 					alert('登录成功！');

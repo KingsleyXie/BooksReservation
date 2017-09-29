@@ -3,11 +3,10 @@ session_start();
 header('Content-Type: application/json');
 require_once('./config.php');
 
-existCheck('type');
+existCheck('operation');
 
-// type value - 1: login, 2: logout
-switch ($_POST['type']) {
-	case 1:
+switch ($_POST['operation']) {
+	case 'login':
 		existCheck('username', 'password');
 		//Default username and password(Hash Method: SHA256) are both 'test', please remember to change it when you  deploy it online
 		if ($_POST['username'] != 'test' OR hash('sha256', $_POST['password']) !=
@@ -16,7 +15,7 @@ switch ($_POST['type']) {
 		$_SESSION['username'] = 'admin';
 		response(0);
 	
-	case 2:
+	case 'logout':
 		unset ($_SESSION['username']);
 		response(0);
 }
