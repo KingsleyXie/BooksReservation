@@ -42,7 +42,7 @@ $(document).ready(function() {
 			$("#loading").css("display", "flex");
 			$.post(
 				'./assets/API/reserve.php',
-				$(this).serialize() + '&count=' + count +
+				$(this).serialize() + '&operation=new&count=' + count +
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
 				function(response) {
 					$("#loading").hide();
@@ -332,8 +332,8 @@ function modifyReservation() {
 function commitModification(val) {
 	$("#loading").css("display", "flex");
 	$.post(
-		'./assets/API/modify.php',
-		$(val).serialize() + '&count=' + count +
+		'./assets/API/reserve.php',
+		$(val).serialize() + '&operation=modify&count=' + count +
 		'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
 		'&preList0=' + preList[0] + '&preList1=' + preList[1] + '&preList2=' + preList[2] +
 		'&studentNo=' + $("#student-number").val(),
