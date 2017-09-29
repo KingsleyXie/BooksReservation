@@ -3,10 +3,10 @@ session_start();
 header('Content-Type: application/json');
 require_once('./config.php');
 
-existCheck('type');
+existCheck('operation');
 
-// type value - 0: all, 1: search
-if ($_POST['type'] == '0') {
+// Return All Reservations' Information
+if ($_POST['operation'] == 'all') {
 	if (!isset($_SESSION['username'])) {
 		$response[0] = array('code' => 2);
 		echo json_encode($response);
@@ -78,6 +78,7 @@ if ($_POST['type'] == '0') {
 	exit(0);
 }
 
+// Search With Posted Student Number
 existCheck('stuNo');
 $sql = 'SELECT * FROM students WHERE studentNo = ?';
 $stmt = $connect->prepare($sql);

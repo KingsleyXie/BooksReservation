@@ -2,7 +2,7 @@ $(document).ready(function() {
 	$(".button-collapse").sideNav();
 	$.post(
 		'../assets/API/reservation.php',
-		{'type': 0},
+		'operation=all',
 		function(response) {
 			if (response[0].code == 1) {
 				Materialize.toast('未查询到订单', 3000);

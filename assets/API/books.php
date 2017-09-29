@@ -2,15 +2,13 @@
 header('Content-Type: application/json');
 require_once('./config.php');
 
-existCheck('type');
+existCheck('operation');
 
-// type value - 0: all, 1: search, 2: category
 $loadImg = isset($_POST['loadImg']) ? true : false;
-
 $defaultCover = "./assets/pictures/defaultCover.png";
 
-switch ($_POST['type']) {
-	case '0':
+switch ($_POST['operation']) {
+	case 'all':
 		$sql = '
 		SELECT * FROM books
 		ORDER BY
@@ -20,7 +18,7 @@ switch ($_POST['type']) {
 		$stmt->execute();
 		break;
 	
-	case '1':
+	case 'search':
 		existCheck('keyWord');
 
 		$sql = '
@@ -36,7 +34,7 @@ switch ($_POST['type']) {
 		]);
 		break;
 
-	case '2':
+	case 'category':
 		existCheck('bookCategory', 'grade', 'major');
 
 		if ($_POST['bookCategory'] == 'CategoryA') {

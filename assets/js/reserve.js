@@ -89,13 +89,17 @@ $(document).ready(function() {
 
 function display(data, type) {
 	$("#loading").css("display", "flex");
+	operation = ['all', 'search', 'category'][type];
 	$.post(
 		'./assets/API/books.php',
-		$(data).serialize() + '&type=' + type,
+		$(data).serialize() + '&operation=' + operation,
 		function(response) {
 			if (response[0].code == 1) {
-				emptyInfo = ['数据库还是空的，过段时间再来看看吧', '未找到相关书籍，换个关键词试试吧', '未找到相关书籍，换个分类试试吧'];
-				Materialize.toast(emptyInfo[type], 3000);
+				Materialize.toast([
+					'数据库还是空的，过段时间再来看看吧',
+					'未找到相关书籍，换个关键词试试吧',
+					'未找到相关书籍，换个分类试试吧'
+				][type], 3000);
 			}
 			if (response[0].code == 0) {
 				$("#display").empty();
@@ -127,8 +131,7 @@ function display(data, type) {
 				}
 				$("#placeholder").show();
 				$("#book-confirm").show();
-				modalID = ['welcome', 'search', 'category'];
-				$("#" + modalID[type]).modal('close');
+				$("#" + ['welcome', 'search', 'category'][type]).modal('close');
 				$(".button-collapse").sideNav('hide');
 			}
 			$("#loading").hide();
@@ -141,7 +144,7 @@ function searchReservation() {
 	stuNo = $("#stu-number").val();
 	$.post(
 		'./assets/API/reservation.php',
-		{ 'stuNo': stuNo, 'type': 1 },
+		'operation=search&stuNo=' + stuNo,
 		function(response) {
 			if (response[0].code == 1) {
 				Materialize.toast('未查询到订单', 3000);
@@ -272,7 +275,7 @@ function modifyReservation() {
 	
 	$.post(
 		'./assets/API/reservation.php',
-		{ 'stuNo': stuNo, 'type': 1 },
+		'operation=search&stuNo=' + stuNo,
 		function(response) {
 			if (response[0].code == 0) {
 				$("#list-data").empty();
