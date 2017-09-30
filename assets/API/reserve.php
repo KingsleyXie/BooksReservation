@@ -90,7 +90,7 @@ switch ($_POST['operation']) {
 		break;
 	
 	case 'modify':
-		existCheck('count', 'list0', 'list1', 'list2', 'preList0', 'preList1', 'preList2');
+		existCheck('list0', 'list1', 'list2', 'preList0', 'preList1', 'preList2');
 		blankCheck('studentName', 'studentNo', 'dormitory', 'contact', 'date', 'timePeriod');
 
 		$arr = array_filter(
@@ -122,98 +122,79 @@ switch ($_POST['operation']) {
 			$_POST['list2']
 		]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 		if (!empty($result)) {
 			date_default_timezone_set('Asia/Shanghai');
-			$time=date('Y.m.d H:i:s');
-			$logFile = fopen('../collision.log', 'a');
-			$logText =
-				"[" . $time . "]\tstudentNo:" . $_POST['studentNo'] .
-				"\tlist0:" . $_POST['list0'] .
-				"\tlist1:" . $_POST['list1'] .
-				"\tlist2:" . $_POST['list2'] . "\n";
-			fwrite($logFile, $logText);
-			fclose($logFile);
-
+			$file = fopen('../collision.log', 'a');
+			$log =
+				'[' . date('Y.m.d H:i:s') . ']   student:' .
+				$_POST['studentNo'] . ' ' . $_POST['studentName'] .
+				$_POST['list0'] . ' ' . $_POST['list1'] . ' ' . $_POST['list2'];
+			fwrite($file, $log . PHP_EOL);
+			fclose($file);
 			response(7, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
 		}
 
 		$sql = '
-		UPDATE `students`
+		UPDATE `reservations`
 		SET
+			`date` = ?,
+			`timePeriod` = ?,
 			`studentName` = ?,
+			`studentNo` = ?,
 			`dormitory` = ?,
-			`contact` = ?
+			`contact` = ?,
+			`bookID_1` = ?,
+			`bookID_2` = ?,
+			`bookID_3` = ?
 		WHERE
 			studentNo = ?';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([
+			$_POST['date'],
+			$_POST['timePeriod'],
 			$_POST['studentName'],
+			$_POST['studentNo'],
 			$_POST['dormitory'],
 			$_POST['contact'],
+			$_POST['list0'],
+			$_POST['list1'],
+			$_POST['list2'],
 			$_POST['studentNo']
 		]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if (empty($result)) {
-			$sql = 'SELECT studentID FROM students WHERE studentNo = ?';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([$_POST['studentNo']]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$stuID = $result[0]['studentID'];
-
 			$sql = '
-			UPDATE `reservations`
-			SET
-				`date` = ?,
-				`timePeriod` = ?,
-				`bookID_1` = ?,
-				`bookID_2` = ?,
-				`bookID_3` = ? 
-			WHERE studentID = ?';
+			UPDATE books
+			SET remainingAmount = remainingAmount + 1
+			WHERE
+				(bookID = ?)
+				OR (bookID = ?)
+				OR (bookID = ?)';
 			$stmt = $connect->prepare($sql);
 			$stmt->execute([
-				$_POST['date'],
-				$_POST['timePeriod'],
-				$_POST['list0'],
-				$_POST['list1'],
-				$_POST['list2'],
-				$stuID
+				$_POST['preList0'],
+				$_POST['preList1'],
+				$_POST['preList2']
 			]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-			if (empty($result)) {
-				$sql = '
-				UPDATE books
-				SET remainingAmount = remainingAmount + 1
-				WHERE
-					(bookID = ?)
-					OR (bookID = ?)
-					OR (bookID = ?)';
-				$stmt = $connect->prepare($sql);
-				$stmt->execute([
-					$_POST['preList0'],
-					$_POST['preList1'],
-					$_POST['preList2']
-				]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-				$sql = '
-				UPDATE books
-				SET remainingAmount = remainingAmount - 1
-				WHERE
-					(bookID = ?)
-					OR (bookID = ?)
-					OR (bookID = ?)';
-				$stmt = $connect->prepare($sql);
-				$stmt->execute([
-					$_POST['list0'],
-					$_POST['list1'],
-					$_POST['list2']
-				]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (empty($result))
-					response(0);
-			}
+			$sql = '
+			UPDATE books
+			SET remainingAmount = remainingAmount - 1
+			WHERE
+				(bookID = ?)
+				OR (bookID = ?)
+				OR (bookID = ?)';
+			$stmt = $connect->prepare($sql);
+			$stmt->execute([
+				$_POST['list0'],
+				$_POST['list1'],
+				$_POST['list2']
+			]);
+			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			if (empty($result)) response(0);
 		}
 		response(8, '订单修改失败，请联系管理员或重试');
 		break;
