@@ -41,8 +41,8 @@ switch ($_POST['operation']) {
 			date_default_timezone_set('Asia/Shanghai');
 			$file = fopen('../collision.log', 'a');
 			$log =
-				'[' . date('Y.m.d H:i:s') . ']   student:' .
-				$_POST['studentNo'] . ' ' . $_POST['studentName'] .
+				'[' . date('Y.m.d H:i:s') . '] ' .
+				$_POST['studentNo'] . ' ' . $_POST['studentName'] . ' ' .
 				$_POST['list0'] . ' ' . $_POST['list1'] . ' ' . $_POST['list2'];
 			fwrite($file, $log . PHP_EOL);
 			fclose($file);
@@ -53,7 +53,7 @@ switch ($_POST['operation']) {
 		INSERT INTO `reservations`
 			(`date`, `timePeriod`, `studentName`, `studentNo`, `dormitory`, `contact`, `bookID_1`, `bookID_2`, `bookID_3`)
 		VALUES
-			(?,?,?,?,?,?,?,?,?)';
+			(?, ?, ?, ?, ?, ?, NULLIF(?, 0), NULLIF(?, 0), NULLIF(?, 0))';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([
 			$_POST['date'],
@@ -127,8 +127,8 @@ switch ($_POST['operation']) {
 			date_default_timezone_set('Asia/Shanghai');
 			$file = fopen('../collision.log', 'a');
 			$log =
-				'[' . date('Y.m.d H:i:s') . ']   student:' .
-				$_POST['studentNo'] . ' ' . $_POST['studentName'] .
+				'[' . date('Y.m.d H:i:s') . '] ' .
+				$_POST['studentNo'] . ' ' . $_POST['studentName'] . ' ' .
 				$_POST['list0'] . ' ' . $_POST['list1'] . ' ' . $_POST['list2'];
 			fwrite($file, $log . PHP_EOL);
 			fclose($file);
@@ -144,9 +144,9 @@ switch ($_POST['operation']) {
 			`studentNo` = ?,
 			`dormitory` = ?,
 			`contact` = ?,
-			`bookID_1` = ?,
-			`bookID_2` = ?,
-			`bookID_3` = ?
+			`bookID_1` = NULLIF(?, 0),
+			`bookID_2` = NULLIF(?, 0),
+			`bookID_3` = NULLIF(?, 0)
 		WHERE
 			studentNo = ?';
 		$stmt = $connect->prepare($sql);
