@@ -9,16 +9,11 @@ switch ($_POST['operation']) {
 	//Search With Posted Student Number
 	case 'search':
 		existCheck('stuNo');
-		$sql = 'SELECT * FROM students WHERE studentNo = ?';
+		$sql = 'SELECT * FROM reservations WHERE studentNo = ?';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([$_POST['stuNo']]);
-		$stu = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($stu)) response(1, '未查询到相关订单');
-
-		$sql = 'SELECT * FROM reservations WHERE studentID = ?';
-		$stmt = $connect->prepare($sql);
-		$stmt->execute([$stu[0]['studentID']]);
 		$reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if (empty($reservation)) response(1, '未查询到相关订单');
 
 		$sql = '
 		SELECT * FROM books
@@ -37,10 +32,10 @@ switch ($_POST['operation']) {
 		$response = ['code' => 0];
 		$response[0] = [
 			'reservationNo' => $reservation[0]['reservationNo'],
-			'stuName' => $stu[0]['studentName'],
-			'stuNo' => $stu[0]['studentNo'],
-			'contact' => $stu[0]['contact'],
-			'dormitory' => $stu[0]['dormitory'],
+			'stuName' => $reservation[0]['studentName'],
+			'stuNo' => $reservation[0]['studentNo'],
+			'contact' => $reservation[0]['contact'],
+			'dormitory' => $reservation[0]['dormitory'],
 			'date' => $reservation[0]['date'],
 			'timePeriod' => $reservation[0]['timePeriod'],
 			'sbmTime' => $reservation[0]['submitTime'],
@@ -67,19 +62,14 @@ switch ($_POST['operation']) {
 			response(2, '请登录系统！');
 		}
 
-		$sql = 'SELECT * FROM students ORDER BY importTime DESC';
+		$sql = 'SELECT * FROM reservations ORDER BY submitTime DESC';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute();
-		$students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($students)) response(3, '暂无订单数据');
+		$reservations = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		if (empty($reservations)) response(3, '暂无订单数据');
 
 		$response = ['code' => 0];
-		foreach ($students as $stu) {
-			$sql = 'SELECT * FROM reservations WHERE studentID = ?';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([$stu['studentID']]);
-			$reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+		foreach ($reservations as $reservation) {
 			$sql = '
 			SELECT * FROM books
 			WHERE (bookID = ?)
@@ -88,22 +78,22 @@ switch ($_POST['operation']) {
 			';
 			$stmt = $connect->prepare($sql);
 			$stmt->execute([
-				$reservation[0]['bookID_1'],
-				$reservation[0]['bookID_2'],
-				$reservation[0]['bookID_3']
+				$reservation['bookID_1'],
+				$reservation['bookID_2'],
+				$reservation['bookID_3']
 			]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 			array_push($response, [
-				'reservationNo' => $reservation[0]['reservationNo'],
-				'stuName' => $stu['studentName'],
-				'stuNo' => $stu['studentNo'],
-				'contact' => $stu['contact'],
-				'dormitory' => $stu['dormitory'],
-				'date' => $reservation[0]['date'],
-				'timePeriod' => $reservation[0]['timePeriod'],
-				'sbmTime' => $reservation[0]['submitTime'],
-				'updTime' => $reservation[0]['updateTime'],
+				'reservationNo' => $reservation['reservationNo'],
+				'stuName' => $reservation['studentName'],
+				'stuNo' => $reservation['studentNo'],
+				'contact' => $reservation['contact'],
+				'dormitory' => $reservation['dormitory'],
+				'date' => $reservation['date'],
+				'timePeriod' => $reservation['timePeriod'],
+				'sbmTime' => $reservation['submitTime'],
+				'updTime' => $reservation['updateTime'],
 				'books' => []
 			]);
 
