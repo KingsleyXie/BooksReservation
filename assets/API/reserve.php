@@ -6,7 +6,7 @@ existCheck('operation');
 
 switch ($_POST['operation']) {
 	case 'new':
-		existCheck('count', 'list0', 'list1', 'list2');
+		existCheck('list0', 'list1', 'list2');
 		blankCheck('studentName', 'studentNo', 'dormitory', 'contact', 'date', 'timePeriod');
 
 		$arr = array_filter(
@@ -17,7 +17,7 @@ switch ($_POST['operation']) {
 		);
 		if ($arr != array_unique($arr)) response(1, '错误请求');
 
-		$sql = 'SELECT * FROM students WHERE studentNo = ?';
+		$sql = 'SELECT * FROM reservations WHERE studentNo = ?';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([$_POST['studentNo']]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -39,74 +39,52 @@ switch ($_POST['operation']) {
 
 		if (!empty($result)) {
 			date_default_timezone_set('Asia/Shanghai');
-			$time=date('Y.m.d H:i:s');
-			$logFile = fopen('../collision.log', 'a');
-			$logText =
-				"[" . $time . "]\tstudentNo:" . $_POST['studentNo'] .
-				"\tlist0:" . $_POST['list0'] .
-				"\tlist1:" . $_POST['list1'] .
-				"\tlist2:" . $_POST['list2'] . "\n";
-			fwrite($logFile, $logText);
-			fclose($logFile);
-
+			$file = fopen('../collision.log', 'a');
+			$log =
+				'[' . date('Y.m.d H:i:s') . ']   student:' .
+				$_POST['studentNo'] . ' ' . $_POST['studentName'] .
+				$_POST['list0'] . ' ' . $_POST['list1'] . ' ' . $_POST['list2'];
+			fwrite($file, $log . PHP_EOL);
+			fclose($file);
 			response(3, '列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写O(∩_∩)O');
 		}
 
 		$sql = '
-		INSERT INTO `students`
-			(`studentName`, `studentNo`, `dormitory`, `contact`)
+		INSERT INTO `reservations`
+			(`date`, `timePeriod`, `studentName`, `studentNo`, `dormitory`, `contact`, `bookID_1`, `bookID_2`, `bookID_3`)
 		VALUES
-			(?,?,?,?)';
+			(?,?,?,?,?,?,?,?,?)';
 		$stmt = $connect->prepare($sql);
 		$stmt->execute([
+			$_POST['date'],
+			$_POST['timePeriod'],
 			$_POST['studentName'],
 			$_POST['studentNo'],
 			$_POST['dormitory'],
-			$_POST['contact']
+			$_POST['contact'],
+			$_POST['list0'],
+			$_POST['list1'],
+			$_POST['list2']
 		]);
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 		if (empty($result)) {
-			$sql = 'SELECT studentID FROM students WHERE studentNo = ?';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([$_POST['studentNo']]);
-			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-			$stuID = $result[0]['studentID'];
-
 			$sql = '
-			INSERT INTO `reservations`
-				(`date`, `timePeriod`, `studentID`, `bookID_1`, `bookID_2`, `bookID_3`)
-			VALUES
-				(?,?,?,?,?,?)';
+			UPDATE books
+			SET
+				remainingAmount = remainingAmount - 1
+			WHERE
+				(bookID = ?)
+				OR (bookID = ?)
+				OR (bookID = ?)';
 			$stmt = $connect->prepare($sql);
 			$stmt->execute([
-				$_POST['date'],
-				$_POST['timePeriod'],
-				$stuID,
 				$_POST['list0'],
 				$_POST['list1'],
 				$_POST['list2']
 			]);
 			$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-			if (empty($result)) {
-				$sql = '
-				UPDATE books
-				SET
-					remainingAmount = remainingAmount - 1
-				WHERE
-					(bookID = ?)
-					OR (bookID = ?)
-					OR (bookID = ?)';
-				$stmt = $connect->prepare($sql);
-				$stmt->execute([
-					$_POST['list0'],
-					$_POST['list1'],
-					$_POST['list2']
-				]);
-				$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-				if (empty($result)) response(0);
-			}
+			if (empty($result)) response(0);
 		}
 		response(4, '订单提交失败，请联系管理员或重试');
 		break;
