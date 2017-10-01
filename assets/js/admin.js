@@ -34,7 +34,7 @@ $(document).ready(function() {
 					'<div class="col s12 m3">' + 
 						'<div class="card blue-grey darken-1">' + 
 							'<div class="card-content white-text">' + 
-								'<div class="card-title">' + book.title + '</div>' + 
+								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' + 
 								'<div class="card-details">' + 
 									'<p>作者：' + book.author + MultipleAuthor + '</p>' + 
 									'<p>出版社：' + book.press + '</p>' + 
@@ -70,8 +70,7 @@ $(document).ready(function() {
 	$("#book").submit(function(e) {
 		e.preventDefault();
 		if ($("#book-info").css("display") == "block"
-			&& check()
-			&& confirmInfo()) {
+			&& check()) {
 			$.post(
 				'../assets/API/admin.php',
 				$(this).serialize() + '&operation=' + (updating ? 'update' : 'add'),
@@ -236,25 +235,9 @@ function check() {
 	return true;
 }
 
-function confirmInfo() {
-	var isMA = $("#is-multiple-author").prop("checked") ? '是' : '否';
-	if ($("#categoryA").prop("checked")) {
-		var cataInfo = '\n书籍分类：教材课本' +
-		'\n年级：' + $("#grade").val() +
-		'\n专业：' + $("#major").val();
-	}
-	if ($("#categoryB").prop("checked")) {
-		var cataInfo = '\n书籍分类：课外书籍' +
-		'\n详细类别：' + $("#extracurricular-category").val();
-	}
-	var confirmPrompt = '请再次确认该书籍信息：\n' +
-		'\n书名：' + $("#title").val() +
-		'\n作者：' + $("#author").val() +
-		'\n是否有多位作者：' + isMA +
-		'\n出版社：' + $("#press").val() +
-		'\n剩余数量：' + $("#remaining-amount").val() +
-		'\n图片链接：' + $("#image").val() + cataInfo;
-	return confirm(confirmPrompt);
+function showFullText(val) {
+	$("#alert-content").text(val.textContent);
+	$("#alert").modal('open');
 }
 
 function logout() {

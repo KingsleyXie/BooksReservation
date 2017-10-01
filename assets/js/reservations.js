@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$(".button-collapse").sideNav();
+	$(".modal").modal();
 	$("#loading").css("display", "flex");
 	
 	$.post(
@@ -58,7 +59,7 @@ $(document).ready(function() {
 						'<div class="col s12 m4">' +
 							'<div class="card blue-grey darken-1">' +
 								'<div class="card-content white-text">' +
-									'<div class="card-title">#' + book.bookID + ' ' + book.title +
+									'<div class="card-title book-title" onclick="showFullText(this)">#' + book.bookID + ' ' + book.title +
 									'</div>' +
 									'<div class="card-details">' +
 										'<p>作者：' + book.author + MultipleAuthor + '</p>' +
@@ -85,3 +86,8 @@ $(document).ready(function() {
 		}
 	);
 });
+
+function showFullText(val) {
+	$("#alert-content").text(val.textContent);
+	$("#alert").modal('open');
+}

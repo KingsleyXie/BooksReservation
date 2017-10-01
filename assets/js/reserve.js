@@ -103,7 +103,7 @@ function display(data,type) {
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="showFullText(this)">' + book.title + '</div>' +
+								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
 									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
 									'<p>出版社：' + book.press + '</p>' +
@@ -194,7 +194,7 @@ function searchReservation() {
 					'<div class="col s12 m4">' +
 						'<div class="card blue-grey darken-1">' +
 							'<div class="card-content white-text">' +
-								'<div class="card-title">' + book.title +
+								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title +
 								'</div>' +
 								'<div class="card-details">' +
 									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
@@ -264,7 +264,7 @@ function modifyReservation() {
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="showFullText(this)">' + book.title + '</div>' +
+								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
 									'<p>' + book.author + MultipleAuthor + '</p>' +
 									'<p>' + book.press + '</p>' +
@@ -310,7 +310,7 @@ function addToList(val) {
 		'</div>' +
 		'<div class="card-stacked">' +
 			'<div class="card-content">' +
-				'<div class="card-title" onclick="showFullText(this)">' +
+				'<div class="card-title book-title" onclick="showFullText(this)">' +
 					val.previousSibling.children[0].children[0].innerText +
 				'</div>' +
 				'<div class="card-details">' +
@@ -341,7 +341,7 @@ function modalAlert(content, title = '系统提示') {
 }
 
 function showFullText(val) {
-	modalAlert(val.textContent, '书籍标题全文');
+	modalAlert(val.textContent, '书籍标题全文：');
 }
 
 function confirmChoose() {

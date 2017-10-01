@@ -100,3 +100,11 @@ th {
 	padding-top: 5px;
 	border-top: 1px solid #c5c5c5;
 }
+.book-title {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.book-title:hover {
+	cursor: pointer;
+}
