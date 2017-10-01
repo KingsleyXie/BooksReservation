@@ -6,7 +6,9 @@ require_once('./config.php');
 existCheck('operation');
 
 switch ($_POST['operation']) {
-	/*Module 1: Login */
+	/* ==========================================================================
+	   Module 0. Login
+	   ========================================================================== */
 	case 'login':
 		existCheck('username', 'password');
 		//Default username and password(Hash Method: SHA256) are both 'test', please remember to change it when you  deploy it online
@@ -16,15 +18,19 @@ switch ($_POST['operation']) {
 		$_SESSION['username'] = 'admin';
 		response(0);
 	
-	/* Module 2: Logout */
+	/* ==========================================================================
+	   Module 1. Logout
+	   ========================================================================== */
 	case 'logout':
 		unset($_SESSION['username']);
 		response(0);
 
-	/* Module 3: Add A Book To Database */
+	/* ==========================================================================
+	   Module 2. Add Or Update One Book's Data
+	   ========================================================================== */
 	case 'add':
-		if (!isset($_SESSION['username']))
-			response(2, '请登录系统！');
+	case 'update':
+		if (!isset($_SESSION['username'])) response(2, '请登录系统！');
 
 		existCheck('image', 'bookCategory');
 
@@ -32,150 +38,140 @@ switch ($_POST['operation']) {
 		$_POST['image'] = empty($_POST['image']) ?
 			'./assets/pictures/defaultCover.png' : $_POST['image'];
 
+		//Shunt The Database Operation
 		if ($_POST['bookCategory'] == 'CategoryA') {
 			existCheck('title', 'author', 'press', 'pubdate', 'grade', 'major', 'remainingAmount');
-
-			$sql = '
-			INSERT INTO `books`
-				(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `grade`, `major`, `remainingAmount`)
-			VALUES
-				(?,?,?,?,?,?,?,?,?,?,?)';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([
-				$_POST['ISBN'],
-				$_POST['title'],
-				$_POST['author'],
-				$isMA,
-				$_POST['press'],
-				$_POST['pubdate'],
-				$_POST['image'],
-				$_POST['bookCategory'],
-				$_POST['grade'],
-				$_POST['major'],
-				$_POST['remainingAmount']
-			]);
+			$_POST['operation'] .= 'A';
 		}
-
 		if ($_POST['bookCategory'] == 'CategoryB') {
 			existCheck('title', 'author', 'press', 'pubdate', 'extracurricularCategory', 'remainingAmount');
+			$_POST['operation'] .= 'B';
+		}
+
+		switch ($_POST['operation']) {
+			case 'addA':
+				$sql = '
+				INSERT INTO `books`
+					(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `grade`, `major`, `remainingAmount`)
+				VALUES
+					(?,?,?,?,?,?,?,?,?,?,?)';
+				$stmt = $connect->prepare($sql);
+				$stmt->execute([
+					$_POST['ISBN'],
+					$_POST['title'],
+					$_POST['author'],
+					$isMA,
+					$_POST['press'],
+					$_POST['pubdate'],
+					$_POST['image'],
+					$_POST['bookCategory'],
+					$_POST['grade'],
+					$_POST['major'],
+					$_POST['remainingAmount']
+				]);
+				break;
 			
-			$sql = '
-			INSERT INTO `books`
-				(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `extracurricularCategory`, `remainingAmount`)
-			VALUES
-				(?,?,?,?,?,?,?,?,?,?)';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([
-				$_POST['ISBN'],
-				$_POST['title'],
-				$_POST['author'],
-				$isMA,
-				$_POST['press'],
-				$_POST['pubdate'],
-				$_POST['image'],
-				$_POST['bookCategory'],
-				$_POST['extracurricularCategory'],
-				$_POST['remainingAmount']
-			]);
+			case 'addB':
+				$sql = '
+				INSERT INTO `books`
+					(`ISBN`, `title`, `author`, `isMultipleAuthor`, `press`, `pubdate`, `image`, `bookCategory`, `extracurricularCategory`, `remainingAmount`)
+				VALUES
+					(?,?,?,?,?,?,?,?,?,?)';
+				$stmt = $connect->prepare($sql);
+				$stmt->execute([
+					$_POST['ISBN'],
+					$_POST['title'],
+					$_POST['author'],
+					$isMA,
+					$_POST['press'],
+					$_POST['pubdate'],
+					$_POST['image'],
+					$_POST['bookCategory'],
+					$_POST['extracurricularCategory'],
+					$_POST['remainingAmount']
+				]);
+				break;
+
+			case 'updateA':
+				$sql = '
+				UPDATE `books`
+				SET
+					`title` = ?,
+					`author` = ?,
+					`isMultipleAuthor` = ?,
+					`press` = ?,
+					`pubdate` = ?,
+					`image` = ?,
+					`bookCategory` = ?,
+					`grade` = ?,
+					`major` = ?,
+					`remainingAmount` = ?
+				WHERE `bookID` = ?';
+				$stmt = $connect->prepare($sql);
+				$stmt->execute([
+					$_POST['title'],
+					$_POST['author'],
+					$isMA,
+					$_POST['press'],
+					$_POST['pubdate'],
+					$_POST['image'],
+					$_POST['bookCategory'],
+					$_POST['grade'],
+					$_POST['major'],
+					$_POST['remainingAmount'],
+					$_POST['bookID']
+				]);
+				break;
+
+			case 'updateB':
+				$sql = '
+				UPDATE `books`
+				SET
+					`title` = ?,
+					`author` = ?,
+					`isMultipleAuthor` = ?,
+					`press` = ?,
+					`pubdate` = ?,
+					`image` = ?,
+					`bookCategory` = ?,
+					`extracurricularCategory` = ?,
+					`remainingAmount` = ?
+				WHERE `bookID` = ?';
+				$stmt = $connect->prepare($sql);
+				$stmt->execute([
+					$_POST['title'],
+					$_POST['author'],
+					$isMA,
+					$_POST['press'],
+					$_POST['pubdate'],
+					$_POST['image'],
+					$_POST['bookCategory'],
+					$_POST['extracurricularCategory'],
+					$_POST['remainingAmount'],
+					$_POST['bookID']
+				]);
+				break;
+
+			default:
+				response(3, '请求有误');
+				break;
 		}
 
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($result))
+		if (empty($stmt->fetchAll(PDO::FETCH_ASSOC)))
 			response(0);
 		else
-			response(3, '添加书籍失败，请联系管理员');
+			response(4, '操作失败，请联系管理员');
 
-	/* Module 4: Update A Book's Information */
-	case 'update':
-		if (!isset($_SESSION['username']))
-			response(4, '请登录系统！');
-
-		existCheck('updImage', 'updBookCategory');
-
-		$isMA = isset($_POST['updIsMultipleAuthor']) ? 1 : 0;
-		$_POST['updImage'] = empty($_POST['updImage']) ?
-			'./assets/pictures/defaultCover.png' : $_POST['updImage'];
-
-		if ($_POST['updBookCategory'] == 'CategoryA') {
-			existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updGrade', 'updMajor', 'updRemainingAmount');
-
-			$sql = '
-			UPDATE `books`
-			SET
-				`title` = ?,
-				`author` = ?,
-				`isMultipleAuthor` = ?,
-				`press` = ?,
-				`pubdate` = ?,
-				`image` = ?,
-				`bookCategory` = ?,
-				`grade` = ?,
-				`major` = ?,
-				`remainingAmount` = ?
-			WHERE `bookID` = ?';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([
-				$_POST['updTitle'],
-				$_POST['updAuthor'],
-				$isMA,
-				$_POST['updPress'],
-				$_POST['updPubdate'],
-				$_POST['updImage'],
-				$_POST['updBookCategory'],
-				$_POST['updGrade'],
-				$_POST['updMajor'],
-				$_POST['updRemainingAmount'],
-				$_POST['bookID']
-			]);
-		}
-
-		if ($_POST['updBookCategory'] == 'CategoryB') {
-			existCheck('updTitle', 'updAuthor', 'updPress', 'updPubdate', 'updExtracurricularCategory', 'updRemainingAmount');
-
-			$sql = '
-			UPDATE `books`
-			SET
-				`title` = ?,
-				`author` = ?,
-				`isMultipleAuthor` = ?,
-				`press` = ?,
-				`pubdate` = ?,
-				`image` = ?,
-				`bookCategory` = ?,
-				`extracurricularCategory` = ?,
-				`remainingAmount` = ?
-			WHERE  `bookID` = ?';
-			$stmt = $connect->prepare($sql);
-			$stmt->execute([
-				$_POST['updTitle'],
-				$_POST['updAuthor'],
-				$isMA,
-				$_POST['updPress'],
-				$_POST['updPubdate'],
-				$_POST['updImage'],
-				$_POST['updBookCategory'],
-				$_POST['updExtracurricularCategory'],
-				$_POST['updRemainingAmount'],
-				$_POST['bookID']
-			]);
-		}
-
-		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-		if (empty($result))
-			response(0);
-		else
-			response(5, '更新书籍信息失败，请联系管理员');
-
-	/* Module 5: Get Detailed Books' Information */
+	/* ==========================================================================
+	   Module 3. Get Detailed Data On Books
+	   ========================================================================== */
 	case 'books':
-		if (!isset($_SESSION['username'])) {
-			response(6, '请登录系统！');
-		}
+		if (!isset($_SESSION['username'])) response(5, '请登录系统！');
 
 		if (isset($_POST['bookID'])) {
 			$sql = 'SELECT * FROM books WHERE bookID = ?';
 			$stmt = $connect->prepare($sql);
-			$stmt->execute(array($_POST['bookID']));
+			$stmt->execute([$_POST['bookID']]);
 		} else {
 			$sql = 'SELECT * FROM books ORDER BY bookID DESC';
 			$stmt = $connect->prepare($sql);
@@ -185,8 +181,8 @@ switch ($_POST['operation']) {
 
 		$response = empty($result) ?
 			isset($_POST['bookID']) ?
-				response(7, '未找到对应书籍，请检查输入 ID 是否正确！') :
-				response(8, '数据库中暂无书籍信息') :
+				response(6, '未找到对应书籍，请检查输入 ID 是否正确！') :
+				response(7, '数据库中暂无书籍信息') :
 			['code' => 0];
 
 		foreach($result as $book) {

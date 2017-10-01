@@ -7,11 +7,11 @@ require_once('./config.php');
 existCheck('ISBN');
 blankCheck('ISBN');
 
-$handle = @fopen("https://api.douban.com/v2/book/isbn/" . $_POST['ISBN'],"rb");
+$handle = @fopen('https://api.douban.com/v2/book/isbn/' . $_POST['ISBN'], 'rb');
 if (empty($_POST['ISBN']) OR !$handle) {
 	response(1, '未找到书籍信息，请手动录入相关数据');
 } else {
-	$data = "";
+	$data = '';
 	while (!feof($handle))
 		$data .= fread($handle, 10000);
 	fclose($handle);
