@@ -55,14 +55,13 @@ $(document).ready(function() {
 								searchReservation();
 							}, 1000);
 							break;
-						case 3:
-						case 7:
-							modalAlert('列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨');
+						case 1:
 							$("#list-data").empty();
 							$("#display").empty();
 							count = 0; list = ['0', '0', '0'];
 							$("#reserve").modal('close');
 							$("#all").modal('open');
+							modalAlert('列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨');
 							break;
 						default:
 							Materialize.toast(response.errMsg, 3000);
@@ -301,10 +300,6 @@ function addToList(val) {
 	count++;
 	val.innerText--;
 
-	if (val.innerText == 0) {
-		val.outerHTML = '<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>';
-	}
-
 	ele = val.previousSibling.children[0].children[1];
 	$("#list-data").append(
 	'<div class="card horizontal list-card">' +
@@ -327,6 +322,10 @@ function addToList(val) {
 		'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
 		'data-id=' + val.dataset.id + ' onclick="deleteFromList(this)">x</a>' +
 	'</div>');
+
+	if (val.innerText == 0) {
+		val.outerHTML = '<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>';
+	}
 }
 
 function deleteFromList(val) {

@@ -34,6 +34,7 @@ if (!empty($stmt->fetchAll(PDO::FETCH_ASSOC))) {
 $arr = [$_POST['list0'], $_POST['list1'], $_POST['list2']];
 $arr = array_filter($arr, function($val) { return $val != '0';});
 if ($arr != array_unique($arr)) response(2, '列表中存在重复书籍');
+if (empty($arr)) response(8, '错误请求');
 
 /* ==========================================================================
    2. Add Or Update A Reservation
