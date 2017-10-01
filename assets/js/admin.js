@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 	$("#update").submit(function(e) {
 		e.preventDefault();
-		if ($("#upd-books").css("display") == 'block'
+		if ($("#books").css("display") == 'block'
 			&& updCheck()
 			&& updConfirmInfo()) {
 			$.post(
@@ -131,6 +131,9 @@ $(document).ready(function() {
 			}
 		);
 	});
+///////////////////////////////////
+	$("#book").modal('open');
+	inputDataManually();
 });
 
 function logout() {
@@ -157,24 +160,13 @@ function selectCategory(val) {
 	}
 }
 
-function updCategory(val) {
-	if (val == "upd-categoryA") {
-		$("#upd-book-categoryA").show();
-		$("#upd-book-categoryB").hide();
-	}
-	if (val == "upd-categoryB") {
-		$("#upd-book-categoryA").hide();
-		$("#upd-book-categoryB").show();
-	}
-}
-
-function inputData() {
+function inputDataManually() {
 	$("#add-init").hide();
 	$("#book-info").show();
 	$("#book-category").show();
 }
 
-function getData() {
+function inputDataViaISBN() {
 	$("#progress").show();
 	$.post(
 		'../assets/API/ISBN_API.php',
@@ -212,45 +204,45 @@ function getData() {
 }
 
 function getBook() {
-	$("#upd-progress").show();
+	$("#progress").show();
 	$.post(
 		'../assets/API/admin.php',
 		'operation=books&bookID=' + $("#bookID").val(),
 		function(response) {
 			if (response.code == 0) {
-				$("#upd-progress").hide();
-				$("#upd-title").val(response[0].title);
-				$("label[for=upd-title]").addClass("active");
-				$("#upd-author").val(response[0].author);
-				$("label[for=upd-author]").addClass("active");
-				$("#upd-press").val(response[0].press);
-				$("label[for=upd-press]").addClass("active");
-				$("#upd-pubdate").val(response[0].pubdate);
-				$("label[for=upd-pubdate]").addClass("active");
-				$("#upd-image").val(response[0].image);
-				$("label[for=upd-image]").addClass("active");
-				$("#upd-" + (response[0].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
+				$("#progress").hide();
+				$("#title").val(response[0].title);
+				$("label[for=title]").addClass("active");
+				$("#author").val(response[0].author);
+				$("label[for=author]").addClass("active");
+				$("#press").val(response[0].press);
+				$("label[for=press]").addClass("active");
+				$("#pubdate").val(response[0].pubdate);
+				$("label[for=pubdate]").addClass("active");
+				$("#image").val(response[0].image);
+				$("label[for=image]").addClass("active");
+				$("#" + (response[0].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
 				if (response[0].bookCategory == "CategoryA") {
-					updCategory('upd-categoryA');
-					$("#upd-grade").val(response[0].grade).material_select();
-					$("#upd-major").val(response[0].major).material_select();
+					updCategory('categoryA');
+					$("#grade").val(response[0].grade).material_select();
+					$("#major").val(response[0].major).material_select();
 				}
 				if (response[0].bookCategory == "CategoryB") {
-					updCategory('upd-categoryB');
-					$("#upd-extracurricular-category").val(response[0].extracurricularCategory).material_select();
+					updCategory('categoryB');
+					$("#extracurricular-category").val(response[0].extracurricularCategory).material_select();
 				}
 
-				$("#upd-is-multiple-author").prop("checked", parseInt(response[0].isMultipleAuthor));
+				$("#is-multiple-author").prop("checked", parseInt(response[0].isMultipleAuthor));
 				window.setTimeout(function () {
-					$("#upd-remaining-amount").val(response[0].remainingAmount);
-					$("#upd-remaining-amount").focus();
+					$("#remaining-amount").val(response[0].remainingAmount);
+					$("#remaining-amount").focus();
 				}, 0);
 				$("#update-init").hide();
-				$("#upd-books").show();
+				$("#books").show();
 			} else {
 				Materialize.toast(response.errMsg, 3000);
-				$("#upd-progress").hide();
+				$("#progress").hide();
 			}
 		}
 	);
@@ -281,31 +273,6 @@ function Check() {
 	return true;
 }
 
-function updCheck() {
-	if ($("#upd-title").val() == '' ||
-		$("#upd-author").val() == '' ||
-		$("#upd-press").val() == '' ||
-		$("#upd-pubdate").val() == '' ||
-		$("#upd-remaining-amount").val() == '' ||
-		!($("#upd-categoryA").prop("checked") ||  
-		$("#upd-categoryB").prop("checked"))) {
-			alert('请将书籍信息填写完整！');
-			return false;
-	}
-	if ($("#upd-categoryA").prop("checked") && 
-		($("#upd-grade").val() == '' ||
-		$("#upd-major").val() == '')) {
-			alert('请将分类信息填写完整！');
-			return false;
-	}
-	if ($("#upd-categoryB").prop("checked") && 
-		$("#upd-extracurricular-category").val() == '') {
-			alert('请将分类信息填写完整！');
-			return false;
-	}
-	return true;
-}
-
 function ConfirmInfo() {
 	var isMA = $("#is-multiple-author").prop("checked") ? '是' : '否';
 	if ($("#categoryA").prop("checked")) {
@@ -324,27 +291,5 @@ function ConfirmInfo() {
 		'\n出版社：' + $("#press").val() +
 		'\n剩余数量：' + $("#remaining-amount").val() +
 		'\n图片链接：' + $("#image").val() + cataInfo;
-	return confirm(confirmPrompt);
-}
-
-function updConfirmInfo() {
-	var isMA = $("#upd-is-multiple-author").prop("checked") ? '是' : '否';
-	if ($("#upd-categoryA").prop("checked")) {
-		var cataInfo = '\n书籍分类：教材课本' +
-		'\n年级：' + $("#upd-grade").val() +
-		'\n专业：' + $("#upd-major").val();
-	}
-	if ($("#upd-categoryB").prop("checked")) {
-		var cataInfo = '\n书籍分类：课外书籍' +
-		'\n详细类别：' + $("#upd-extracurricular-category").val();
-	}
-	var confirmPrompt = '请再次确认该书籍信息：\n' +
-		'\n书籍 ID：' + $("#bookID").val() +
-		'\n书名：' + $("#upd-title").val() +
-		'\n作者：' + $("#upd-author").val() +
-		'\n是否有多位作者：' + isMA +
-		'\n出版社：' + $("#upd-press").val() +
-		'\n剩余数量：' + $("#upd-remaining-amount").val() +
-		'\n图片链接：' + $("#upd-image").val() + cataInfo;
 	return confirm(confirmPrompt);
 }

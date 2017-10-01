@@ -14,13 +14,20 @@
 	width: 120px;
 	z-index: 2006;
 }
-
+.modal {
+	max-height: 90%;
+}
 .login {
 	display: none;
 	width: 430px;
 	max-width: 95%;
 }
-
+.update-init {
+	display: none;
+}
+.form-btn {
+	display: none;
+}
 .selection {
 	padding-left: 10.5px;
 	padding-right: 10.5px;

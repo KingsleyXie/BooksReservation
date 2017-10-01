@@ -77,15 +77,15 @@
 			<a class="button-collapse" data-activates="mobile-menu">菜单</a>
 
 			<ul class="right hide-on-med-and-down">
-				<li><a href="#add">新增书籍</a></li>
-				<li><a href="#update">更新书籍信息</a></li>
+				<li><a href="#book">新增书籍</a></li>
+				<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
 				<li><a href="./reservations">查看所有订单</a></li>
 				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
 			
 			<ul class="side-nav" id="mobile-menu">
-				<li><a href="#add">新增书籍</a></li>
-				<li><a href="#update">更新书籍信息</a></li>
+				<li><a href="#book">新增书籍</a></li>
+				<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
 				<li><a href="./reservations">查看所有订单</a></li>
 				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
@@ -94,7 +94,7 @@
 
 	<form class="row login" id="login">
 		<div class="card-panel">	
-			<div class="row center-align">
+			<div class="row center">
 				<h5>管理员登录</h5>
 			</div>
 			
@@ -112,15 +112,16 @@
 				</div>
 			</div>
 
-			<div class="row center-align">
+			<div class="row center">
 				<button type="submit" class="btn">登录</button>
 			</div>
 		</div>
 	</form>
 
-	<form class="modal" id="add">
+	<form class="modal" id="book">
 		<div class="modal-content">
-			<h5>新增书籍</h5>
+			<h5 id="form-title">新增书籍</h5>
+
 			<div id="add-init">
 				<div class="row">
 					<div class="input-field col s12">
@@ -129,9 +130,22 @@
 					</div>					
 				</div>
 
-				<div class="center-align">
-					<a class="waves-effect waves-light btn" onclick="getData();">获取书籍信息</a>
-					<a class="waves-effect waves-light btn" onclick="inputData();">手动录入数据</a>
+				<div class="center">
+					<a class="waves-effect waves-light btn" onclick="inputDataViaISBN();">获取书籍信息</a>
+					<a class="waves-effect waves-light btn" onclick="inputDataManually();">手动录入数据</a>
+				</div>
+			</div>
+
+			<div class="update-init" id="update-init">
+				<div class="row">
+					<div class="input-field col s12">
+						<input type="text" id="bookID" name="bookID">
+						<label for="bookID">请输入书籍 ID </label>
+					</div>
+				</div>
+
+				<div class="center">
+					<a class="waves-effect waves-light btn" onclick="getBookByID();">更新书籍信息</a>
 				</div>
 			</div>
 
@@ -139,7 +153,7 @@
 				<div class="indeterminate"></div>
 			</div>
 
-			<div class="center-align book-info" id="book-info">
+			<div class="center book-info" id="book-info">
 				<div class="row">
 					<div class="input-field col s5">
 						<input type="text" id="title" name="title">
@@ -180,15 +194,14 @@
 						<label for="image">封面图片链接（参照下方示例，非必填项）</label>
 					</div>
 				</div>
-			</div>
+				
+				<div class="row">
+					<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id);">
+					<label for="categoryA">教材课本</label>
 
-			<div class="book-category center-align" id="book-category">
-				<p>请选择书籍分类：</p>
-				<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id);">
-				<label for="categoryA">教材课本</label>
-
-				<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id);">
-				<label for="categoryB">课外书籍</label>
+					<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id);">
+					<label for="categoryB">课外书籍</label>
+				</div>
 			</div>
 
 			<div class="book-categoryA" id="book-categoryA">
@@ -233,125 +246,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button type="submit" class="btn-flat">确认添加</button>
-		</div>
-	</form>
-
-	<form class="modal" id="update">
-		<div class="modal-content">
-			<h5>书籍信息更新</h5>
-			<div id="update-init">
-				<div class="row">
-					<div class="input-field col s12">
-						<input type="text" id="bookID" name="bookID">
-						<label for="bookID">请输入书籍 ID </label>
-					</div>					
-				</div>
-
-				<div class="center-align">
-					<a class="waves-effect waves-light btn" onclick="getBook();">更新书籍信息</a>
-				</div>
-			</div>
-
-			<div class="progress" id="upd-progress">
-				<div class="indeterminate"></div>
-			</div>
-
-			<div class="center-align upd-books" id="upd-books">
-				<div class="row">
-					<div class="input-field col s5">
-						<input type="text" id="upd-title" name="updTitle">
-						<label for="upd-title">书名</label>
-					</div>
-
-					<div class="input-field col s4">
-						<input type="text" id="upd-author" name="updAuthor">
-						<label for="upd-author">作者</label>
-					</div>
-
-					<div class="input-field col s3">
-						<input type="checkbox" id="upd-is-multiple-author" name="updIsMultipleAuthor">
-						<label for="upd-is-multiple-author">多位作者</label>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="input-field col s7">
-						<input type="text" id="upd-press" name="updPress">
-						<label for="upd-press">出版社</label>
-					</div>
-
-					<div class="input-field col s5">
-						<input type="text" id="upd-pubdate" name="updPubdate">
-						<label for="upd-pubdate">出版日期</label>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="input-field col s3">
-						<input type="number" id="upd-remaining-amount" name="updRemainingAmount">
-						<label for="upd-remaining-amount">数量</label>
-					</div>
-
-					<div class="input-field col s9">
-						<input type="text" id="upd-image" name="updImage">
-						<label for="upd-image">封面图片链接</label>
-					</div>
-				</div>
-
-				<div class="center-align" id="upd-book-category">
-					<p>请选择书籍分类：</p>
-					<input type="radio" class="with-gap" id="upd-categoryA" name="updBookCategory" value="CategoryA" onclick="updCategory(this.id);">
-					<label for="updCategoryA">教材课本</label>
-
-					<input type="radio" class="with-gap" id="upd-categoryB" name="updBookCategory" value="CategoryB" onclick="updCategory(this.id);">
-					<label for="updCategoryB">课外书籍</label>
-				</div>
-
-				<div id="upd-book-categoryA">
-					<div class="row">
-						<div class="input-field col s6 selection">
-							<select id="upd-grade" name="updGrade">
-								<option value="" disabled selected>请选择年级：</option>
-								<option value="不限">不限</option>
-								<option value="大一">大一</option>
-								<option value="大二">大二</option>
-								<option value="大三">大三</option>
-								<option value="大四">大四</option>
-							</select>
-						</div>
-
-						<div class="input-field col s6 selection">
-							<select id="upd-major" name="updMajor">
-								<option value="" disabled selected>请选择专业：</option>
-								<option value="不限">不限</option>
-								<option value="计科">计科</option>
-								<option value="信安">信安</option>
-								<option value="网工">网工</option>
-								<option value="计联计创">计联计创</option>
-							</select>
-						</div>
-					</div>
-				</div>
-
-				<div id="upd-book-categoryB">
-					<div class="row">
-						<div class="input-field col s12 selection">
-							<select id="upd-extracurricular-category" name="updExtracurricularCategory">
-								<option value="" disabled selected>请选择详细类别：</option>
-								<option value="文学类书籍">文学类书籍</option>
-								<option value="计算机专业类书籍">计算机专业类书籍</option>
-								<option value="学习辅导资料">学习辅导资料</option>
-								<option value="其它">其它</option>
-							</select>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		<div class="modal-footer">
-			<button type="submit" class="btn-flat">确认更新</button>
+			<button type="submit" class="btn-flat form-btn" id="form-btn">确认添加</button>
 		</div>
 	</form>
 
