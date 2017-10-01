@@ -1,5 +1,5 @@
 //The following three lines of code are wrote for reservation or modification
-modifying = false;
+modifying = false, count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
@@ -29,44 +29,49 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#reserve-form").submit(function(e) {
+	$("#reserve").submit(function(e) {
 		e.preventDefault();
 		if (reserveCheck()) {
 			$("#loading").css("display", "flex");
-			if (modifying) {
-				commitModification(this);
-				return;
-			}
+			
+			data = $(this).serialize() + 
+				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
+				(!modifying ? '&operation=new' :
+				'&operation=modify' + '&preList0=' + preList[0] +
+				'&preList1=' + preList[1] + '&preList2=' + preList[2] +
+				'&studentNo=' + $("#student-number").val());
+			
 			$.post(
 				'./assets/API/reserve.php',
-				$(this).serialize() + '&operation=new' +
-				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
+				data,
 				function(response) {
 					$("#loading").hide();
-					if (response.code == 0) {
-						Materialize.toast('订单提交成功！', 3000);
-						window.setTimeout(function () {
-							$("#reserve").modal('close');
-							$("#stu-number").val($("#student-number").val());
-							$("label[for=stu-number]").addClass("active");
-							searchReservation();
-						}, 1000);
-					} else {
-						if (response.code == 3) {
-							alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
+					switch(response.code) {
+						case 0:
+							Materialize.toast('订单' + (modifying ? '修改' : '提交') + '成功！', 3000);
+							window.setTimeout(function () {
+								$("#reserve").modal('close');
+								$("#stu-number").val($("#student-number").val());
+								$("label[for=stu-number]").addClass("active");
+								searchReservation();
+							}, 1000);
+							break;
+						case 3:
+						case 7:
+							modalAlert('列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨');
 							$("#list-data").empty();
 							$("#display").empty();
-							list = ['0', '0', '0'];
+							count = 0; list = ['0', '0', '0'];
 							$("#reserve").modal('close');
-							$("#welcome").modal('open');
-						} else {
+							$("#all").modal('open');
+							break;
+						default:
 							Materialize.toast(response.errMsg, 3000);
-						}
 					}
 				}
 			);
 		}
-	});	
+	});
 
 	$("#search-reservation").submit(function(e) {
 		e.preventDefault();
@@ -120,6 +125,19 @@ function display(data,type) {
 			$("#loading").hide();
 		}
 	);
+}
+
+function selectCategory(val) {
+	switch(val) {
+		case 'categoryA':
+			$("#book-categoryB").hide(700);
+			$("#book-categoryA").show(700);
+			break;
+		case 'categoryB':
+			$("#book-categoryA").hide(700);
+			$("#book-categoryB").show(700);
+			break;
+	}
 }
 
 function searchReservation() {
@@ -207,42 +225,6 @@ function searchReservation() {
 	);
 }
 
-function selectCategory(val) {
-	switch(val) {
-		case 'categoryA':
-			$("#book-categoryB").hide(300);
-			$("#book-categoryA").show(300);
-			break;
-		case 'categoryB':
-			$("#book-categoryA").hide(300);
-			$("#book-categoryB").show(300);
-			break;
-	}
-}
-
-function reserveCheck() {
-	if ($("#student-name").val() == ''
-		|| $("#student-number").val() == ''
-		|| $("#dormitory").val() == ''
-		|| $("#contact").val() == ''
-		|| $("#date").val() == ''
-		|| $("#time-period").val() == '') {
-			alert('请将预约信息填写完整！');
-			return false;
-	}
-	return true;
-}
-
-function back() {
-	$("#reservation").modal('close');
-}
-
-function showFullText(val) {
-	$("#alert-title").text('书籍标题全文');
-	$("#alert-content").text(val.textContent);
-	$("#alert").modal('open');
-}
-
 function modifyReservation() {
 	$("#loading").css("display", "flex");
 	$("#submit").text('确定修改');
@@ -274,10 +256,9 @@ function modifyReservation() {
 				$.each(response[0].books, function(i, book) {
 					list[list.indexOf('0')] = book.bookID;
 					preList[preList.indexOf('0')] = book.bookID;
-					count ++;
+					count++;
 
 					MultipleAuthor = book.isMultipleAuthor ? ' 等' : '';
-					
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
@@ -306,76 +287,42 @@ function modifyReservation() {
 	);
 }
 
-function commitModification(val) {
-	$.post(
-		'./assets/API/reserve.php',
-		$(val).serialize() + '&operation=modify&count=' + count +
-		'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
-		'&preList0=' + preList[0] + '&preList1=' + preList[1] + '&preList2=' + preList[2] +
-		'&studentNo=' + $("#student-number").val(),
-		function(response) {
-			$("#loading").hide();
-			if (response.code == 0) {
-				Materialize.toast('订单修改成功！', 3000);
-				window.setTimeout(function () {
-					$("#reserve").modal('close');
-					searchReservation();
-				}, 1000);
-			} else {
-				if (response.code == 7) {
-					alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
-					$("#list-data").empty();
-					$("#display").empty();
-					count = 0; list = ['0', '0', '0'];
-					$("#reserve").modal('close');
-					$("#welcome").modal('open');
-				} else {
-					Materialize.toast(response.errMsg, 3000);
-				}
-			}
-		}
-	);
-}
-
 function addToList(val) {
 	if (count >= 3) {
-		$("#alert-content").text('列表书籍已达到选择上限');
-		$("#alert").modal('open');
+		modalAlert('列表书籍已达到选择上限');
 		return;
 	}
 
 	if (list.indexOf(val.dataset.id) != -1) {
-		$("#alert-content").text('每种书籍仅限选择一本哦');
-		$("#alert").modal('open');
+		modalAlert('每种书籍仅限选择一本哦');
 		return;
 	}
 
 	list[list.indexOf('0')] = val.dataset.id;
-	count ++;
+	count++;
 	val.innerText--;
-
-	var image = val.previousSibling.previousSibling.children[0].src;
-	var title = val.previousSibling.children[0].children[0].innerText;
-	var author = val.previousSibling.children[0].children[1].children[0].innerText;
-	var press = val.previousSibling.children[0].children[1].children[1].innerText;
-	var pubdate = val.previousSibling.children[0].children[1].children[2].innerText;
 
 	if (val.innerText == 0) {
 		val.outerHTML = '<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>';
 	}
 
+	ele = val.previousSibling.children[0].children[1];
 	$("#list-data").append(
 	'<div class="card horizontal list-card">' +
 		'<div class="card-image">' +
-			'<img class="z-depth-3" src=' + image + '>' +
+			'<img class="z-depth-3" src=' +
+				val.previousSibling.previousSibling.children[0].src +
+			'>' +
 		'</div>' +
 		'<div class="card-stacked">' +
 			'<div class="card-content">' +
-				'<div class="card-title" onclick="showFullText(this)">' + title + '</div>' +
+				'<div class="card-title" onclick="showFullText(this)">' +
+					val.previousSibling.children[0].children[0].innerText +
+				'</div>' +
 				'<div class="card-details">' +
-					'<p>' + author + '</p>' +
-					'<p>' + press + '</p>' +
-					'<p>' + pubdate + '</p>' +
+					'<p>' + ele.children[0].innerText + '</p>' +
+					'<p>' + ele.children[1].innerText + '</p>' +
+					'<p>' + ele.children[2].innerText + '</p>' +
 				'</div>' +
 			'</div>' +
 		'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
@@ -387,4 +334,39 @@ function deleteFromList(val) {
 	count --;
 	list[list.indexOf(val.dataset.id)] = '0';
 	val.parentNode.outerHTML = '';
+}
+
+function modalAlert(content, title = '系统提示') {
+	$("#alert-title").text(title);
+	$("#alert-content").html(content);
+	$("#alert").modal('open');
+}
+
+function showFullText(val) {
+	modalAlert(val.textContent, '书籍标题全文');
+}
+
+function confirmChoose() {
+	if (count == 0) {
+		modalAlert('请选择预约书籍');
+		return;
+	}
+	$("#reserve").modal('open');
+}
+
+function reserveCheck() {
+	if ($("#student-name").val() == ''
+		|| $("#student-number").val() == ''
+		|| $("#dormitory").val() == ''
+		|| $("#contact").val() == ''
+		|| $("#date").val() == ''
+		|| $("#time-period").val() == '') {
+			alert('请将预约信息填写完整！');
+			return false;
+	}
+	return true;
+}
+
+function back() {
+	$("#reservation").modal('close');
 }
