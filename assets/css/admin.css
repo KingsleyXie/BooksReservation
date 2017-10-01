@@ -87,29 +87,13 @@ th {
 .form-btn {
 	display: none;
 }
-.start {
-	background-color: #ee6e73;
-	color: white;
-	width: 100%;
-}
 .login {
 	display: none;
 	width: 430px;
 	max-width: 95%;
 }
-.selection {
-	padding-left: 10.5px;
-	padding-right: 10.5px;
-}
 .admin-info {
 	margin-top: 5px;
 	padding-top: 5px;
 	border-top: 1px solid #c5c5c5;
-}
-.reservation {
-	display: flex;
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	justify-content: space-between;
 }

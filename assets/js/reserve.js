@@ -1,5 +1,5 @@
 //The following three lines of code are wrote for reservation or modification
-modifying = false, count = 0
+modifying = false;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
@@ -8,26 +8,22 @@ $(document).ready(function() {
 	$(".button-collapse").sideNav();
 	$("select").material_select();
 
-	$("#welcome").modal('open');
-	$("#loading").hide();
-
+	$("#all").modal('open');
 	$("#all").submit(function(e) {
 		e.preventDefault();
 		display(this, 0);
 	});
 
-	$("#search-form").submit(function(e) {
+	$("#search").submit(function(e) {
 		e.preventDefault();
 		display(this, 1);
 	});
 
-	$("#category-form").submit(function(e) {
+	$("#category").submit(function(e) {
 		e.preventDefault();
-		$("#loading").css("display", "flex");
-		if (!($("#categoryA").prop("checked") ||
-			$("#categoryB").prop("checked"))) {
+		if (!($("#categoryA").prop("checked")
+			|| $("#categoryB").prop("checked"))) {
 				alert('请选择书籍分类！');
-				$("#loading").hide();
 		} else {
 			display(this, 2);
 		}
@@ -36,13 +32,14 @@ $(document).ready(function() {
 	$("#reserve-form").submit(function(e) {
 		e.preventDefault();
 		if (reserveCheck()) {
-			if (modifying) {
-				commitModification(this); return;
-			}
 			$("#loading").css("display", "flex");
+			if (modifying) {
+				commitModification(this);
+				return;
+			}
 			$.post(
 				'./assets/API/reserve.php',
-				$(this).serialize() + '&operation=new&count=' + count +
+				$(this).serialize() + '&operation=new' +
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2],
 				function(response) {
 					$("#loading").hide();
@@ -59,7 +56,6 @@ $(document).ready(function() {
 							alert('列表中有书籍已被他人预约，请重新选择\n\n预约信息不需要重新填写O(∩_∩)O');
 							$("#list-data").empty();
 							$("#display").empty();
-							count = 0;
 							list = ['0', '0', '0'];
 							$("#reserve").modal('close');
 							$("#welcome").modal('open');
@@ -78,7 +74,7 @@ $(document).ready(function() {
 	});
 });
 
-function display(data, type) {
+function display(data,type) {
 	$("#loading").css("display", "flex");
 	operation = ['all', 'search', 'category'][type];
     $.post(
@@ -104,7 +100,7 @@ function display(data, type) {
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="fullText(this)">' + book.title + '</div>' +
+								'<div class="card-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
 									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
 									'<p>出版社：' + book.press + '</p>' +
@@ -116,7 +112,7 @@ function display(data, type) {
 				});
 				$("#placeholder").show();
 				$("#book-confirm").show();
-				$("#" + ['welcome', 'search', 'category'][type]).modal('close');
+				$("#" + operation).modal('close');
 				$(".button-collapse").sideNav('hide');
 			} else {
 				Materialize.toast(response.errMsg, 3000);
@@ -212,46 +208,39 @@ function searchReservation() {
 }
 
 function selectCategory(val) {
-	if (val == 'categoryA') {
-		$("#book-categoryA").show();
-		$("#book-categoryB").hide();
-	}
-	if (val == 'categoryB') {
-		$("#book-categoryA").hide();
-		$("#book-categoryB").show();
+	switch(val) {
+		case 'categoryA':
+			$("#book-categoryB").hide(300);
+			$("#book-categoryA").show(300);
+			break;
+		case 'categoryB':
+			$("#book-categoryA").hide(300);
+			$("#book-categoryB").show(300);
+			break;
 	}
 }
 
 function reserveCheck() {
-	if ($("#student-name").val() == '' ||
-		$("#student-number").val() == '' ||
-		$("#dormitory").val() == '' ||
-		$("#contact").val() == '' ||
-		$("#date").val() == '' ||
-		$("#time-period").val() == '') {
+	if ($("#student-name").val() == ''
+		|| $("#student-number").val() == ''
+		|| $("#dormitory").val() == ''
+		|| $("#contact").val() == ''
+		|| $("#date").val() == ''
+		|| $("#time-period").val() == '') {
 			alert('请将预约信息填写完整！');
 			return false;
 	}
-	$("#loading").css("display", "flex");
 	return true;
-}
-
-function confirmChoose() {
-	if (count == 0) {
-		$("#alert-content").text('请选择预约书籍');
-		$("#alert").modal('open');
-		return;
-	}
-	$("#reserve").modal('open');
 }
 
 function back() {
 	$("#reservation").modal('close');
 }
 
-function fullText(val) {
-	$("#full-text-content").text(val.textContent);
-	$("#full-text").modal('open');
+function showFullText(val) {
+	$("#alert-title").text('书籍标题全文');
+	$("#alert-content").text(val.textContent);
+	$("#alert").modal('open');
 }
 
 function modifyReservation() {
@@ -296,7 +285,7 @@ function modifyReservation() {
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
-								'<div class="card-title" onclick="fullText(this)">' + book.title + '</div>' +
+								'<div class="card-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
 									'<p>' + book.author + MultipleAuthor + '</p>' +
 									'<p>' + book.press + '</p>' +
@@ -318,7 +307,6 @@ function modifyReservation() {
 }
 
 function commitModification(val) {
-	$("#loading").css("display", "flex");
 	$.post(
 		'./assets/API/reserve.php',
 		$(val).serialize() + '&operation=modify&count=' + count +
@@ -383,7 +371,7 @@ function addToList(val) {
 		'</div>' +
 		'<div class="card-stacked">' +
 			'<div class="card-content">' +
-				'<div class="card-title" onclick="fullText(this)">' + title + '</div>' +
+				'<div class="card-title" onclick="showFullText(this)">' + title + '</div>' +
 				'<div class="card-details">' +
 					'<p>' + author + '</p>' +
 					'<p>' + press + '</p>' +

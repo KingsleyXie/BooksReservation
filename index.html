@@ -89,113 +89,107 @@
 		</div>
 	</nav>
 
-	<form id="all">
-		<div class="modal welcome" id="welcome">
-			<div class="modal-content welcome-content">
-				<div class="dialog-title">欢迎光临</div>
-				<p>每位同学共限选三本书籍，需要确认后选择领取时段并提交，提交预约信息之后可以对订单进行查询和修改</p>
+	<form class="modal welcome" id="all">
+		<div class="modal-content welcome-content">
+			<div class="dialog-title">欢迎光临</div>
+			<p>每位同学最多可以选择三本书，需要在确认后选择领取日期和时段并提交，预约信息提交之后可以对订单进行查询和修改</p>
 
-				<div class="load-img">
-					<input type="checkbox" name="loadImg" id="load-img0">
-					<label for="load-img0">加载书籍封面图片</label>
-				</div>
-
-				<div class="copyright">Copyright © 2017 <a href="https://github.com/KingsleyXie/BooksReservation">Kingsley</a></div>
+			<div class="load-img">
+				<input type="checkbox" name="loadImg" id="load-img0">
+				<label for="load-img0">加载书籍封面图片</label>
 			</div>
 
-			<div class="modal-footer">
-				<button class="modal-action waves-effect waves-light btn-flat start" type="submit">我知道了</button>
-			</div>
+			<div class="copyright">Copyright © 2017 <a href="https://github.com/KingsleyXie/BooksReservation">Kingsley</a></div>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="modal-action waves-effect waves-light btn-flat start">我知道了</button>
 		</div>
 	</form>
 
-	<form id="search-form">
-		<div class="modal" id="search">
-			<div class="modal-content">
-				<div class="dialog-title">搜索书籍</div>
-				<div class="input-field col s12">
-					<input type="text" name="keyWord" id="key-word">
-					<label for="key-word">输入书名或作者</label>
-				</div>
-
-				<div class="load-img">
-					<input type="checkbox" name="loadImg" id="load-img1" checked>
-					<label for="load-img1">加载书籍封面图片</label>
-				</div>
+	<form class="modal" id="search">
+		<div class="modal-content">
+			<div class="dialog-title">搜索书籍</div>
+			<div class="input-field col s12">
+				<input type="text" name="keyWord" id="key-word">
+				<label for="key-word">输入书名或作者</label>
 			</div>
 
-			<div class="modal-footer">
-				<button class="modal-action waves-effect waves-light btn-flat" type="submit">确定</button>
+			<div class="load-img">
+				<input type="checkbox" name="loadImg" id="load-img1" checked>
+				<label for="load-img1">加载书籍封面图片</label>
 			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button type="submit" class="modal-action waves-effect waves-light btn-flat">确定</button>
 		</div>
 	</form>
 
-	<form id="category-form">
-		<div class="modal" id="category">
-			<div class="modal-content">
-				<div class="dialog-title">分类查看</div>
-				<div class="center-align" id="book-category">
-					<p>请选择书籍分类：</p>
-					<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id)">
-					<label for="categoryA">教材课本</label>
+	<form class="modal" id="category">
+		<div class="modal-content">
+			<div class="dialog-title">分类查看</div>
+			<div class="center-align" id="book-category">
+				<p>请选择书籍分类：</p>
+				<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id)">
+				<label for="categoryA">教材课本</label>
 
-					<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id)">
-					<label for="categoryB">课外书籍</label>
-				</div>
+				<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id)">
+				<label for="categoryB">课外书籍</label>
+			</div>
 
-				<div class="book-categoryA" id="book-categoryA">
-					<div class="row">
-						<div class="input-field col s6 selection">
-							<select name="grade" id="grade">
-								<option value="all">年级：不限</option>
-								<option value="大一">大一</option>
-								<option value="大二">大二</option>
-								<option value="大三">大三</option>
-								<option value="大四">大四</option>
-							</select>
-						</div>
-
-						<div class="input-field col s6 selection">
-							<select id="major" name="major">
-								<option value="all">专业：不限</option>
-								<option value="计科">计科</option>
-								<option value="信安">信安</option>
-								<option value="网工">网工</option>
-								<option value="计联计创">计联计创</option>
-							</select>
-						</div>
+			<div class="book-categoryA" id="book-categoryA">
+				<div class="row">
+					<div class="input-field col s6 selection">
+						<select name="grade" id="grade">
+							<option value="all">年级：不限</option>
+							<option value="大一">大一</option>
+							<option value="大二">大二</option>
+							<option value="大三">大三</option>
+							<option value="大四">大四</option>
+						</select>
 					</div>
-				</div>
 
-				<div class="book-categoryB" id="book-categoryB">
-					<div class="row">
-						<div class="input-field col s12 selection">
-							<select id="extracurricular-category" name="extracurricularCategory">
-								<option value="all">详细类别：不限</option>
-								<option value="文学类书籍">文学类书籍</option>
-								<option value="计算机专业类书籍">计算机专业类书籍</option>
-								<option value="学习辅导资料">学习辅导资料</option>
-								<option value="其它">其它</option>
-							</select>
-						</div>
+					<div class="input-field col s6 selection">
+						<select id="major" name="major">
+							<option value="all">专业：不限</option>
+							<option value="计科">计科</option>
+							<option value="信安">信安</option>
+							<option value="网工">网工</option>
+							<option value="计联计创">计联计创</option>
+						</select>
 					</div>
-				</div>
-
-				<div class="load-img">
-					<input type="checkbox" id="load-img2" name="loadImg" checked>
-					<label for="load-img2">加载书籍封面图片</label>
 				</div>
 			</div>
 
-			<div class="modal-footer">
-				<button class="modal-action waves-effect waves-light btn-flat" type="submit">确定</button>
+			<div class="book-categoryB" id="book-categoryB">
+				<div class="row">
+					<div class="input-field col s12 selection">
+						<select id="extracurricular-category" name="extracurricularCategory">
+							<option value="all">详细类别：不限</option>
+							<option value="文学类书籍">文学类书籍</option>
+							<option value="计算机专业类书籍">计算机专业类书籍</option>
+							<option value="学习辅导资料">学习辅导资料</option>
+							<option value="其它">其它</option>
+						</select>
+					</div>
+				</div>
 			</div>
+
+			<div class="load-img">
+				<input type="checkbox" id="load-img2" name="loadImg" checked>
+				<label for="load-img2">加载书籍封面图片</label>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+			<button class="modal-action waves-effect waves-light btn-flat" type="submit">确定</button>
 		</div>
 	</form>
 
 	<form class="modal" id="search-reservation">
 		<div class="modal-content">
-			<h5>订单查询</h5>
+			<div class="dialog-title">订单查询</div>
 			<div class="row">
 				<div class="input-field col s12">
 					<input type="text" id="stu-number" name="stuNo">
@@ -230,62 +224,60 @@
 		</div>
 	</div>
 
-	<form id="reserve-form">
-		<div class="modal bottom-sheet col s12" id="reserve">
-			<div class="modal-content">
-				<h4>预约信息</h4>
-				<div class="row">
-					<div class="input-field col s4">
-						<input type="text" id="student-name" name="studentName" required>
-						<label for="student-name">姓名</label>
-					</div>
-
-					<div class="input-field col s5">
-						<input type="text" id="student-number" name="studentNo" required>
-						<label for="student-number">学号</label>
-					</div>
-
-					<div class="input-field col s3 selection">
-						<select id="dormitory" name="dormitory">
-							<option value="" disabled selected>宿舍楼</option>
-							<option value="C12">C12</option>
-							<option value="C10">C10</option>
-							<option value="C5">C5</option>
-							<option value="C3">C3</option>
-						</select>
-					</div>
+	<form class="modal bottom-sheet col s12" id="reserve">
+		<div class="modal-content">
+			<h4>预约信息</h4>
+			<div class="row">
+				<div class="input-field col s4">
+					<input type="text" id="student-name" name="studentName" required>
+					<label for="student-name">姓名</label>
 				</div>
 
-				<div class="row">
-					<div class="input-field col s12">
-						<input type="text" id="contact" name="contact" required>
-						<label for="contact">联系方式（手机号码优先）</label>
-					</div>
-				</div>	
+				<div class="input-field col s5">
+					<input type="text" id="student-number" name="studentNo" required>
+					<label for="student-number">学号</label>
+				</div>
 
-				<div class="row">
-					<div class="input-field col s5 selection">
-						<select id="date" name="date">
-							<option value="" disabled selected>领取日期</option>
-							<option value="6月10日">6月10日</option>
-							<option value="6月11日">6月11日</option>
-						</select>
-					</div>
-
-					<div class="input-field col s7 selection">
-						<select id="time-period" name="timePeriod">
-							<option value="" disabled selected>领取时间段</option>
-							<option value="10：00 - 12：00">10：00 - 12：00</option>
-							<option value="16：00 - 18：00">16：00 - 18：00</option>
-							<option value="21：30 - 22：30">21：30 - 22：30</option>
-						</select>
-					</div>
+				<div class="input-field col s3 selection">
+					<select id="dormitory" name="dormitory">
+						<option value="" disabled selected>宿舍楼</option>
+						<option value="C12">C12</option>
+						<option value="C10">C10</option>
+						<option value="C5">C5</option>
+						<option value="C3">C3</option>
+					</select>
 				</div>
 			</div>
 
-			<div class="modal-footer reserve">
-				<button class="btn waves-effect waves-light red lighten-1" id="submit" type="submit">确定预约</button>
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" id="contact" name="contact" required>
+					<label for="contact">联系方式（手机号码优先）</label>
+				</div>
+			</div>	
+
+			<div class="row">
+				<div class="input-field col s5 selection">
+					<select id="date" name="date">
+						<option value="" disabled selected>领取日期</option>
+						<option value="6月10日">6月10日</option>
+						<option value="6月11日">6月11日</option>
+					</select>
+				</div>
+
+				<div class="input-field col s7 selection">
+					<select id="time-period" name="timePeriod">
+						<option value="" disabled selected>领取时间段</option>
+						<option value="10：00 - 12：00">10：00 - 12：00</option>
+						<option value="16：00 - 18：00">16：00 - 18：00</option>
+						<option value="21：30 - 22：30">21：30 - 22：30</option>
+					</select>
+				</div>
 			</div>
+		</div>
+
+		<div class="modal-footer reserve">
+			<button type="submit" class="btn waves-effect waves-light red lighten-1" id="submit">确定预约</button>
 		</div>
 	</form>
 
@@ -293,18 +285,8 @@
 
 	<div class="modal" id="alert">
 		<div class="modal-content">
-			<div class="alert-content" id="alert-content"></div>
-		</div>
-
-		<div class="modal-footer">
-			<a class="modal-action modal-close waves-effect waves-red btn-flat">确定</a>
-		</div>
-	</div>
-
-	<div class="modal" id="full-text">
-		<div class="modal-content full-text">
-			<h5>书籍标题全文：</h5>
-			<p id="full-text-content"></p>
+			<h5 id="alert-title">系统提示</h5>
+			<p id="alert-content"></p>
 		</div>
 
 		<div class="modal-footer">
