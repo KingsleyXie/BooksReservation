@@ -1,10 +1,8 @@
 <?php
 session_start();
-header('Content-Type: application/json');
 require_once('./config.php');
 
 existCheck('operation');
-
 switch ($_POST['operation']) {
 	//Search With Posted Student Number
 	case 'search':

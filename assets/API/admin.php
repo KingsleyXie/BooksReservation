@@ -1,10 +1,8 @@
 <?php
 session_start();
-header('Content-Type: application/json');
 require_once('./config.php');
 
 existCheck('operation');
-
 switch ($_POST['operation']) {
 	/* ==========================================================================
 	   Module 0. Login

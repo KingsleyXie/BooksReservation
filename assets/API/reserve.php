@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: application/json');
 require_once('./config.php');
 
 existCheck('operation', 'list0', 'list1', 'list2', 'studentName', 'studentNo', 'dormitory', 'contact', 'date', 'timePeriod');

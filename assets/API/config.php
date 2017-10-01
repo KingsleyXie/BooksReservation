@@ -13,6 +13,9 @@ $password = 'corresponding_password_here';	//Password for Project Database
 
 
 
+//Universal Header Set Code
+header('Content-Type: application/json');
+
 //Database Connection based on PDO:
 try {
 	$connect = new PDO("mysql:host=$addr;dbname=$dbname;charset=utf8", $user, $password);
@@ -37,7 +40,7 @@ function existCheck() {
 //Check if necessary paraments are blank
 function blankCheck() {
 	for($i = 0; $i < func_num_args(); $i++) {
-		if (($_POST[func_get_arg($i)] == '') OR ($_POST[func_get_arg($i)] === 0))
+		if (empty($_POST[func_get_arg($i)]))
 			response(233, '必填项中含有空值');
 	}
 }

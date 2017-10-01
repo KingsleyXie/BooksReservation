@@ -1,12 +1,7 @@
 <?php
-header('Content-Type: application/json');
 require_once('./config.php');
 
 existCheck('operation');
-
-$loadImg = isset($_POST['loadImg']) ? true : false;
-$defaultCover = "./assets/pictures/defaultCover.png";
-
 switch ($_POST['operation']) {
 	case 'all':
 		$sql = '
@@ -24,7 +19,9 @@ switch ($_POST['operation']) {
 
 		$sql = '
 		SELECT * FROM books
-		WHERE (title LIKE ?) OR (author LIKE ?)
+		WHERE
+			(title LIKE ?)
+			OR (author LIKE ?)
 		ORDER BY
 			remainingAmount > 0 DESC,
 			bookID DESC';
@@ -56,9 +53,7 @@ switch ($_POST['operation']) {
 				$_POST['major'],
 				$_POST['major']
 			]);
-		}
-
-		if ($_POST['bookCategory'] == 'CategoryB') {
+		} elseif ($_POST['bookCategory'] == 'CategoryB') {
 			$sql = '
 			SELECT * FROM books
 			WHERE
@@ -72,16 +67,18 @@ switch ($_POST['operation']) {
 				$_POST['extracurricularCategory'],
 				$_POST['extracurricularCategory']
 			]);
+		} else {
+			response(1, '错误请求');
 		}
 		$emptyMsg = '未找到相关书籍，换个分类试试吧';
 		break;
 
 	default:
-		response(1, '请求有误');
+		response(2, '错误请求');
 }
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$response = empty($result) ? response(2, $emptyMsg) : ['code' => 0];
+$response = empty($result) ? response(3, $emptyMsg) : ['code' => 0];
 
 foreach($result as $book) {
 	array_push($response, [
@@ -91,7 +88,8 @@ foreach($result as $book) {
 		'isMultipleAuthor' => htmlspecialchars($book['isMultipleAuthor']),
 		'press' => htmlspecialchars($book['press']),
 		'pubdate' => htmlspecialchars($book['pubdate']),
-		'image' => ($loadImg ? htmlspecialchars($book['image']) : $defaultCover),
+		'image' => (isset($_POST['loadImg']) ?
+			htmlspecialchars($book['image']) : './assets/pictures/defaultCover.png'),
 		'remainingAmount' => htmlspecialchars($book['remainingAmount'])
 	]);
 }
