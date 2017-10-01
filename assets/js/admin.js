@@ -20,7 +20,7 @@ $(document).ready(function() {
 					if (i % 4 == 0)
 						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');
 
-					MultipleAuthor = book.isMultipleAuthor == '1' ? ' 等' : '';
+					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 					Category = book.bookCategory == 'CategoryA' ?
 						'<p>分类：教材课本</p><p>年级：' + book.grade +
 						'&nbsp;&nbsp;&nbsp;专业：' + book.major + '</p>' :

@@ -88,7 +88,7 @@ function display(data,type) {
 				$("#display").empty();
 				$.each(response, function(i, book) {
 					if (i == 'code') return true;
-					MultipleAuthor = book.isMultipleAuthor ? ' 等' : '';
+					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 					btnAttr = book.remainingAmount == 0 ?
 						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
 						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
@@ -256,7 +256,7 @@ function modifyReservation() {
 					preList[preList.indexOf('0')] = book.bookID;
 					count++;
 
-					MultipleAuthor = book.isMultipleAuthor ? ' 等' : '';
+					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
