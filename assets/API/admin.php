@@ -26,7 +26,7 @@ switch ($_POST['operation']) {
 		response(0);
 
 	/* ==========================================================================
-	   Module 2. Add Or Update One Book's Data
+	   Module 2. Add Or Update A Book
 	   ========================================================================== */
 	case 'add':
 	case 'update':
@@ -153,7 +153,7 @@ switch ($_POST['operation']) {
 				break;
 
 			default:
-				response(3, '请求有误');
+				response(3, '错误请求');
 				break;
 		}
 
