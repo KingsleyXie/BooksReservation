@@ -55,7 +55,7 @@ $(document).ready(function() {
 								searchReservation();
 							}, 1000);
 							break;
-						case 1:
+						case 5:
 							$("#list-data").empty();
 							$("#display").empty();
 							count = 0; list = ['0', '0', '0'];
