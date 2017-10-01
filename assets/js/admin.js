@@ -7,6 +7,7 @@ $(document).ready(function() {
 	$("#loading").css("display", "flex");
 	$("#ISBN").bind('keypress',function(e) { if(e.keyCode == 13) inputDataViaISBN(); });
 	$("#bookID").bind('keypress',function(e) { if(e.keyCode == 13) getBookByID(); });
+	$("#book").modal({complete: function() {window.location.href = './';}});
 
 	$.post(
 		'../assets/API/admin.php',
@@ -113,7 +114,6 @@ function update() {
 	$("#add-init").hide();
 	$("#form-btn").text('确认更新');
 	$("#form-title").text('更新书籍信息');
-	$("#book").modal({complete: function() {window.location.href = './';}});
 	$("#book").modal('open');
 }
 

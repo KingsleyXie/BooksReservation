@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	$(".button-collapse").sideNav();
+	$("#loading").css("display", "flex");
 	
 	$.post(
 		'../assets/API/reservations.php',
@@ -77,22 +78,10 @@ $(document).ready(function() {
 					});
 				});
 			} else {
+				if (response.code == 2) window.location.href = './';
 				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#loading").hide();
 		}
 	);
 });
-
-function logout() {
-	$.post(
-		'../assets/API/admin.php',
-		'operation=logout',
-		function(response) {
-			if (response.code == 0) {
-				alert('退出系统成功');
-			}
-			window.location.href = '../';
-		}
-	);
-}

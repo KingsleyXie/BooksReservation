@@ -1,3 +1,6 @@
+/* ====================================================
+   0. Loading And Copyright Related Part
+   ==================================================== */
 .loading {
 	display: none;
 	position: fixed;
@@ -5,138 +8,14 @@
 	width: 100%;
 	align-items: center;
 	justify-content: center;
-	background:#000;
-	opacity:0.6;
+	background: #000;
+	opacity: 0.6;
 	z-index: 2000;
 }
 .loading-circle {
 	height: 120px;
 	width: 120px;
 	z-index: 2006;
-}
-.modal {
-	max-height: 90%;
-}
-.login {
-	display: none;
-	width: 430px;
-	max-width: 95%;
-}
-.update-init {
-	display: none;
-}
-.form-btn {
-	display: none;
-}
-.selection {
-	padding-left: 10.5px;
-	padding-right: 10.5px;
-}
-.progress,
-.book-info,
-.book-category,
-.book-categoryA,
-.book-categoryB,
-.upd-books {
-	display: none;
-}
-.admin-info {
-	margin-top: 5px;
-	padding-top: 5px;
-	border-top: 1px solid #c5c5c5;
-}
-.cover {
-	margin-right: 0 !important;
-}
-.cover .cover-image {
-	position: absolute;
-	visibility: hidden;
-	z-index: 5;
-	bottom: 2.7em;
-	right: 1em;
-}
-.cover .cover-image img {
-	max-width: 150px;
-}
-.cover:hover .cover-image {
-	visibility: visible;
-}
-
-.cover-reservation {
-	margin-right: 0 !important;
-}
-.cover-reservation .cover-image-reservation {
-	position: absolute;
-	visibility: hidden;
-	z-index: 5;
-	bottom: 1em;
-	left: 1.5em;
-}
-.cover-reservation .cover-image-reservation img {
-	max-width: 100px;
-}
-.cover-reservation:hover .cover-image-reservation {
-	visibility: visible;
-}
-
-.white-text {
-	padding-bottom: 7px !important;
-}
-.card-action {
-	padding-top: 7px !important;
-	padding-bottom: 10px !important;
-}
-.card.horizontal .card-image {
-    max-width: 100px;
-}
-.card.horizontal .card-stacked .card-content {
-	padding-top: 5px;
-	padding-left: 17px;
-	padding-right: 0;
-}
-.card.horizontal .card-stacked{
-	width: calc(100% - 100px);
-}
-.modal.bottom-sheet {
-	max-height: 100%;
-}
-.modal.bottom-sheet .modal-content{
-	padding-bottom: 7px;
-}
-.modal.modal-fixed-footer .modal-footer {
-	display: flex;
-	justify-content: center;
-}
-.card.horizontal .card-stacked .card-content .card-title{
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
-}
-.card.horizontal .card-stacked .card-content .card-details p{
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
-}
-.modal .welcome-content {
-	padding-bottom: 15px;
-}
-.start {
-	background-color: #ee6e73;
-	color: white;
-	width: 100%;
-}
-th {
-	font-weight: 500;
-}
-.reservation {
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	display: flex;
-	justify-content: space-between;
-}
-.card .card-content {
-	padding-bottom: 0;
 }
 .copyright {
 	padding-top: 10px;
@@ -146,4 +25,91 @@ th {
 }
 .copyright a {
 	color: inherit;
+}
+
+/* ====================================================
+   1. Card Related Part
+   ==================================================== */
+.card-action {
+	padding-top: 7px !important;
+	padding-bottom: 10px !important;
+}
+.card .card-content {
+	padding-bottom: 0;
+}
+
+/* ====================================================
+   2. Cover And Cover Image Related Part
+   ==================================================== */
+.cover,
+.cover-reservation {
+	margin-right: 0 !important;
+}
+.cover .cover-image {
+	position: absolute;
+	visibility: hidden;
+	z-index: 5;
+	bottom: 2.7em;
+	right: 1em;
+}
+.cover-reservation .cover-image-reservation {
+	position: absolute;
+	visibility: hidden;
+	z-index: 5;
+	bottom: 1em;
+	left: 1.5em;
+}
+.cover .cover-image img {
+	max-width: 150px;
+}
+.cover-reservation .cover-image-reservation img {
+	max-width: 100px;
+}
+.cover:hover .cover-image,
+.cover-reservation:hover .cover-image-reservation {
+	visibility: visible;
+}
+
+/* ====================================================
+   3. Self-Defined Style Or Overwrite Part
+   ==================================================== */
+th {
+	font-weight: 500;
+}
+.white-text {
+	padding-bottom: 7px !important;
+}
+.progress,
+.book-info,
+.book-categoryA,
+.book-categoryB,
+.update-init,
+.form-btn {
+	display: none;
+}
+.start {
+	background-color: #ee6e73;
+	color: white;
+	width: 100%;
+}
+.login {
+	display: none;
+	width: 430px;
+	max-width: 95%;
+}
+.selection {
+	padding-left: 10.5px;
+	padding-right: 10.5px;
+}
+.admin-info {
+	margin-top: 5px;
+	padding-top: 5px;
+	border-top: 1px solid #c5c5c5;
+}
+.reservation {
+	display: flex;
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	justify-content: space-between;
 }
