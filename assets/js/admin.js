@@ -3,15 +3,11 @@ $(document).ready(function() {
 	$(".modal").modal();
 	$("select").material_select();
 	
-	$("#ISBN").bind('keypress',function(e) {
-		if(e.keyCode == 13) getData();
-	});
-
-	$("#bookID").bind('keypress',function(e) {
-		if(e.keyCode == 13) getBook();
-	});
-
+	updating = false;
 	$("#loading").css("display", "flex");
+	$("#ISBN").bind('keypress',function(e) { if(e.keyCode == 13) inputDataViaISBN(); });
+	$("#bookID").bind('keypress',function(e) { if(e.keyCode == 13) getBookByID(); });
+
 	$.post(
 		'../assets/API/admin.php',
 		'operation=books',
@@ -70,42 +66,20 @@ $(document).ready(function() {
 		}
 	);
 
-	$("#add").submit(function(e) {
+	$("#book").submit(function(e) {
 		e.preventDefault();
 		if ($("#book-info").css("display") == "block"
-			&& Check()
-			&& ConfirmInfo()) {
+			&& check()
+			&& confirmInfo()) {
 			$.post(
 				'../assets/API/admin.php',
-				$(this).serialize() + '&operation=add',
+				$(this).serialize() + '&operation=' + (updating ? 'update' : 'add'),
 				function(response) {
 					if (response.code == 0) {
-						Materialize.toast('书籍添加成功！', 3000);
+						Materialize.toast('书籍' + (updating ? '信息更新' : '添加')  + '成功！', 1700);
 						window.setTimeout(function() {
 							window.location.href = './';
-						}, 3600);
-					} else {
-						Materialize.toast(response.errMsg, 3000);
-					}
-				}
-			);
-		}
-	});
-
-	$("#update").submit(function(e) {
-		e.preventDefault();
-		if ($("#books").css("display") == 'block'
-			&& updCheck()
-			&& updConfirmInfo()) {
-			$.post(
-				'../assets/API/admin.php',
-				$(this).serialize() + '&operation=update',
-				function(response) {
-					if (response.code == 0) {
-						Materialize.toast('书籍信息更新成功！', 3000);
-						window.setTimeout(function() {
-							window.location.href = './';
-						}, 3600);
+						}, 2000);
 					} else {
 						Materialize.toast(response.errMsg, 3000);
 					}
@@ -131,39 +105,25 @@ $(document).ready(function() {
 			}
 		);
 	});
-///////////////////////////////////
-	$("#book").modal('open');
-	inputDataManually();
 });
 
-function logout() {
-	$.post(
-		'../assets/API/admin.php',
-		'operation=logout',
-		function(response) {
-			Materialize.toast('退出系统成功', 1700);
-			setTimeout(function () {
-				window.location.href = './';
-			}, 2000);
-		}
-	);
-}
-
-function selectCategory(val) {
-	if (val == "categoryA") {
-		$("#book-categoryA").show();
-		$("#book-categoryB").hide();
-	}
-	if (val == "categoryB") {
-		$("#book-categoryA").hide();
-		$("#book-categoryB").show();
-	}
+function update() {
+	updating = true;
+	$("#update-init").show();
+	$("#add-init").hide();
+	$("#form-btn").text('确认更新');
+	$("#form-title").text('更新书籍信息');
+	$("#book").modal({complete: function() {window.location.href = './';}});
+	$("#book").modal('open');
 }
 
 function inputDataManually() {
-	$("#add-init").hide();
-	$("#book-info").show();
-	$("#book-category").show();
+	$("#add-init").hide(700);
+	$("#update-init").hide(700);
+	$("#book-info").show(700);
+	window.setTimeout(function () {
+		$("#remaining-amount").focus();
+	}, 0);
 }
 
 function inputDataViaISBN() {
@@ -172,11 +132,9 @@ function inputDataViaISBN() {
 		'../assets/API/ISBN_API.php',
 		'ISBN=' + $("#ISBN").val(),
 		function(response) {
-			$("#progress").hide();
 			if (response.code == 1) {
-				alert('未找到书籍信息，请手动录入相关数据');
+				Materialize.toast('未找到对应书籍信息，请手动录入相关数据', 3000);
 				$("#ISBN").val('');
-				inputData();
 			}
 			if (response.code == 0) {
 				$("#title").val(response.title);
@@ -188,92 +146,97 @@ function inputDataViaISBN() {
 				$("#pubdate").val(response.pubdate);
 				$("label[for=pubdate]").addClass("active");
 				$("#image").val(response.image);
-				$("label[for=image]").addClass("active");
 				$("#is-multiple-author").prop("checked", parseInt(response.isMultipleAuthor));
-
-				window.setTimeout(function () {
-					$("#remaining-amount").focus();
-				}, 0);
-
-				$("#add-init").hide();
-				$("#book-info").show();
-				$("#book-category").show();
 			}
+			$("#progress").hide();
+			inputDataManually();
 		}
 	);
 }
 
-function getBook() {
+function selectCategory(val) {
+	switch(val) {
+		case 'categoryA':
+			$("#book-categoryB").hide(300);
+			$("#book-categoryA").show(300);
+			break;
+		case 'categoryB':
+			$("#book-categoryA").hide(300);
+			$("#book-categoryB").show(300);
+			break;
+	}
+	$("#form-btn").show();
+}
+
+function getBookByID() {
 	$("#progress").show();
 	$.post(
 		'../assets/API/admin.php',
 		'operation=books&bookID=' + $("#bookID").val(),
 		function(response) {
 			if (response.code == 0) {
-				$("#progress").hide();
-				$("#title").val(response[0].title);
+				book = response[0];
+				$("#title").val(book.title);
 				$("label[for=title]").addClass("active");
-				$("#author").val(response[0].author);
+				$("#author").val(book.author);
 				$("label[for=author]").addClass("active");
-				$("#press").val(response[0].press);
+				$("#press").val(book.press);
 				$("label[for=press]").addClass("active");
-				$("#pubdate").val(response[0].pubdate);
+				$("#pubdate").val(book.pubdate);
 				$("label[for=pubdate]").addClass("active");
-				$("#image").val(response[0].image);
-				$("label[for=image]").addClass("active");
-				$("#" + (response[0].bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
+				$("#image").val(book.image);
+				$("#remaining-amount").val(book.remainingAmount);
+				$("#" + (book.bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
-				if (response[0].bookCategory == "CategoryA") {
-					updCategory('categoryA');
-					$("#grade").val(response[0].grade).material_select();
-					$("#major").val(response[0].major).material_select();
-				}
-				if (response[0].bookCategory == "CategoryB") {
-					updCategory('categoryB');
-					$("#extracurricular-category").val(response[0].extracurricularCategory).material_select();
+				switch(book.bookCategory) {
+					case 'CategoryA':
+						selectCategory('categoryA');
+						$("#grade").val(book.grade).material_select();
+						$("#major").val(book.major).material_select();
+						break;
+					case 'CategoryB':
+						selectCategory('categoryB');
+						$("#extracurricular-category").val(book.extracurricularCategory).material_select();
+						break;
 				}
 
-				$("#is-multiple-author").prop("checked", parseInt(response[0].isMultipleAuthor));
-				window.setTimeout(function () {
-					$("#remaining-amount").val(response[0].remainingAmount);
-					$("#remaining-amount").focus();
-				}, 0);
-				$("#update-init").hide();
-				$("#books").show();
+				$("#is-multiple-author").prop("checked", parseInt(book.isMultipleAuthor));
+				
+				inputDataManually();
 			} else {
 				Materialize.toast(response.errMsg, 3000);
-				$("#progress").hide();
 			}
+			$("#progress").hide();
 		}
 	);
 }
 
-function Check() {
-	if ($("#title").val() == '' ||
-		$("#author").val() == '' ||
-		$("#press").val() == '' ||
-		$("#pubdate").val() == '' ||
-		$("#remaining-amount").val() == '' ||
-		!($("#categoryA").prop("checked") ||  
-		$("#categoryB").prop("checked"))) {
+function check() {
+	if ($("#title").val() == ''
+		|| $("#author").val() == ''
+		|| $("#press").val() == ''
+		|| $("#pubdate").val() == ''
+		|| $("#remaining-amount").val() == ''
+		|| !($("#categoryA").prop("checked")
+		|| $("#categoryB").prop("checked"))) {
 			alert('请将书籍信息填写完整！');
 			return false;
 	}
-	if ($("#categoryA").prop("checked") && 
-		($("#grade").val() == '' ||
-		$("#major").val() == '')) {
+	if ($("#categoryA").prop("checked")
+		&& ($("#grade").val() == ''
+		|| $("#major").val() == '')) {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
-	if ($("#categoryB").prop("checked") && 
-		$("#extracurricular-category").val() == '') {
+	if ($("#categoryB").prop("checked")
+		&& $("#extracurricular-category").val() == '') {
 			alert('请将分类信息填写完整！');
 			return false;
 	}
 	return true;
 }
 
-function ConfirmInfo() {
+function confirmInfo() {
 	var isMA = $("#is-multiple-author").prop("checked") ? '是' : '否';
 	if ($("#categoryA").prop("checked")) {
 		var cataInfo = '\n书籍分类：教材课本' +
@@ -292,4 +255,17 @@ function ConfirmInfo() {
 		'\n剩余数量：' + $("#remaining-amount").val() +
 		'\n图片链接：' + $("#image").val() + cataInfo;
 	return confirm(confirmPrompt);
+}
+
+function logout() {
+	$.post(
+		'../assets/API/admin.php',
+		'operation=logout',
+		function(response) {
+			Materialize.toast('退出系统成功', 1700);
+			setTimeout(function () {
+				window.location.href = './';
+			}, 2000);
+		}
+	);
 }
