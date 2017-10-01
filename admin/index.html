@@ -78,19 +78,45 @@
 
 			<ul class="right hide-on-med-and-down">
 				<li><a href="#add">新增书籍</a></li>
-				<li><a href="#update">书籍信息更新</a></li>
-				<li><a href="./reservation">用户信息及预订情况</a></li>
+				<li><a href="#update">更新书籍信息</a></li>
+				<li><a href="./reservations">查看所有订单</a></li>
 				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
 			
 			<ul class="side-nav" id="mobile-menu">
 				<li><a href="#add">新增书籍</a></li>
-				<li><a href="#update">书籍信息更新</a></li>
-				<li><a href="./reservation">用户信息及预订情况</a></li>
+				<li><a href="#update">更新书籍信息</a></li>
+				<li><a href="./reservations">查看所有订单</a></li>
 				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
 			</ul>
 		</div>
 	</nav>
+
+	<form class="row login" id="login">
+		<div class="card-panel">	
+			<div class="row center-align">
+				<h5>管理员登录</h5>
+			</div>
+			
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" name="username" required>
+					<label for="username">用户名</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="password" name="password" required>
+					<label for="password">密码</label>
+				</div>
+			</div>
+
+			<div class="row center-align">
+				<button type="submit" class="btn">登录</button>
+			</div>
+		</div>
+	</form>
 
 	<form class="modal" id="add">
 		<div class="modal-content">

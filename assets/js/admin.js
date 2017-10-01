@@ -11,15 +11,11 @@ $(document).ready(function() {
 		if(e.keyCode == 13) getBook();
 	});
 
+	$("#loading").css("display", "flex");
 	$.post(
 		'../assets/API/admin.php',
 		'operation=books',
 		function(response) {
-			if (response.code == 6) {
-				alert('请登录系统！');
-				window.location.href = './login.html';
-			}
-
 			if (response.code == 0) {
 				$.each(response, function(i, book) {
 					if (i == 'code') return true;
@@ -69,6 +65,8 @@ $(document).ready(function() {
 				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#loading").hide();
+
+			if (response.code == 5) $("#login").show(1700);
 		}
 	);
 
@@ -115,6 +113,24 @@ $(document).ready(function() {
 			);
 		}
 	});
+
+	$("#login").submit(function(e) {
+		e.preventDefault();
+		$.post(
+			'../assets/API/admin.php',
+			$(this).serialize() + '&operation=login',
+			function(response) {
+				if (response.code == 0) {
+					Materialize.toast('登录成功！', 1700);
+					setTimeout(function () {
+						window.location.href = './';
+					}, 2000);
+				} else {
+					Materialize.toast(response.errMsg, 3000);
+				}
+			}
+		);
+	});
 });
 
 function logout() {
@@ -122,9 +138,10 @@ function logout() {
 		'../assets/API/admin.php',
 		'operation=logout',
 		function(response) {
-			if (response.code == 0)
-				alert('退出系统成功');
-			window.location.href = '../';
+			Materialize.toast('退出系统成功', 1700);
+			setTimeout(function () {
+				window.location.href = './';
+			}, 2000);
 		}
 	);
 }

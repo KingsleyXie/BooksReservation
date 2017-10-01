@@ -15,6 +15,12 @@
 	z-index: 2006;
 }
 
+.login {
+	display: none;
+	width: 430px;
+	max-width: 95%;
+}
+
 .selection {
 	padding-left: 10.5px;
 	padding-right: 10.5px;
