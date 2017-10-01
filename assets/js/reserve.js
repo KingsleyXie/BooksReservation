@@ -44,22 +44,28 @@ $(document).ready(function() {
 				'./assets/API/reserve.php',
 				data,
 				function(response) {
+					$("#reserve").modal('close');
 					$("#loading").hide();
 					switch(response.code) {
 						case 0:
 							Materialize.toast('订单' + (modifying ? '修改' : '提交') + '成功！', 3000);
-							window.setTimeout(function () {
-								$("#reserve").modal('close');
+							setTimeout(function () {
 								$("#stu-number").val($("#student-number").val());
 								$("label[for=stu-number]").addClass("active");
 								searchReservation();
 							}, 1000);
 							break;
 						case 5:
-							$("#list-data").empty();
-							$("#display").empty();
-							count = 0; list = ['0', '0', '0'];
-							$("#reserve").modal('close');
+							if (modifying) {
+								$("#stu-number").val($("#student-number").val());
+								$("label[for=stu-number]").addClass("active");
+								searchReservation();
+								modifyReservation();
+							} else {
+								$("#list-data").empty();
+								$("#display").empty();
+								count = 0; list = ['0', '0', '0'];
+							}
 							$("#all").modal('open');
 							modalAlert('列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨');
 							break;
@@ -276,7 +282,6 @@ function modifyReservation() {
 					'</div>');
 				});
 				$("#reservation").modal('close');
-				$("#list").modal('open');
 			} else {
 				Materialize.toast(response.errMsg, 3000);
 			}
