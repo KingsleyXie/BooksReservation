@@ -1,3 +1,6 @@
+/* ====================================================
+   0. Loading And Copyright Related Part
+   ==================================================== */
 .loading {
 	display: none;
 	position: fixed;
@@ -14,16 +17,19 @@
 	width: 120px;
 	z-index: 2006;
 }
-
-.reservation-title {
-	font-size: 2em;
+.copyright {
+	padding-top: 20px;
+	line-height: 1em;
+	border-top: 1px solid rgba(158, 158, 158, 0.3);
 	text-align: center;
-	padding-bottom: 20px;
-	font-weight: 300;
 }
-.white-text {
-	padding-bottom: 7px !important;
+.copyright a {
+	color: inherit;
 }
+
+/* ====================================================
+   1. Card And Modal Related Part
+   ==================================================== */
 .card-action {
 	padding-top: 7px !important;
 	padding-bottom: 10px !important;
@@ -36,21 +42,8 @@
 	padding-left: 17px;
 	padding-right: 0;
 }
-.card.horizontal .card-stacked{
+.card.horizontal .card-stacked {
 	width: calc(100% - 100px);
-}
-.modal.bottom-sheet {
-	max-height: 100%;
-}
-.modal.bottom-sheet .modal-content{
-	padding-bottom: 7px;
-}
-.modal.modal-fixed-footer .modal-footer {
-	display: flex;
-	justify-content: center;
-}
-.full-text{
-	padding-bottom: 0px !important;
 }
 .card.horizontal.list-card .card-image img {
 	max-width: 80px;
@@ -64,62 +57,36 @@
 .card.horizontal.list-card .card-stacked{
 	width: calc(100% - 128px);
 }
-.card.horizontal .card-stacked .card-content .card-title{
+.card.horizontal .card-stacked .card-content .card-title,
+.card.horizontal .card-stacked .card-content .card-details p {
 	white-space:nowrap;
 	text-overflow:ellipsis;
 	overflow:hidden;
 }
-.card.horizontal .card-stacked .card-content .card-details p{
-	white-space:nowrap;
-	text-overflow:ellipsis;
-	overflow:hidden;
+.card .card-content {
+	padding-bottom: 0;
 }
-.welcome {
+
+.modal {
 	max-height: 90%;
 }
-.dialog-title {
-	font-size: 2.3rem;
-	line-height: 100%;
-	margin-top: 0.3rem;
-	margin-bottom: 1.5rem;
+.modal.bottom-sheet {
+	max-height: 100% !important;
 }
-.load-img {
-	margin-top: 1.3rem;
-	margin-bottom: 1.5rem;
+.modal.bottom-sheet .modal-content{
+	padding-bottom: 7px;
+}
+.modal.modal-fixed-footer .modal-footer {
+	display: flex;
+	justify-content: center;
 }
 .modal .welcome-content {
 	padding-bottom: 15px;
 }
-.start {
-	background-color: #ee6e73;
-	color: white;
-	width: 100%;
-}
-.placeholder {
-	display: none;
-	padding-bottom: 60px;
-	text-align: center;
-	color: #9e9e9e
-}
-.book-confirm {
-	display: none;
-	position: fixed;
-	background-color: #ee6e73;
-	font-size: 1.3em;
-	text-align: center;
-	line-height: 45px;
-	color: #fff;
-	bottom: 0;
-	z-index: 1;
-	width: 100%;
-	height: 45px;
-}
-.progress {
-	display: none;
-}
-th {
-	font-weight: 500;
-}
+
+/* ====================================================
+   2. Cover And Cover Image Related Part
+   ==================================================== */
 .cover {
 	margin-right: 0;
 }
@@ -136,13 +103,54 @@ th {
 .cover:hover .cover-image {
 	visibility: visible;
 }
+
+/* ====================================================
+   3. Self-Defined Style Or Overwrite Part
+   ==================================================== */
+th {
+	font-weight: 500;
+}
+.white-text {
+	padding-bottom: 7px !important;
+}
+.dialog-title {
+	font-size: 2rem;
+	line-height: 100%;
+	margin-top: 0.3rem;
+	margin-bottom: 1.5rem;
+}
+.load-img {
+	margin-top: 1.3rem;
+	margin-bottom: 1.5rem;
+}
+.start {
+	background-color: #ee6e73;
+	color: white;
+	width: 100%;
+}
 .selection {
 	padding-left: 10.5px;
 	padding-right: 10.5px;
 }
-.book-categoryA {
-	display: none;
+.reserve {
+	display: flex;
+	justify-content: center;
 }
+.reservation {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+}
+.reservation-title {
+	font-size: 2em;
+	text-align: center;
+	padding-bottom: 20px;
+	font-weight: 300;
+}
+.progress,
+.book-categoryA,
 .book-categoryB {
 	display: none;
 }
@@ -167,29 +175,25 @@ th {
 	background-color: #ee6673;
 	color: white;
 }
-.reserve {
-	display: flex;
-	justify-content: center;
-}
-.reservation {
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	display: flex;
-	justify-content: space-between;
-}
-.card .card-content {
-	padding-bottom: 0;
-}
-.copyright {
-	padding-top: 10px;
-	line-height: 1em;
-	border-top: 1px solid rgba(158, 158, 158, 0.3);
-	text-align: center;
-}
-.copyright a {
-	color: inherit;
-}
 .alert-content {
-	font-size: 1.5rem;
+	padding-bottom: 10px !important;
+}
+.placeholder {
+	display: none;
+	padding-bottom: 60px;
+	text-align: center;
+	color: #9e9e9e
+}
+.book-confirm {
+	display: none;
+	position: fixed;
+	background-color: #ee6e73;
+	font-size: 1.3em;
+	text-align: center;
+	line-height: 45px;
+	color: #fff;
+	bottom: 0;
+	z-index: 1;
+	width: 100%;
+	height: 45px;
 }

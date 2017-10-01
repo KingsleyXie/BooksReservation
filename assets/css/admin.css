@@ -76,6 +76,9 @@
 th {
 	font-weight: 500;
 }
+.modal {
+	max-height: 90% !important;
+}
 .white-text {
 	padding-bottom: 7px !important;
 }

@@ -2,7 +2,6 @@
 modifying = false, count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
-
 $(document).ready(function() {
 	$(".modal").modal();
 	$(".button-collapse").sideNav();
