@@ -71,26 +71,30 @@
 		</div>
 	</div>
 
-	<nav>
-		<div class="nav-wrapper">
-			<div class="brand-logo center">书籍信息</div>
-			<a class="button-collapse" data-activates="mobile-menu">菜单</a>
+	<header>
+		<div class="navbar-fixed">
+			<nav>
+				<div class="nav-wrapper">
+					<div class="brand-logo center">书籍信息</div>
+					<a class="button-collapse" data-activates="mobile-menu">菜单</a>
 
-			<ul class="right hide-on-med-and-down">
-				<li><a href="#book">新增书籍</a></li>
-				<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
-				<li><a href="./reservations">查看所有订单</a></li>
-				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
-			</ul>
-			
-			<ul class="side-nav" id="mobile-menu">
-				<li><a href="#book">新增书籍</a></li>
-				<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
-				<li><a href="./reservations">查看所有订单</a></li>
-				<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
-			</ul>
+					<ul class="right hide-on-med-and-down">
+						<li><a href="#book">新增书籍</a></li>
+						<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
+						<li><a href="./reservations">查看所有订单</a></li>
+						<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
+					</ul>
+				</div>
+			</nav>
 		</div>
-	</nav>
+		
+		<ul class="side-nav" id="mobile-menu">
+			<li><a href="#book">新增书籍</a></li>
+			<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
+			<li><a href="./reservations">查看所有订单</a></li>
+			<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
+		</ul>
+	</header>
 
 	<form class="row login" id="login">
 		<div class="card-panel">	
