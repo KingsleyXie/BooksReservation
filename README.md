@@ -22,6 +22,8 @@ This is an online web system wrote in HTML, CSS, Javascript and PHP for reservin
 
 **The API used in this system to get books' information from their ISBN is provided by [douban](https://developers.douban.com/wiki/?title=book_v2), and the Front-End UI is based on [Materialize](https://github.com/Dogfalo/materialize)**
 
-You can also see brief introductions and directions of this system inside `assets/directions.md` in Chinese
+You can also see brief introductions and directions of this system inside [`./assets/directions.md`](./assets/directions.md) in Chinese
+
+Source of [sample SideNav header picture](./assets/directions.md) was [here](https://assets.entrepreneur.com/content/3x2/1300/20150115183825-books-reading.jpeg) and it was processed to fit in its element position
 
 // To do: Deploy it on my server

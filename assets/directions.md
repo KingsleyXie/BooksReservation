@@ -40,7 +40,7 @@
 
 ### C. 一些注意事项
 #### 管理系统使用相关
-- 管理系统的初始用户名和密码均为 **test**，部署上线后请在 `./assets/API/admin.php` 中更改用户名和密码哈希值
+- 管理系统的初始用户名和密码均为 **test**，部署上线后请在 [`./assets/API/admin.php`](./API/admin.php) 中更改用户名和密码哈希值
 - 登录管理系统建议使用电脑，当然如果觉得手机录入的效率更高也可以使用手机，管理系统的两个页面（包括书籍信息页面和订单信息页面）都有做手机端的适配
 - 管理系统会直接加载所有书籍的封面图片，所以在使用手机登录或连接手机热点的情况下请留意流量消耗问题
 
@@ -60,8 +60,14 @@
 
 #### 浏览器支持
 前端使用的是 [Materialize](http://materializecss.com/) 框架，[官网给的浏览器支持信息](https://github.com/Dogfalo/materialize#supported-browsers)是：
-> ##Supported Browsers:
-> Chrome 35+, Firefox 31+, Safari 7+, IE 10+
+> ## Supported Browsers:
+> Materialize is compatible with:
+> - Chrome 35+
+> - Firefox 31+
+> - Safari 7+
+> - Opera
+> - Edge
+> - IE 10+
 
 目前已知的一个情况是 Android 下的浏览器在搜索书籍框内填写关键词时，底部的“查看预约书籍列表”按钮会移动到输入法上方
 
