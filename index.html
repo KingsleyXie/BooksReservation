@@ -7,6 +7,7 @@
 	<title>书籍预约</title>
 	<link rel="shortcut icon" href="./assets/pictures/icon.png">
 	<link rel="stylesheet" href="https://cdn.bootcss.com/materialize/0.98.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css">
 	<link rel="stylesheet" href="./assets/css/reserve.css">
 </head>
 
@@ -76,7 +77,9 @@
 			<nav>
 				<div class="nav-wrapper">
 					<div class="brand-logo center">书籍预约</div>
-					<a href="#" data-activates="mobile-menu" class="button-collapse">菜单</a>
+					<a href="#" data-activates="mobile-menu" class="button-collapse">
+						<i class="material-icons">menu</i>
+					</a>
 					<ul class="right hide-on-med-and-down">
 						<li><a href="#search">搜索书籍</a></li>
 						<li><a href="#category">分类查看</a></li>
@@ -87,9 +90,21 @@
 		</div>
 		
 		<ul class="side-nav" id="mobile-menu">
-			<li><a href="#search">搜索书籍</a></li>
-			<li><a href="#category">分类查看</a></li>
-			<li><a href="#search-reservation">预订情况查询</a></li>
+			<li>
+				<a href="#search">
+					<i class="material-icons">search</i>搜索书籍
+				</a>
+			</li>
+			<li>
+				<a href="#category">
+					<i class="material-icons">format_list_bulleted</i>分类查看
+				</a>
+			</li>
+			<li>
+				<a href="#search-reservation">
+					<i class="material-icons">library_books</i>预订情况查询
+				</a>
+			</li>
 		</ul>
 	</header>
 
@@ -187,7 +202,7 @@
 		</div>
 
 		<div class="modal-footer">
-			<button class="modal-action waves-effect waves-light btn-flat" type="submit">确定</button>
+			<button type="submit" class="modal-action waves-effect waves-light btn-flat">确定</button>
 		</div>
 	</form>
 
@@ -224,7 +239,9 @@
 		</div>
 
 		<div class="modal-footer">
-			<a class="modal-action modal-close waves-effect btn-flat btn-reserve" href="#" onclick="confirmChoose(); return false;">确认选择</a>
+			<a class="modal-action modal-close waves-effect btn-flat btn-reserve" href="#" onclick="confirmChoose(); return false;">
+				<i class="material-icons right">check_circle</i>确认选择
+			</a>
 		</div>
 	</div>
 
@@ -281,7 +298,9 @@
 		</div>
 
 		<div class="modal-footer reserve">
-			<button type="submit" class="btn waves-effect waves-light red lighten-1" id="submit">确定预约</button>
+			<button type="submit" class="btn waves-effect waves-light red lighten-1" id="submit">
+				<i class="material-icons right">send</i>确定预约
+			</button>
 		</div>
 	</form>
 
@@ -289,7 +308,7 @@
 
 	<div class="modal" id="alert">
 		<div class="modal-content alert-content">
-			<h5 id="alert-title">系统提示</h5>
+			<h5 id="alert-title"></h5>
 			<p id="alert-content"></p>
 		</div>
 

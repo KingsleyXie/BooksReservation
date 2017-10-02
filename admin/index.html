@@ -7,6 +7,7 @@
 	<title>书籍管理页面</title>
 	<link rel="shortcut icon" href="../assets/pictures/icon.png">
 	<link rel="stylesheet" href="https://cdn.bootcss.com/materialize/0.98.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css">
 	<link rel="stylesheet" href="../assets/css/admin.css">
 </head>
 
@@ -76,7 +77,9 @@
 			<nav>
 				<div class="nav-wrapper">
 					<div class="brand-logo center">书籍信息</div>
-					<a class="button-collapse" data-activates="mobile-menu">菜单</a>
+					<a class="button-collapse" data-activates="mobile-menu">
+						<i class="material-icons right">menu</i>
+					</a>
 
 					<ul class="right hide-on-med-and-down">
 						<li><a href="#book">新增书籍</a></li>
@@ -89,10 +92,26 @@
 		</div>
 		
 		<ul class="side-nav" id="mobile-menu">
-			<li><a href="#book">新增书籍</a></li>
-			<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
-			<li><a href="./reservations">查看所有订单</a></li>
-			<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
+			<li>
+				<a href="#book">
+					<i class="material-icons left">add_box</i>新增书籍
+				</a>
+			</li>
+			<li>
+				<a href="#" onclick="update(); return false;">
+					<i class="material-icons left">edit</i>更新书籍信息
+				</a>
+			</li>
+			<li>
+				<a href="./reservations">
+					<i class="material-icons left">library_books</i>查看所有订单
+				</a>
+			</li>
+			<li>
+				<a href="#" onclick="logout(); return false;">
+					<i class="material-icons left">highlight_off</i>退出管理系统
+				</a>
+			</li>
 		</ul>
 	</header>
 
@@ -117,7 +136,9 @@
 			</div>
 
 			<div class="row center">
-				<button type="submit" class="btn">登录</button>
+				<button type="submit" class="btn">
+					<i class="material-icons right">send</i>登录
+				</button>
 			</div>
 		</div>
 	</form>
@@ -135,8 +156,12 @@
 				</div>
 
 				<div class="center">
-					<a class="waves-effect waves-light btn" onclick="inputDataViaISBN();">获取书籍信息</a>
-					<a class="waves-effect waves-light btn" onclick="inputDataManually();">手动录入数据</a>
+					<a class="waves-effect waves-light btn" onclick="inputDataViaISBN();">
+						<i class="material-icons right">cloud_download</i>获取书籍信息
+					</a>
+					<a class="waves-effect waves-light btn" onclick="inputDataManually();">
+						<i class="material-icons right">edit</i>手动录入数据
+					</a>
 				</div>
 			</div>
 
@@ -149,7 +174,9 @@
 				</div>
 
 				<div class="center">
-					<a class="waves-effect waves-light btn" onclick="getBookByID();">确定</a>
+					<a class="waves-effect waves-light btn" onclick="getBookByID();">
+						<i class="material-icons right">check_box</i>确定
+					</a>
 				</div>
 			</div>
 

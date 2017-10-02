@@ -187,8 +187,12 @@ function searchReservation() {
 							'<div class="card-title">预约书籍信息：</div>' +
 							'<div class="row" id="reserved-books"></div>' +
 							'<div class="reservation">' +
-								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation();">更改</button>' +
-								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="back();">返回</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation();">' +
+									'<i class="material-icons right">edit</i>更改' +
+								'</button>' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="back();">' +
+									'<i class="material-icons right">replay</i>返回' +
+								'</button>' +
 							'</div>' +
 						'</div>' +
 					'</div>' +
@@ -231,7 +235,7 @@ function searchReservation() {
 
 function modifyReservation() {
 	$("#loading").css("display", "flex");
-	$("#submit").text('确定修改');
+	$("#submit").html('<i class="material-icons right">send</i>确定修改');
 	stuNo = $("#stu-number").val();
 
 	modifying = true, count = 0;
@@ -278,7 +282,8 @@ function modifyReservation() {
 								'</div>' +
 							'</div>' +
 						'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
-						'data-id=' + book.bookID + ' onclick="deleteFromList(this)">&times</a>' +
+						'data-id=' + book.bookID + ' onclick="deleteFromList(this)">' +
+						'<i class="material-icons">clear</i></a>' +
 					'</div>');
 				});
 				$("#reservation").modal('close');
@@ -325,7 +330,8 @@ function addToList(val) {
 				'</div>' +
 			'</div>' +
 		'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
-		'data-id=' + val.dataset.id + ' onclick="deleteFromList(this)">x</a>' +
+		'data-id=' + val.dataset.id + ' onclick="deleteFromList(this)">' +
+		'<i class="material-icons">clear</i></a>' +
 	'</div>');
 
 	if (val.innerText == 0) {
@@ -339,14 +345,14 @@ function deleteFromList(val) {
 	val.parentNode.outerHTML = '';
 }
 
-function modalAlert(content, title = '系统提示') {
-	$("#alert-title").text(title);
+function modalAlert(content, title = '<i class="material-icons left">warning</i>系统提示') {
+	$("#alert-title").html(title);
 	$("#alert-content").html(content);
 	$("#alert").modal('open');
 }
 
 function showFullText(val) {
-	modalAlert(val.textContent, '书籍标题全文：');
+	modalAlert(val.textContent, '<i class="material-icons left">book</i>书籍标题全文：');
 }
 
 function confirmChoose() {
