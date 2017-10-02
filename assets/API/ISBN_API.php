@@ -6,7 +6,7 @@ require_once('./config.php');
 existCheck('ISBN');
 $handle = @fopen('https://api.douban.com/v2/book/isbn/' . $_POST['ISBN'], 'rb');
 if (empty($_POST['ISBN']) OR !$handle) {
-	response(1, '未找到书籍信息，请手动录入相关数据');
+	response(1, '未找到对应书籍信息，请手动录入相关数据');
 } else {
 	$data = '';
 	while (!feof($handle))

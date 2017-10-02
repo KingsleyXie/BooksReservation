@@ -131,10 +131,6 @@ function inputDataViaISBN() {
 		'../assets/API/ISBN_API.php',
 		'ISBN=' + $("#ISBN").val(),
 		function(response) {
-			if (response.code == 1) {
-				Materialize.toast('未找到对应书籍信息，请手动录入相关数据', 3000);
-				$("#ISBN").val('');
-			}
 			if (response.code == 0) {
 				$("#title").val(response.title);
 				$("label[for=title]").addClass("active");
@@ -146,6 +142,9 @@ function inputDataViaISBN() {
 				$("label[for=pubdate]").addClass("active");
 				$("#image").val(response.image);
 				$("#is-multiple-author").prop("checked", parseInt(response.isMultipleAuthor));
+			} else {
+				Materialize.toast(response.errMsg, 3000);
+				$("#ISBN").val('');
 			}
 			$("#progress").hide();
 			inputDataManually();
