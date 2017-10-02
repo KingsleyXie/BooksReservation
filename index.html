@@ -77,9 +77,11 @@
 			<nav>
 				<div class="nav-wrapper">
 					<div class="brand-logo center">书籍预约</div>
+					
 					<a href="#" data-activates="mobile-menu" class="button-collapse">
 						<i class="material-icons">menu</i>
 					</a>
+					
 					<ul class="right hide-on-med-and-down">
 						<li><a href="#search">搜索书籍</a></li>
 						<li><a href="#category">分类查看</a></li>
@@ -90,21 +92,33 @@
 		</div>
 		
 		<ul class="side-nav" id="mobile-menu">
+			<div class="brand"></div>
+
 			<li>
 				<a href="#search">
 					<i class="material-icons">search</i>搜索书籍
 				</a>
 			</li>
+
 			<li>
 				<a href="#category">
 					<i class="material-icons">format_list_bulleted</i>分类查看
 				</a>
 			</li>
+
 			<li>
 				<a href="#search-reservation">
 					<i class="material-icons">library_books</i>预订情况查询
 				</a>
 			</li>
+
+			<li>
+				<a onclick="returnToMainPage();">
+					<i class="material-icons">navigate_before</i>返回
+				</a>
+			</li>
+
+			<div class="copyright">Copyright © 2017 <a href="https://github.com/KingsleyXie/BooksReservation">Kingsley</a></div>
 		</ul>
 	</header>
 

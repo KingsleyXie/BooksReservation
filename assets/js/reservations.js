@@ -91,3 +91,7 @@ function showFullText(val) {
 	$("#alert-content").text(val.textContent);
 	$("#alert").modal('open');
 }
+
+function returnToMainPage() {
+	$(".button-collapse").sideNav('hide');
+}

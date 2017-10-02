@@ -26,6 +26,12 @@
 .copyright a {
 	color: inherit;
 }
+ul .copyright {
+	margin-top: calc(100vh - 450px);
+}
+ul .copyright a {
+	padding: 0 !important;
+}
 
 /* ====================================================
    1. Card And Modal Related Part
@@ -112,6 +118,12 @@ th {
 	line-height: 100%;
 	margin-top: 0.3rem;
 	margin-bottom: 1.5rem;
+}
+.brand {
+	background: url('../pictures/books.png');
+	background-size: 100% 100%;
+	margin-bottom: 15px;
+	height: 185px;
 }
 .load-img {
 	margin-top: 1.3rem;

@@ -379,3 +379,7 @@ function reserveCheck() {
 function back() {
 	$("#reservation").modal('close');
 }
+
+function returnToMainPage() {
+	$(".button-collapse").sideNav('hide');
+}

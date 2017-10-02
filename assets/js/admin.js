@@ -240,6 +240,10 @@ function showFullText(val) {
 	$("#alert").modal('open');
 }
 
+function returnToMainPage() {
+	$(".button-collapse").sideNav('hide');
+}
+
 function logout() {
 	$.post(
 		'../assets/API/admin.php',
