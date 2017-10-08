@@ -211,3 +211,10 @@ th {
 	width: 100%;
 	height: 45px;
 }
+.underline {
+	color: inherit;
+	text-decoration: underline;
+}
+.admin-system {
+	color: #ee6e73;
+}
