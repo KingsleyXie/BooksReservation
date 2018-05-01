@@ -25,6 +25,11 @@ Route::get(
 	'/api/admin/book/all',
 	'AdminBookController@index'
 );
+Route::get(
+	'/api/admin/book/id/{id}',
+	'AdminBookController@getById'
+);
+
 Route::post(
 	'/api/admin/book/add',
 	'AdminBookController@add'

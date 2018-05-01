@@ -16,6 +16,31 @@ class AdminBookController extends Controller
 		]);
 	}
 
+	public function getById($id)
+	{
+		$book = DB::table('book')
+		return response()->json([
+			'errcode' => 0,
+			'data' => $book
+		]);
+	}
+
+	public function add()
+	{
+		DB::table('book')
+		return response()->json([
+			'errcode' => 0
+		]);
+	}
+
+	public function updateById($id)
+	{
+		$books = DB::table('book')
+		return response()->json([
+			'errcode' => 0
+		]);
+	}
+
 	public function searchByISBN($ISBN)
 	{
 		$result = @file_get_contents(
