@@ -14,24 +14,29 @@
 // Admin Part
 Route::get(
 	'/api/admin/login',
-	'AdminController@login'
+	'SessionController@login'
 );
 Route::get(
 	'/api/admin/logout',
-	'AdminController@logout'
+	'SessionController@logout'
 );
 
 Route::get(
 	'/api/admin/book/all',
-	'AdminController@getAllBooks'
+	'AdminBookController@index'
 );
 Route::post(
 	'/api/admin/book/add',
-	'AdminController@addBook'
+	'AdminBookController@add'
 );
 Route::post(
 	'/api/admin/book/update/{id}',
-	'AdminController@updateBookById'
+	'AdminBookController@updateById'
+);
+
+Route::get(
+	'/api/admin/book/isbn/{isbn}',
+	'AdminBookController@searchByISBN'
 );
 
 Route::get(
@@ -39,10 +44,7 @@ Route::get(
 	'ReservationController@index'
 );
 
-Route::get(
-	'/api/admin/douban/search/isbn/{isbn}',
-	'DoubanController@search'
-);
+
 
 // User Part
 Route::get(
@@ -51,19 +53,19 @@ Route::get(
 );
 
 Route::post(
-	'/api/user/reserve/add'
+	'/api/user/reserve/add',
 	'ReserveController@add'
 );
 Route::post(
 	'/api/user/reserve/modify/{id}',
-	'ReserveController@modifyReservationById'
+	'ReserveController@modifyById'
 );
 
 Route::get(
 	'/api/user/book/all',
-	'BookController@index'
+	'UserBookController@index'
 );
 Route::get(
 	'/api/user/book/search',
-	'BookController@search'
+	'UserBookController@search'
 );
