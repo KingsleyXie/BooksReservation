@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -9,7 +10,10 @@ class AdminBookController extends Controller
 {
 	public function index()
 	{
-		$books = DB::table('book')->get();
+		$books = DB::table('book')
+			->orderBy('id', 'desc')
+			->get();
+
 		return response()->json([
 			'errcode' => 0,
 			'data' => $books
@@ -19,23 +23,47 @@ class AdminBookController extends Controller
 	public function getById($id)
 	{
 		$book = DB::table('book')
+			->where('id', $id)
+			->first();
+
 		return response()->json([
 			'errcode' => 0,
 			'data' => $book
 		]);
 	}
 
-	public function add()
+	public function add(Request $req)
 	{
-		DB::table('book')
+		$book = DB::table('book')
+			->insertGetId([
+				'isbn' => $req->isbn,
+				'title' => $req->title,
+				'author' => $req->author,
+				'publisher' => $req->publisher,
+				'pub_date' => $req->pub_date,
+				'cover' => $req->cover,
+				'quantity' => $req->quantity
+			]);
+
 		return response()->json([
-			'errcode' => 0
+			'errcode' => 0,
+			'data' => $book
 		]);
 	}
 
-	public function updateById($id)
+	public function updateById(Request $req, $id)
 	{
-		$books = DB::table('book')
+		DB::table('book')
+			->where('id', $id)
+			->update([
+				'title' => $req->title,
+				'author' => $req->author,
+				'publisher' => $req->publisher,
+				'pub_date' => $req->pub_date,
+				'cover' => $req->cover,
+				'quantity' => $req->quantity
+			]);
+
 		return response()->json([
 			'errcode' => 0
 		]);
