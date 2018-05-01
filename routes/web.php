@@ -70,7 +70,7 @@ Route::get(
 	'/api/user/book/all',
 	'UserBookController@index'
 );
-Route::get(
+Route::post(
 	'/api/user/book/search',
 	'UserBookController@search'
 );
