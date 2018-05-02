@@ -22,6 +22,20 @@ class UserBookController extends Controller
 		]);
 	}
 
+	public function getByPage($page, $limit)
+	{
+		$books = DB::table('book')
+			->orderByRaw('quantity > 0 DESC, id DESC')
+			->skip(($page - 1) * $limit)
+			->take($limit)
+			->get();
+
+		return response()->json([
+			'errcode' => 0,
+			'data' => UserBookResource::collection($books)
+		]);
+	}
+
 	public function search(Request $req)
 	{
 		$books = DB::table('book')

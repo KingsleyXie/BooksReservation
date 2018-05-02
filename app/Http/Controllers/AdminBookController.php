@@ -32,6 +32,20 @@ class AdminBookController extends Controller
 		]);
 	}
 
+	public function getByPage($page, $limit)
+	{
+		$books = DB::table('book')
+			->orderBy('id', 'DESC')
+			->skip(($page - 1) * $limit)
+			->take($limit)
+			->get();
+
+		return response()->json([
+			'errcode' => 0,
+			'data' => $books
+		]);
+	}
+
 	public function add(Request $req)
 	{
 		$book = DB::table('book')

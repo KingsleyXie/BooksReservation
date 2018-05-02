@@ -29,6 +29,10 @@ Route::get(
 	'/api/admin/book/id/{id}',
 	'AdminBookController@getById'
 );
+Route::get(
+	'/api/admin/book/page/{page}/limit/{limit}',
+	'AdminBookController@getByPage'
+);
 
 Route::post(
 	'/api/admin/book/add',
@@ -69,6 +73,10 @@ Route::post(
 Route::get(
 	'/api/user/book/all',
 	'UserBookController@index'
+);
+Route::get(
+	'/api/user/book/page/{page}/limit/{limit}',
+	'UserBookController@getByPage'
 );
 Route::post(
 	'/api/user/book/search',
