@@ -52,26 +52,26 @@ class AdminBookController extends Controller
 	{
 		return DB::table('book')
 			->insertGetId([
-				'isbn' => $book['isbn'],
-				'title' => $book['title'],
-				'author' => $book['author'],
-				'publisher' => $book['publisher'],
-				'pubdate' => $book['pubdate'],
-				'cover' => $book['cover'],
-				'quantity' => $book['quantity']
+				'isbn' => $book[0],
+				'title' => $book[1],
+				'author' => $book[2],
+				'publisher' => $book[3],
+				'pubdate' => $book[4],
+				'cover' => $book[5],
+				'quantity' => $book[6]
 			]);
 	}
 
 	public function addByRaw(Request $req)
 	{
 		$bookID = $this->add([
-			'isbn' => $req->isbn,
-			'title' => $req->title,
-			'author' => $req->author,
-			'publisher' => $req->publisher,
-			'pubdate' => $req->pubdate,
-			'cover' => $req->cover,
-			'quantity' => $req->quantity
+			$req->isbn,
+			$req->title,
+			$req->author,
+			$req->publisher,
+			$req->pubdate,
+			$req->cover,
+			$req->quantity
 		]);
 
 		return response()->json([
@@ -91,7 +91,7 @@ class AdminBookController extends Controller
 			]);
 		}
 
-		$book['quantity'] = $req->quantity;
+		array_push($book, $req->quantity);
 		$bookID = $this->add($book);
 
 		return response()->json([
