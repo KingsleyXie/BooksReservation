@@ -46,23 +46,43 @@ class AdminBookController extends Controller
 		]);
 	}
 
-	public function add(Request $req)
+	private function add(
+		$isbn, $title, $author, $publisher, $pubdate, $cover, $quantity
+	)
 	{
-		$book = DB::table('book')
+		return DB::table('book')
 			->insertGetId([
-				'isbn' => $req->isbn,
-				'title' => $req->title,
-				'author' => $req->author,
-				'publisher' => $req->publisher,
-				'pub_date' => $req->pub_date,
-				'cover' => $req->cover,
-				'quantity' => $req->quantity
+				'isbn' => $isbn,
+				'title' => $title,
+				'author' => $author,
+				'publisher' => $publisher,
+				'pubdate' => $pubdate,
+				'cover' => $cover,
+				'quantity' => $quantity
 			]);
+	}
+
+	public function addByRaw(Request $req)
+	{
+		$bookID = $this->add([
+			$req->isbn,
+			$req->title,
+			$req->author,
+			$req->publisher,
+			$req->pubdate,
+			$req->cover,
+			$req->quantity
+		]);
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $book
+			'data' => $bookID
 		]);
+	}
+
+	public function addByISBN(Request $req)
+	{
+		//Todo
 	}
 
 	public function updateById(Request $req, $id)
@@ -73,7 +93,7 @@ class AdminBookController extends Controller
 				'title' => $req->title,
 				'author' => $req->author,
 				'publisher' => $req->publisher,
-				'pub_date' => $req->pub_date,
+				'pubdate' => $req->pubdate,
 				'cover' => $req->cover,
 				'quantity' => $req->quantity
 			]);
@@ -109,7 +129,7 @@ class AdminBookController extends Controller
 				'title' => $result['title'],
 				'author' => $author,
 				'publisher' => $result['publisher'],
-				'pub_date' => $result['pubdate'],
+				'pubdate' => $result['pubdate'],
 				'cover' => $result['images']['large']
 			]
 		]);

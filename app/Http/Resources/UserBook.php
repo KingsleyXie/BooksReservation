@@ -19,7 +19,7 @@ class UserBook extends JsonResource
 			'title' => $this->title,
 			'author' => $this->author,
 			'publisher' => $this->publisher,
-			'pub_date' => $this->pub_date,
+			'pubdate' => $this->pubdate,
 			'cover' => $this->cover,
 			'quantity' => $this->quantity
 		];

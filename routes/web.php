@@ -35,14 +35,19 @@ Route::get(
 );
 
 Route::post(
-	'/api/admin/book/add',
-	'AdminBookController@add'
+	'/api/admin/book/add/raw',
+	'AdminBookController@addByRaw'
+);
+Route::post(
+	'/api/admin/book/add/isbn',
+	'AdminBookController@addByISBN'
 );
 Route::post(
 	'/api/admin/book/update/{id}',
 	'AdminBookController@updateById'
 );
 
+// This Interface Is Currently Still Reserved
 Route::get(
 	'/api/admin/book/isbn/{isbn}',
 	'AdminBookController@searchByISBN'

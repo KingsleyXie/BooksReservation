@@ -9,7 +9,7 @@ CREATE TABLE book (
 	title VARCHAR(60) NOT NULL,
 	author VARCHAR(60) NOT NULL,
 	publisher VARCHAR(60) NOT NULL,
-	pub_date VARCHAR(15) NOT NULL,
+	pubdate VARCHAR(15) NOT NULL,
 	cover VARCHAR(100) NOT NULL,
 	quantity INTEGER NOT NULL,
 	import_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE reservation (
 -- Following are test data for books
 /*
 INSERT INTO book
-	(isbn, title, author, publisher, pub_date, cover, quantity)
+	(isbn, title, author, publisher, pubdate, cover, quantity)
 VALUES
 	('9787208061699', '江泽民和他的母校上海交通大学', '上海交通大学 编著', '上海人民出版社', '2006-01-01', 'https://img3.doubanio.com/lpic/s2927042.jpg', 1),
 	('9780321714114', 'C++ Primer', 'Stanley B. Lippman 等', 'Addison-Wesley Professional', '2012-8-16', 'https://img1.doubanio.com/lpic/s29252317.jpg', 0),
