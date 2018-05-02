@@ -9,12 +9,15 @@ class AdminSessionController extends Controller
 {
 	public function login(Request $req)
 	{
-		//Default username and password(Hash Method: SHA256) are both 'test', please remember to change it when you  deploy it online
-		$hash =
-		'9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08';
+		// Default username and password are both 'test'
+		// Please remember to change them when you deploy online
+		// Hash generate: password_hash($password, PASSWORD_DEFAULT);
 
-		if ($req->username != 'test'
-			|| hash('sha256', $req->password) != $hash)
+		$username = 'test';
+		$hash = '$2y$10$/lRYaYQFCD6rkZyEN8YJ4OnALIYPh7gqNFL2zCFFrHt8pTGItWBQy';
+
+		if (!(($req->username == $username)
+			&& password_verify($req->password, $hash)))
 			return response()->json([
 				'errcode' => 1,
 				'errmsg' => '用户名或密码错误！'
@@ -34,15 +37,6 @@ class AdminSessionController extends Controller
 
 		return response()->json([
 			'errcode' => 0
-		]);
-	}
-
-	public function status(Request $req)
-	{
-		$status = $req->session()->exists('admin');
-		return response()->json([
-			'errcode' => 0,
-			"data" => $status
 		]);
 	}
 }

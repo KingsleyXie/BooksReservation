@@ -17,7 +17,10 @@ class AdminAuth
     public function handle($req, Closure $next)
     {
         if (!$req->session()->exists('admin'))
-            return redirect('test');
+            return response()->json([
+                'errcode' => -1,
+                'errmsg' => '请登录系统！'
+            ]);
 
         return $next($req);
     }

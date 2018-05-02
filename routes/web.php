@@ -12,30 +12,28 @@
 |
 */
 
-// Admin Part
+
+
+/*
+==================================================================
+	Admin Route 0. Session Control
+==================================================================
+*/
 Route::post(
 	'/api/admin/login',
 	'AdminSessionController@login'
-)->middleware('admin');
+);
 
 Route::get(
 	'/api/admin/logout',
 	'AdminSessionController@logout'
 )->middleware('admin');
 
-Route::get(
-	'/api/admin/status',
-	'AdminSessionController@status'
-)->middleware('admin');
-
-
-
-Route::get('/test', function() {
-	return view('test');
-});
-
-
-
+/*
+==================================================================
+	Admin Route 1. Query Books
+==================================================================
+*/
 Route::get(
 	'/api/admin/book/all',
 	'AdminBookController@index'
@@ -51,8 +49,17 @@ Route::get(
 	'AdminBookController@getByPage'
 )->middleware('admin');
 
+// This Interface Is Currently Still Reserved
+Route::get(
+	'/api/admin/book/isbn/{isbn}',
+	'AdminBookController@searchByISBN'
+)->middleware('admin');
 
-
+/*
+==================================================================
+	Admin Route 2. Manage Books
+==================================================================
+*/
 Route::post(
 	'/api/admin/book/add/raw',
 	'AdminBookController@addByRaw'
@@ -68,16 +75,11 @@ Route::post(
 	'AdminBookController@updateById'
 )->middleware('admin');
 
-
-
-// This Interface Is Currently Still Reserved
-Route::get(
-	'/api/admin/book/isbn/{isbn}',
-	'AdminBookController@searchByISBN'
-)->middleware('admin');
-
-
-
+/*
+==================================================================
+	Admin Route 3. Query Reservations
+==================================================================
+*/
 Route::get(
 	'/api/admin/reservation/all',
 	'ReservationController@index'
@@ -85,30 +87,42 @@ Route::get(
 
 
 
-// User Part
-Route::get(
-	'/api/user/reservation/stuno/{stuno}',
-	'ReservationController@searchByStuNo'
-);
-
-Route::post(
-	'/api/user/reserve/add',
-	'ReserveController@add'
-);
-Route::post(
-	'/api/user/reserve/modify/{id}',
-	'ReserveController@modifyById'
-);
-
+/*
+==================================================================
+	User Route 0. Query Books
+==================================================================
+*/
 Route::get(
 	'/api/user/book/all',
 	'UserBookController@index'
 );
+
 Route::get(
 	'/api/user/book/page/{page}/limit/{limit}',
 	'UserBookController@getByPage'
 );
+
 Route::post(
 	'/api/user/book/search',
 	'UserBookController@search'
+);
+
+/*
+==================================================================
+	User Route 1. Manage Reservation
+==================================================================
+*/
+Route::post(
+	'/api/user/reservation/add',
+	'ReservationController@add'
+);
+
+Route::post(
+	'/api/user/reservation/modify/{id}',
+	'ReservationController@modifyById'
+);
+
+Route::get(
+	'/api/user/reservation/stuno/{stuno}',
+	'ReservationController@searchByStuNo'
 );
