@@ -12,13 +12,17 @@
 */
 
 // Admin Part
-Route::get(
+Route::post(
 	'/api/admin/login',
-	'SessionController@login'
+	'AdminSessionController@login'
 );
 Route::get(
 	'/api/admin/logout',
-	'SessionController@logout'
+	'AdminSessionController@logout'
+);
+Route::get(
+	'/api/admin/status',
+	'AdminSessionController@status'
 );
 
 Route::get(
