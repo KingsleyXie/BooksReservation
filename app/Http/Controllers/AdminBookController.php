@@ -11,7 +11,7 @@ class AdminBookController extends Controller
 	public function index()
 	{
 		$books = DB::table('book')
-			->orderBy('id', 'desc')
+			->orderBy('id', 'DESC')
 			->get();
 
 		return response()->json([
@@ -86,9 +86,8 @@ class AdminBookController extends Controller
 
 		// Specially write to handle books with multiple authors
 		$author = $result['author'][0];
-		if (count($result['author']) > 1) {
+		if (count($result['author']) > 1)
 			$author .= ' 等';
-		}
 
 		return response()->json([
 			'errcode' => 0,

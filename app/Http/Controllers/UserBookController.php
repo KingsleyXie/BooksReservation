@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+use App\Http\Resources\UserBook as UserBookResource;
+
 class UserBookController extends Controller
 {
 	public function index()
@@ -16,7 +18,7 @@ class UserBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $books
+			'data' => UserBookResource::collection($books)
 		]);
 	}
 
@@ -35,7 +37,7 @@ class UserBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $books
+			'data' => UserBookResource::collection($books)
 		]);
 	}
 }
