@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\DoubanAPIHandler as Douban;
+
 class AdminBookController extends Controller
 {
 	public function index()
@@ -105,9 +107,7 @@ class AdminBookController extends Controller
 
 	public function searchByISBN($ISBN)
 	{
-		$result = @file_get_contents(
-			'https://api.douban.com/v2/book/isbn/' . $ISBN
-		);
+		$result = Douban::getBook($ISBN);
 
 		if (!$result) {
 			return response()->json([
@@ -116,22 +116,9 @@ class AdminBookController extends Controller
 			]);
 		}
 
-		$result = json_decode($result, true);
-
-		// Specially write to handle books with multiple authors
-		$author = $result['author'][0];
-		if (count($result['author']) > 1)
-			$author .= ' 等';
-
 		return response()->json([
 			'errcode' => 0,
-			'data' => [
-				'title' => $result['title'],
-				'author' => $author,
-				'publisher' => $result['publisher'],
-				'pubdate' => $result['pubdate'],
-				'cover' => $result['images']['large']
-			]
+			'data' => $result
 		]);
 	}
 }
