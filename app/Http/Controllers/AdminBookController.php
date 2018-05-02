@@ -48,32 +48,30 @@ class AdminBookController extends Controller
 		]);
 	}
 
-	private function add(
-		$isbn, $title, $author, $publisher, $pubdate, $cover, $quantity
-	)
+	private function add($book)
 	{
 		return DB::table('book')
 			->insertGetId([
-				'isbn' => $isbn,
-				'title' => $title,
-				'author' => $author,
-				'publisher' => $publisher,
-				'pubdate' => $pubdate,
-				'cover' => $cover,
-				'quantity' => $quantity
+				'isbn' => $book['isbn'],
+				'title' => $book['title'],
+				'author' => $book['author'],
+				'publisher' => $book['publisher'],
+				'pubdate' => $book['pubdate'],
+				'cover' => $book['cover'],
+				'quantity' => $book['quantity']
 			]);
 	}
 
 	public function addByRaw(Request $req)
 	{
 		$bookID = $this->add([
-			$req->isbn,
-			$req->title,
-			$req->author,
-			$req->publisher,
-			$req->pubdate,
-			$req->cover,
-			$req->quantity
+			'isbn' => $req->isbn,
+			'title' => $req->title,
+			'author' => $req->author,
+			'publisher' => $req->publisher,
+			'pubdate' => $req->pubdate,
+			'cover' => $req->cover,
+			'quantity' => $req->quantity
 		]);
 
 		return response()->json([
@@ -84,7 +82,22 @@ class AdminBookController extends Controller
 
 	public function addByISBN(Request $req)
 	{
-		//Todo
+		$book = Douban::getBook($req->isbn);
+
+		if (!$book) {
+			return response()->json([
+				'errcode' => 1,
+				'errmsg' => '未找到对应书籍信息，请手动录入相关数据'
+			]);
+		}
+
+		$book['quantity'] = $req->quantity;
+		$bookID = $this->add($book);
+
+		return response()->json([
+			'errcode' => 0,
+			'data' => $bookID
+		]);
 	}
 
 	public function updateById(Request $req, $id)
@@ -107,9 +120,9 @@ class AdminBookController extends Controller
 
 	public function searchByISBN($ISBN)
 	{
-		$result = Douban::getBook($ISBN);
+		$book = Douban::getBook($ISBN);
 
-		if (!$result) {
+		if (!$book) {
 			return response()->json([
 				'errcode' => 1,
 				'errmsg' => '未找到对应书籍信息，请手动录入相关数据'
@@ -118,7 +131,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $result
+			'data' => $book
 		]);
 	}
 }

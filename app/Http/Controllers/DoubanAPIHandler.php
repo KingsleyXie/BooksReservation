@@ -21,6 +21,7 @@ class DoubanAPIHandler extends Controller
 			$author .= ' 等';
 
 		return [
+			'isbn' => $ISBN,
 			'title' => $book['title'],
 			'author' => $author,
 			'publisher' => $book['publisher'],
