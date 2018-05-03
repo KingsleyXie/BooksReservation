@@ -37,6 +37,7 @@ class ReserveAdd
                 'errmsg' => '预约列表中存在重复书籍'
             ]);
 
+        $req->books = $books;
         return $next($req);
     }
 }

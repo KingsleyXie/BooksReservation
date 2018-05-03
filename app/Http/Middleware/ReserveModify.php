@@ -37,6 +37,7 @@ class ReserveModify
                 'errmsg' => '修改列表中存在重复书籍'
             ]);
 
+        $req->books = array_diff($req->books, $prebooks);
         return $next($req);
     }
 }
