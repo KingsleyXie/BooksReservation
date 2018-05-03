@@ -130,4 +130,4 @@ Route::post(
 Route::post(
 	'/api/user/reserve/modify/{id}',
 	'ReserveController@modifyById'
-)->middleware('reserve.modify');
+)->middleware('reserve.add', 'reserve.modify');
