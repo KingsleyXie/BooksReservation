@@ -114,7 +114,7 @@ Route::post(
 */
 Route::get(
 	'/api/user/reservation/stuno/{stuno}',
-	'ReservationController@searchByStuNo'
+	'ReservationController@searchByStuno'
 );
 
 /*
