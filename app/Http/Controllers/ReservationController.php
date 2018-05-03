@@ -11,6 +11,23 @@ use App\Http\Resources\UserBook as UserBookResource;
 
 class ReservationController extends Controller
 {
+	private function getData($reservation)
+	{
+		$books = DB::table('book')
+			->whereIn('id', [
+				$reservation->book0,
+				$reservation->book1,
+				$reservation->book2
+			])
+			->get();
+
+		$data = new ReservationResource($reservation);
+		$data = json_decode(json_encode($data), true);
+		$data['books'] = UserBookResource::collection($books);
+
+		return $data;
+	}
+
 	public function index()
 	{
 		$reservations = DB::table('reservation')
@@ -19,21 +36,7 @@ class ReservationController extends Controller
 
 		$dataset = [];
 		foreach ($reservations as $reservation) {
-			$books = DB::table('book')
-				->whereIn('id', [
-					$reservation->book0,
-					$reservation->book1,
-					$reservation->book2
-				])
-				->get();
-
-			$data = new ReservationResource($reservation);
-			$data = json_decode(json_encode($data), true);
-
-			$books = UserBookResource::collection($books);
-			$data['books'] = json_decode(json_encode($books), true);
-
-			array_push($dataset, $data);
+			array_push($dataset, $this->getData($reservation));
 		}
 
 		return response()->json([
@@ -55,23 +58,9 @@ class ReservationController extends Controller
 			]);
 		}
 
-		$books = DB::table('book')
-			->whereIn('id', [
-				$reservation->book0,
-				$reservation->book1,
-				$reservation->book2
-			])
-			->get();
-
-		$data = new ReservationResource($reservation);
-		$data = json_decode(json_encode($data), true);
-
-		$books = UserBookResource::collection($books);
-		$data['books'] = json_decode(json_encode($books), true);
-
 		return response()->json([
 			'errcode' => 0,
-			'data' => $data
+			'data' => $this->getData($reservation)
 		]);
 	}
 }
