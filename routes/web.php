@@ -130,8 +130,8 @@ Route::post(
 );
 
 Route::post(
-	'/api/user/reserve/modify/{id}',
-	'ReserveController@modifyById'
+	'/api/user/reserve/modify',
+	'ReserveController@modify'
 )->middleware(
 	'add', 'list', 'modify', 'list', 'collision'
 );
