@@ -28,6 +28,13 @@ class AdminBookController extends Controller
 			->where('id', $id)
 			->first();
 
+		if ($book == null) {
+			return response()->json([
+				'errcode' => 1,
+				'errmsg' => '未找到对应书籍信息'
+			]);
+		}
+
 		return response()->json([
 			'errcode' => 0,
 			'data' => $book
