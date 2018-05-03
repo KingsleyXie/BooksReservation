@@ -27,7 +27,7 @@ Route::post(
 Route::get(
 	'/api/admin/logout',
 	'AdminSessionController@logout'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 /*
 ==================================================================
@@ -37,23 +37,23 @@ Route::get(
 Route::get(
 	'/api/admin/book/all',
 	'AdminBookController@index'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 Route::get(
 	'/api/admin/book/id/{id}',
 	'AdminBookController@getById'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 Route::get(
 	'/api/admin/book/page/{page}/limit/{limit}',
 	'AdminBookController@getByPage'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 // This Interface Is Currently Still Reserved
 Route::get(
 	'/api/admin/book/isbn/{isbn}',
 	'AdminBookController@searchByISBN'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 /*
 ==================================================================
@@ -63,17 +63,17 @@ Route::get(
 Route::post(
 	'/api/admin/book/add/raw',
 	'AdminBookController@addByRaw'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 Route::post(
 	'/api/admin/book/add/isbn',
 	'AdminBookController@addByISBN'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 Route::post(
 	'/api/admin/book/update/{id}',
 	'AdminBookController@updateById'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 /*
 ==================================================================
@@ -83,7 +83,7 @@ Route::post(
 Route::get(
 	'/api/admin/reservation/all',
 	'ReservationController@index'
-)->middleware('admin');
+)->middleware('admin.auth');
 
 
 
@@ -109,20 +109,25 @@ Route::post(
 
 /*
 ==================================================================
-	User Route 1. Manage Reservation
+	User Route 1. Search Reservation
 ==================================================================
 */
-Route::post(
-	'/api/user/reservation/add',
-	'ReservationController@add'
-);
-
-Route::post(
-	'/api/user/reservation/modify/{id}',
-	'ReservationController@modifyById'
-);
-
 Route::get(
 	'/api/user/reservation/stuno/{stuno}',
 	'ReservationController@searchByStuNo'
 );
+
+/*
+==================================================================
+	User Route 2. Manage Reservation
+==================================================================
+*/
+Route::post(
+	'/api/user/reserve/add',
+	'ReserveController@add'
+)->middleware('reserve.add');
+
+Route::post(
+	'/api/user/reserve/modify/{id}',
+	'ReserveController@modifyById'
+)->middleware('reserve.modify');
