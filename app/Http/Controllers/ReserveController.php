@@ -10,6 +10,17 @@ class ReserveController extends Controller
 {
 	public function add(Request $req)
 	{
+		$exists = DB::table('reservation')
+			->where('stuno', $req->stuno)
+			->exists();
+
+		if ($exists) {
+			return response()->json([
+				'errcode' => 1,
+				'data' => '该学号已存在预约订单！'
+			]);
+		}
+
 		return response()->json([
 			'errcode' => 0
 		]);
@@ -17,6 +28,17 @@ class ReserveController extends Controller
 
 	public function modifyById(Request $req, $id)
 	{
+		$exists = DB::table('reservation')
+			->where('stuno', $req->stuno)
+			->exists();
+
+		if (!$exists) {
+			return response()->json([
+				'errcode' => 1,
+				'data' => '未找到该学号对应的订单信息！'
+			]);
+		}
+
 		return response()->json([
 			'errcode' => 0
 		]);

@@ -25,7 +25,7 @@ class CollisionCheck
 
         if ($collision) {
             $notice = json_encode([
-                $req->stuNo, $req->stuName, $req->books
+                $req->stuno, $req->stuname, $req->books
             ]);
             Log::channel('collision')->notice($notice);
 
