@@ -57,16 +57,20 @@ class AdminBookController extends Controller
 
 	private function add($book)
 	{
+		$record = [
+			'isbn' => $book[0],
+			'title' => $book[1],
+			'author' => $book[2],
+			'publisher' => $book[3],
+			'pubdate' => $book[4],
+			'cover' => $book[5]
+		];
+
+		if (isset($book[6]))
+			$record['quantity'] = $book[6];
+
 		return DB::table('book')
-			->insertGetId([
-				'isbn' => $book[0],
-				'title' => $book[1],
-				'author' => $book[2],
-				'publisher' => $book[3],
-				'pubdate' => $book[4],
-				'cover' => $book[5],
-				'quantity' => $book[6]
-			]);
+			->insertGetId($record);
 	}
 
 	public function addByRaw(Request $req)
@@ -89,6 +93,18 @@ class AdminBookController extends Controller
 
 	public function addByISBN(Request $req)
 	{
+		$affected = DB::table('book')
+			->where('isbn', $req->isbn)
+			->increment('quantity');
+
+		if ($affected == 1) {
+			return response()->json([
+				'errcode' => 0,
+				'data' => '书籍添加成功'
+			]);
+		}
+
+		// Book is not in the database
 		$book = Douban::getBook($req->isbn);
 
 		if (!$book) {
@@ -98,12 +114,11 @@ class AdminBookController extends Controller
 			]);
 		}
 
-		array_push($book, $req->quantity);
 		$bookID = $this->add($book);
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $bookID
+			'data' => '书籍新增成功，编号为 ' . $bookID
 		]);
 	}
 
