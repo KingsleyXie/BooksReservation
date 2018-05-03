@@ -33,6 +33,11 @@ return [
     */
 
     'channels' => [
+        'collision' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/collision.log')
+        ],
+
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],
