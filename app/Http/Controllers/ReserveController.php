@@ -10,17 +10,27 @@ class ReserveController extends Controller
 {
 	public function add(Request $req)
 	{
+		$collision = DB::table('book')
+			->where('quantity', '<=', 0)
+			->whereIn('id', $req->books)
+			->exists();
+
 		return response()->json([
 			'errcode' => 0,
-			'data' => array_values($req->books)
+			'data' => $collision
 		]);
 	}
 
 	public function modifyById(Request $req, $id)
 	{
+		$collision = DB::table('book')
+			->where('quantity', '<=', 0)
+			->whereIn('id', $req->books)
+			->exists();
+
 		return response()->json([
 			'errcode' => 0,
-			'data' => array_values($req->books)
+			'data' => $collision
 		]);
 	}
 }
