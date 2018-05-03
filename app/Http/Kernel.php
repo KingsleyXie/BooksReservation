@@ -63,5 +63,7 @@ class Kernel extends HttpKernel
         'admin.auth' => \App\Http\Middleware\AdminAuth::class,
         'reserve.add' => \App\Http\Middleware\ReserveAdd::class,
         'reserve.modify' => \App\Http\Middleware\ReserveModify::class,
+        'list' => \App\Http\Middleware\ListCheck::class,
+        'collision' => \App\Http\Middleware\CollisionCheck::class,
     ];
 }

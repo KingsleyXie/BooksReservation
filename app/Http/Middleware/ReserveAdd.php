@@ -21,23 +21,12 @@ class ReserveAdd
             $req->book2
         ];
 
-        $books = array_filter($books, function($val) {
-            return $val != 0;
-        });
+        // For list checker
+        $req->list = $books;
 
-        if (empty($books))
-            return response()->json([
-                'errcode' => 1,
-                'errmsg' => '预约列表内未包含有效书籍'
-            ]);
-
-        if ($books != array_unique($books))
-            return response()->json([
-                'errcode' => 2,
-                'errmsg' => '预约列表中存在重复书籍'
-            ]);
-
+        // For modify filter & collision checker
         $req->books = $books;
+
         return $next($req);
     }
 }

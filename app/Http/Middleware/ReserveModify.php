@@ -21,23 +21,12 @@ class ReserveModify
             $req->prebook2
         ];
 
-        $prebooks = array_filter($prebooks, function($val) {
-            return $val != 0;
-        });
+        // For list checker
+        $req->list = $prebooks;
 
-        if (empty($prebooks))
-            return response()->json([
-                'errcode' => 1,
-                'errmsg' => '修改列表内未包含有效书籍'
-            ]);
-
-        if ($prebooks != array_unique($prebooks))
-            return response()->json([
-                'errcode' => 2,
-                'errmsg' => '修改列表中存在重复书籍'
-            ]);
-
+        // For collision checker
         $req->books = array_diff($req->books, $prebooks);
+
         return $next($req);
     }
 }

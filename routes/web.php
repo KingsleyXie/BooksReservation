@@ -125,9 +125,9 @@ Route::get(
 Route::post(
 	'/api/user/reserve/add',
 	'ReserveController@add'
-)->middleware('reserve.add');
+)->middleware('reserve.add', 'list', 'collision');
 
 Route::post(
 	'/api/user/reserve/modify/{id}',
 	'ReserveController@modifyById'
-)->middleware('reserve.add', 'reserve.modify');
+)->middleware('reserve.add', 'reserve.modify', 'list', 'collision');
