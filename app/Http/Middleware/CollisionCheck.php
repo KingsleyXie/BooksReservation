@@ -31,7 +31,7 @@ class CollisionCheck
 
             return response()->json([
                 'errcode' => 1,
-                'data' => '列表中存在余量为0的书籍'
+                'data' => '列表中存在余量为 0 的书籍'
             ]);
         }
 

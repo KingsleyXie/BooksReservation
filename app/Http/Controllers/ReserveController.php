@@ -10,9 +10,15 @@ class ReserveController extends Controller
 {
 	public function add(Request $req)
 	{
+		return response()->json([
+			'errcode' => 0
+		]);
 	}
 
 	public function modifyById(Request $req, $id)
 	{
+		return response()->json([
+			'errcode' => 0
+		]);
 	}
 }

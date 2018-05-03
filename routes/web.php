@@ -27,7 +27,7 @@ Route::post(
 Route::get(
 	'/api/admin/logout',
 	'AdminSessionController@logout'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 /*
 ==================================================================
@@ -37,23 +37,23 @@ Route::get(
 Route::get(
 	'/api/admin/book/all',
 	'AdminBookController@index'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 Route::get(
 	'/api/admin/book/id/{id}',
 	'AdminBookController@getById'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 Route::get(
 	'/api/admin/book/page/{page}/limit/{limit}',
 	'AdminBookController@getByPage'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 // This Interface Is Currently Still Reserved
 Route::get(
 	'/api/admin/book/isbn/{isbn}',
 	'AdminBookController@searchByISBN'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 /*
 ==================================================================
@@ -63,17 +63,17 @@ Route::get(
 Route::post(
 	'/api/admin/book/add/raw',
 	'AdminBookController@addByRaw'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 Route::post(
 	'/api/admin/book/add/isbn',
 	'AdminBookController@addByISBN'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 Route::post(
 	'/api/admin/book/update/{id}',
 	'AdminBookController@updateById'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 /*
 ==================================================================
@@ -83,7 +83,7 @@ Route::post(
 Route::get(
 	'/api/admin/reservation/all',
 	'ReservationController@index'
-)->middleware('admin.auth');
+)->middleware('admin');
 
 
 
@@ -125,9 +125,13 @@ Route::get(
 Route::post(
 	'/api/user/reserve/add',
 	'ReserveController@add'
-)->middleware('reserve.add', 'list', 'collision');
+)->middleware(
+	'add', 'list', 'collision'
+);
 
 Route::post(
 	'/api/user/reserve/modify/{id}',
 	'ReserveController@modifyById'
-)->middleware('reserve.add', 'reserve.modify', 'list', 'collision');
+)->middleware(
+	'add', 'list', 'modify', 'list', 'collision'
+);

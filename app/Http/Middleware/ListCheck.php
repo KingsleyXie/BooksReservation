@@ -15,7 +15,9 @@ class ListCheck
      */
     public function handle($req, Closure $next)
     {
-        $list = array_filter($req->list, function($val) {
+        $list = $req->list;
+
+        $list = array_filter($list, function($val) {
             return $val != 0;
         });
 
