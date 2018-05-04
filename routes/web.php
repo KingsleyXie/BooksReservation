@@ -85,7 +85,7 @@ Route::post(
 Route::post(
 	'/api/admin/book/add/isbn',
 	'AdminBookController@addByISBN'
-)->middleware('admin', 'book');
+)->middleware('admin');
 
 Route::post(
 	'/api/admin/book/update/{id}',

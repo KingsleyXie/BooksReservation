@@ -1,16 +1,82 @@
 $(document).ready(function() {
+	updating = false;
+	prepare();
+	bind();
+
+	$.get('../api/admin/book/all', function(response) {
+		if (response.errcode == 0) {
+			$.each(response.data, function(i, book) {
+				var row = Math.round((parseInt(i) + 2) / 4);
+				if (i % 4 == 0)
+					$("#books").append(
+					'<div class="row" id="row' + row + '"></div>'
+					);
+
+				$("#row" + row).append(
+				'<div class="col s12 m3">' +
+					'<div class="card blue-grey darken-1">' +
+						'<div class="card-content white-text">' +
+							'<p class="right-align">#' + book.id + '</p>' +
+							'<div class="card-title book-title"' +
+							'onclick="showFullText(this)">' + book.title + '</div>' +
+							'<div class="card-details">' +
+								'<p>作者：' + book.author + '</p>' +
+								'<p>出版社：' + book.publisher + '</p>' +
+								'<p>出版日期：' + book.pubdate + '</p>' +
+								'<div class="admin-info">' +
+									'<p>剩余数量：' + book.quantity + '</p>' +
+									'<p>入库时间：' + book.imported + '</p>' +
+									'<p>更新时间：' + book.updated + '</p>' +
+								'</div>' +
+							'</div>' +
+						'</div>' +
+						'<div class="card-action center-align">' +
+							'<a class="cover" href=' + book.cover + '>' +
+								'触碰或点击查看封面图片' +
+								'<div class="cover-image">' +
+									'<img src=' + book.cover + ' alt="封面图片" >' +
+								'</div>' +
+							'</a>' +
+						'</div>' +
+					'</div>' +
+				'</div>');
+			});
+		} else {
+			Materialize.toast(response.errmsg, 3000);
+		}
+		$("#loading").hide();
+
+		if (response.errcode == -1) $("#login").show(1700);
+	});
+});
+
+function prepare() {
 	$(".button-collapse").sideNav();
 	$(".modal").modal();
 	$("select").material_select();
 
-	updating = false;
 	$("#loading").css("display", "flex");
-	$("#ISBN").bind('keypress',function(e) {
-		if(e.keyCode == 13) inputDataViaISBN();
-	});
 
 	$("#bookID").bind('keypress',function(e) {
 		if(e.keyCode == 13) getBookByID();
+	});
+
+	$("#barcode").modal({
+		ready: function() {
+			window.setTimeout(function () {
+				$("#isbn").focus();
+			}, 0);
+		}
+	});
+
+	$("#book").modal({
+		complete: function() {
+			window.location.href = 'books';
+		}
+	});
+
+	$("#return").click(function() {
+		$(".button-collapse").sideNav('hide');
 	});
 
 	$("#multi").change(function () {
@@ -26,81 +92,28 @@ $(document).ready(function() {
 			}
 		}
 	});
+}
 
-	$("#book").modal({
-		complete: function() {
-			window.location.href = 'books';
-		}
-	});
+function bind() {
+	$("#barcode").submit(function(e) {
+		e.preventDefault();
+		$("#progress").show();
 
-	$("#logout").click(function() {
-		$.get(
-			'../api/admin/logout',
+		$.post(
+			'../api/admin/book/add/isbn',
+			$(this).serialize(),
 			function(response) {
 				if (response.errcode == 0) {
-					Materialize.toast('退出系统成功', 1700);
-					setTimeout(function () {
-						window.location.href = 'books';
-					}, 2000);
+					Materialize.toast(response.data, 1700);
 				} else {
-					Materialize.toast(response.errmsg, 3000);
+					Materialize.toast(response.errmsg, 2000);
 				}
+
+				$("#isbn").val('');
+				$("#progress").hide();
 			}
 		);
 	});
-
-	$("#return").click(function() {
-		$(".button-collapse").sideNav('hide');
-	});
-
-	$.get(
-		'../api/admin/book/all',
-		function(response) {
-			if (response.errcode == 0) {
-				$.each(response.data, function(i, book) {
-					var row = Math.round((parseInt(i) + 2) / 4);
-					if (i % 4 == 0)
-						$("#books").append(
-						'<div class="row" id="row' + row + '"></div>'
-						);
-
-					$("#row" + row).append(
-					'<div class="col s12 m3">' +
-						'<div class="card blue-grey darken-1">' +
-							'<div class="card-content white-text">' +
-								'<p class="right-align">#' + book.id + '</p>' +
-								'<div class="card-title book-title"' +
-								'onclick="showFullText(this)">' + book.title + '</div>' +
-								'<div class="card-details">' +
-									'<p>作者：' + book.author + '</p>' +
-									'<p>出版社：' + book.publisher + '</p>' +
-									'<p>出版日期：' + book.pubdate + '</p>' +
-									'<div class="admin-info">' +
-										'<p>剩余数量：' + book.quantity + '</p>' +
-										'<p>入库时间：' + book.imported + '</p>' +
-										'<p>更新时间：' + book.updated + '</p>' +
-									'</div>' +
-								'</div>' +
-							'</div>' +
-							'<div class="card-action center-align">' +
-								'<a class="cover" href=' + book.cover + '>' +
-									'触碰或点击查看封面图片' +
-									'<div class="cover-image">' +
-										'<img src=' + book.cover + ' alt="封面图片" >' +
-									'</div>' +
-								'</a>' +
-							'</div>' +
-						'</div>' +
-					'</div>');
-				});
-			} else {
-				Materialize.toast(response.errmsg, 3000);
-			}
-			$("#loading").hide();
-
-			if (response.errcode == -1) $("#login").show(1700);
-		}
-	);
 
 	$("#book").submit(function(e) {
 		e.preventDefault();
@@ -138,51 +151,22 @@ $(document).ready(function() {
 			}
 		);
 	});
-});
 
-function update() {
-	updating = true;
-	$("#update-init").show();
-	$("#add-init").hide();
-	$("#form-btn").text('确认更新');
-	$("#form-title").text('更新书籍信息');
-	$("#book").modal('open');
-}
-
-function inputDataManually() {
-	$("#add-init").hide(700);
-	$("#update-init").hide(700);
-	$("#book-info").show(700);
-	window.setTimeout(function () {
-		$("#remaining-amount").focus();
-	}, 0);
-}
-
-function inputDataViaISBN() {
-	$("#progress").show();
-	$.post(
-		'../assets/API/ISBN_API.php',
-		'ISBN=' + $("#ISBN").val(),
-		function(response) {
-			if (response.errcode == 0) {
-				$("#title").val(response.title);
-				$("label[for=title]").addClass("active");
-				$("#author").val(response.author);
-				$("label[for=author]").addClass("active");
-				$("#press").val(response.press);
-				$("label[for=press]").addClass("active");
-				$("#pubdate").val(response.pubdate);
-				$("label[for=pubdate]").addClass("active");
-				$("#image").val(response.image);
-				$("#is-multiple-author").prop("checked", parseInt(response.isMultipleAuthor));
-			} else {
-				Materialize.toast(response.errmsg, 3000);
-				$("#ISBN").val('');
+	$("#logout").click(function() {
+		$.get(
+			'../api/admin/logout',
+			function(response) {
+				if (response.errcode == 0) {
+					Materialize.toast('退出系统成功', 1700);
+					setTimeout(function () {
+						window.location.href = 'books';
+					}, 2000);
+				} else {
+					Materialize.toast(response.errmsg, 3000);
+				}
 			}
-			$("#progress").hide();
-			inputDataManually();
-		}
-	);
+		);
+	});
 }
 
 function getBookByID() {
@@ -207,11 +191,20 @@ function getBookByID() {
 				$("#multi").prop("checked",
 					book.author.indexOf(' 等') == book.author.length - 2
 				);
-				inputDataManually();
+
+				updating = true;
+				$("#form-btn").text('确认更新');
+				$("#form-title").text('更新书籍信息');
+				$("#progress").hide();
+				$("#update").modal('close');
+				$("#book").modal('open');
+
+				window.setTimeout(function () {
+					$("#quantity").focus();
+				}, 0);
 			} else {
 				Materialize.toast(response.errmsg, 3000);
 			}
-			$("#progress").hide();
 		}
 	);
 }

@@ -166,34 +166,34 @@
 
 	<form class="modal" id="barcode">
 		<div class="modal-content">
-			<h5 id="form-title">扫码录入</h5>
-
-			<div class="progress" id="progress">
-				<div class="indeterminate"></div>
-			</div>
+			<h5>扫码录入</h5>
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input type="text" id="isbn">
+					<input type="text" id="isbn" name="isbn">
 					<label for="isbn">图书 ISBN</label>
 				</div>
+			</div>
+
+			<div class="progress" id="progress">
+				<div class="indeterminate"></div>
 			</div>
 		</div>
 	</form>
 
 	<div class="modal" id="update">
 		<div class="modal-content">
-			<h5 id="form-title">更新书籍信息</h5>
-
-			<div class="progress" id="progress">
-				<div class="indeterminate"></div>
-			</div>
+			<h5>更新书籍信息</h5>
 
 			<div class="row">
 				<div class="input-field col s12">
 					<input type="text" id="bookID">
 					<label for="bookID">请输入书籍 ID </label>
 				</div>
+			</div>
+
+			<div class="progress" id="progress">
+				<div class="indeterminate"></div>
 			</div>
 
 			<div class="center">
@@ -206,11 +206,7 @@
 		<div class="modal-content">
 			<h5 id="form-title">新增书籍</h5>
 
-			<div class="progress" id="progress">
-				<div class="indeterminate"></div>
-			</div>
-
-			<div class="center book-info" id="book-info">
+			<div class="center">
 				<div class="row">
 					<div class="input-field col s5">
 						<input type="text" id="title" name="title">
