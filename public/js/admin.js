@@ -13,6 +13,20 @@ $(document).ready(function() {
 		if(e.keyCode == 13) getBookByID();
 	});
 
+	$("#multi").change(function () {
+		var txt = $("#author").val();
+
+		if ($(this).prop('checked')) {
+			$("label[for=author]").addClass("active");
+			$("#author").val(txt + ' 等');
+		} else {
+			var len = txt.length - 2;
+			if (txt.indexOf(' 等') == len) {
+				$("#author").val(txt.substr(0, len));
+			}
+		}
+	});
+
 	$("#book").modal({
 		complete: function() {
 			window.location.href = 'books';
