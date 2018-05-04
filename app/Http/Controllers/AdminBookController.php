@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AdminBook as AdminBookResource;
 use App\Http\Controllers\DoubanAPIHandler as Douban;
 
 class AdminBookController extends Controller
@@ -17,7 +18,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $books
+			'data' => AdminBookResource::collection($books)
 		]);
 	}
 
@@ -36,7 +37,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $book
+			'data' => new AdminBookResource($book)
 		]);
 	}
 
@@ -50,7 +51,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $books
+			'data' => AdminBookResource::collection($books)
 		]);
 	}
 
@@ -156,7 +157,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $book
+			'data' => new AdminBookResource($book)
 		]);
 	}
 }
