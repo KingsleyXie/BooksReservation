@@ -89,7 +89,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => $bookID
+			'data' => '书籍新增成功，编号为 ' . $bookID
 		]);
 	}
 
@@ -138,7 +138,8 @@ class AdminBookController extends Controller
 			]);
 
 		return response()->json([
-			'errcode' => 0
+			'errcode' => 0,
+			'data' => '书籍信息修改成功'
 		]);
 	}
 

@@ -84,23 +84,21 @@ $(document).ready(function() {
 
 	$("#book").submit(function(e) {
 		e.preventDefault();
-		if ($("#book-info").css("display") == "block"
-			&& check()) {
-			$.post(
-				'../assets/API/admin.php',
-				$(this).serialize() + '&operation=' + (updating ? 'update' : 'add'),
-				function(response) {
-					if (response.code == 0) {
-						Materialize.toast('书籍' + (updating ? '信息更新' : '添加')  + '成功！', 1700);
-						window.setTimeout(function() {
-							window.location.href = './';
-						}, 2000);
-					} else {
-						Materialize.toast(response.errmsg, 3000);
-					}
+		$.post(
+			'../api/admin/book/' +
+			(updating ? 'update/' + $("#bookID").val() : 'add/raw'),
+			$(this).serialize(),
+			function(response) {
+				if (response.errcode == 0) {
+					Materialize.toast(response.data, 1700);
+					window.setTimeout(function() {
+						window.location.href = 'books';
+					}, 2000);
+				} else {
+					Materialize.toast(response.errmsg, 3000);
 				}
-			);
-		}
+			}
+		);
 	});
 
 	$("#login").submit(function(e) {
@@ -173,21 +171,22 @@ function getBookByID() {
 		'../api/admin/book/id/' + $("#bookID").val(),
 		function(response) {
 			if (response.errcode == 0) {
-				book = response[0];
+				var book = response.data;
 				$("#title").val(book.title);
 				$("label[for=title]").addClass("active");
 				$("#author").val(book.author);
 				$("label[for=author]").addClass("active");
-				$("#press").val(book.press);
-				$("label[for=press]").addClass("active");
+				$("#publisher").val(book.publisher);
+				$("label[for=publisher]").addClass("active");
 				$("#pubdate").val(book.pubdate);
 				$("label[for=pubdate]").addClass("active");
-				$("#image").val(book.image);
-				$("#remaining-amount").val(book.remainingAmount);
-				$("#" + (book.bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
+				$("#cover").val(book.cover);
+				$("#quantity").val(book.quantity);
+				$("label[for=quantity]").addClass("active");
 
-				$("#is-multiple-author").prop("checked", parseInt(book.isMultipleAuthor));
-				
+				$("#multi").prop("checked",
+					book.author.indexOf(' 等') == book.author.length - 2
+				);
 				inputDataManually();
 			} else {
 				Materialize.toast(response.errmsg, 3000);
