@@ -73,7 +73,7 @@ $(document).ready(function() {
 				});
 			} else {
 				if (response.errcode == -1) window.location.href = 'books';
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#loading").hide();
 		}

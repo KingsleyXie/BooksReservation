@@ -2,20 +2,28 @@ $(document).ready(function() {
 	$(".button-collapse").sideNav();
 	$(".modal").modal();
 	$("select").material_select();
-	
+
 	updating = false;
 	$("#loading").css("display", "flex");
-	$("#ISBN").bind('keypress',function(e) { if(e.keyCode == 13) inputDataViaISBN(); });
-	$("#bookID").bind('keypress',function(e) { if(e.keyCode == 13) getBookByID(); });
-	$("#book").modal({complete: function() {window.location.href = './';}});
+	$("#ISBN").bind('keypress',function(e) {
+		if(e.keyCode == 13) inputDataViaISBN();
+	});
 
-	$.post(
-		'../assets/API/admin.php',
-		'operation=books',
+	$("#bookID").bind('keypress',function(e) {
+		if(e.keyCode == 13) getBookByID();
+	});
+
+	$("#book").modal({
+		complete: function() {
+			window.location.href = './';
+		}
+	});
+
+	$.get(
+		'../api/admin/book/all',
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
 				$.each(response, function(i, book) {
-					if (i == 'code') return true;
 					rowNo = Math.round((parseInt(i) + 2) / 4);
 					if (i % 4 == 0)
 						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');
@@ -59,11 +67,11 @@ $(document).ready(function() {
 					'</div>');
 				});
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#loading").hide();
 
-			if (response.code == 5) $("#login").show(1700);
+			if (response.errcode == -1) $("#login").show(1700);
 		}
 	);
 
@@ -81,7 +89,7 @@ $(document).ready(function() {
 							window.location.href = './';
 						}, 2000);
 					} else {
-						Materialize.toast(response.errMsg, 3000);
+						Materialize.toast(response.errmsg, 3000);
 					}
 				}
 			);
@@ -91,16 +99,16 @@ $(document).ready(function() {
 	$("#login").submit(function(e) {
 		e.preventDefault();
 		$.post(
-			'../assets/API/admin.php',
-			$(this).serialize() + '&operation=login',
+			'../api/admin/login',
+			$(this).serialize(),
 			function(response) {
-				if (response.code == 0) {
+				if (response.errcode == 0) {
 					Materialize.toast('登录成功！', 1700);
 					setTimeout(function () {
-						window.location.href = './';
+						window.location.href = 'books';
 					}, 2000);
 				} else {
-					Materialize.toast(response.errMsg, 3000);
+					Materialize.toast(response.errmsg, 3000);
 				}
 			}
 		);
@@ -143,7 +151,7 @@ function inputDataViaISBN() {
 				$("#image").val(response.image);
 				$("#is-multiple-author").prop("checked", parseInt(response.isMultipleAuthor));
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 				$("#ISBN").val('');
 			}
 			$("#progress").hide();
@@ -202,7 +210,7 @@ function getBookByID() {
 				
 				inputDataManually();
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#progress").hide();
 		}
@@ -244,14 +252,17 @@ function returnToMainPage() {
 }
 
 function logout() {
-	$.post(
-		'../assets/API/admin.php',
-		'operation=logout',
+	$.get(
+		'../api/admin/logout',
 		function(response) {
-			Materialize.toast('退出系统成功', 1700);
-			setTimeout(function () {
-				window.location.href = './';
-			}, 2000);
+			if (response.code == 0) {
+				Materialize.toast('退出系统成功', 1700);
+				setTimeout(function () {
+					window.location.href = 'books';
+				}, 2000);
+			} else {
+				Materialize.toast(response.errmsg, 3000);
+			}
 		}
 	);
 }
