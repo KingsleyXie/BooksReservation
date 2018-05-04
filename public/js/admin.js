@@ -15,7 +15,7 @@ $(document).ready(function() {
 
 	$("#book").modal({
 		complete: function() {
-			window.location.href = './';
+			window.location.href = 'books';
 		}
 	});
 
@@ -23,47 +23,40 @@ $(document).ready(function() {
 		'../api/admin/book/all',
 		function(response) {
 			if (response.errcode == 0) {
-				$.each(response, function(i, book) {
-					rowNo = Math.round((parseInt(i) + 2) / 4);
+				$.each(response.data, function(i, book) {
+					var row = Math.round((parseInt(i) + 2) / 4);
 					if (i % 4 == 0)
-						$("#books").append('<div class="row" id="row' + rowNo + '"></div>');
+						$("#books").append(
+						'<div class="row" id="row' + row + '"></div>'
+						);
 
-					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
-					Category = book.bookCategory == 'CategoryA' ?
-						'<p>分类：教材课本</p><p>年级：' + book.grade +
-						'&nbsp;&nbsp;&nbsp;专业：' + book.major + '</p>' :
-						'<p>分类：课外书籍</p><p>详细类别：' + book.extracurricularCategory + '</p>';
-
-					if (book.image == './assets/pictures/defaultCover.png') {
-						book.image = '../assets/pictures/defaultCover.png'
-					}
-
-					$("#row" + rowNo).append(
-					'<div class="col s12 m3">' + 
-						'<div class="card blue-grey darken-1">' + 
-							'<div class="card-content white-text">' + 
-								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' + 
-								'<div class="card-details">' + 
-									'<p>作者：' + book.author + MultipleAuthor + '</p>' + 
-									'<p>出版社：' + book.press + '</p>' + 
-									'<p>出版日期：' + book.pubdate + '</p>' + 
-									'<div class="admin-info">' + 
-										'<p>书籍 ID：' + book.bookID + '</p>' + 
-										'<p>剩余数量：' + book.remainingAmount + '</p>' + Category +
-										'<p>入库时间：' + book.importTime + '</p>' + 
-										'<p>更新时间：' + book.updateTime + '</p>' + 
-									'</div>' + 
-								'</div>' + 
-							'</div>' + 
-							'<div class="card-action center-align">' + 
-								'<a class="cover" href=' + book.image + '>' + 
-									'触碰或点击查看封面图片' + 
-									'<div class="cover-image">' + 
-										'<img src=' + book.image + ' alt="封面图片" >' + 
-									'</div>' + 
-								'</a>' + 
-							'</div>' + 
-						'</div>' + 
+					$("#row" + row).append(
+					'<div class="col s12 m3">' +
+						'<div class="card blue-grey darken-1">' +
+							'<div class="card-content white-text">' +
+								'<p class="right-align">#' + book.id + '</p>' +
+								'<div class="card-title book-title"' +
+								'onclick="showFullText(this)">' + book.title + '</div>' +
+								'<div class="card-details">' +
+									'<p>作者：' + book.author + '</p>' +
+									'<p>出版社：' + book.publisher + '</p>' +
+									'<p>出版日期：' + book.pubdate + '</p>' +
+									'<div class="admin-info">' +
+										'<p>剩余数量：' + book.quantity + '</p>' +
+										'<p>入库时间：' + book.imported + '</p>' +
+										'<p>更新时间：' + book.updated + '</p>' +
+									'</div>' +
+								'</div>' +
+							'</div>' +
+							'<div class="card-action center-align">' +
+								'<a class="cover" href=' + book.cover + '>' +
+									'触碰或点击查看封面图片' +
+									'<div class="cover-image">' +
+										'<img src=' + book.cover + ' alt="封面图片" >' +
+									'</div>' +
+								'</a>' +
+							'</div>' +
+						'</div>' +
 					'</div>');
 				});
 			} else {
@@ -255,7 +248,7 @@ function logout() {
 	$.get(
 		'../api/admin/logout',
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
 				Materialize.toast('退出系统成功', 1700);
 				setTimeout(function () {
 					window.location.href = 'books';
