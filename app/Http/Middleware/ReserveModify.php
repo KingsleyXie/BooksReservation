@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Validator;
 
 class ReserveModify
 {
@@ -15,6 +16,21 @@ class ReserveModify
      */
     public function handle($req, Closure $next)
     {
+        $validator = Validator::make(
+            $req->all(), [
+                'prebook0' => 'required',
+                'prebook1' => 'required',
+                'prebook2' => 'required'
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errcode' => 2,
+                'data' => '缺少必要参数'
+            ]);
+        }
+
         $prebooks = [
             $req->prebook0,
             $req->prebook1,

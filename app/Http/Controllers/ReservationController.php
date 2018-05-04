@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
 use App\Http\Resources\Reservation as ReservationResource;
 use App\Http\Resources\UserBook as UserBookResource;
 
@@ -53,8 +52,8 @@ class ReservationController extends Controller
 
 		if ($reservation == null) {
 			return response()->json([
-				'errcode' => 1,
-				'errmsg' => '未找到对应订单信息'
+				'errcode' => 5,
+				'errmsg' => '未找到对应的订单信息'
 			]);
 		}
 

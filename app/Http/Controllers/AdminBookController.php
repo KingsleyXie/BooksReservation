@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
 use App\Http\Controllers\DoubanAPIHandler as Douban;
 
 class AdminBookController extends Controller
@@ -30,7 +29,7 @@ class AdminBookController extends Controller
 
 		if ($book == null) {
 			return response()->json([
-				'errcode' => 1,
+				'errcode' => 9,
 				'errmsg' => '未找到对应书籍信息'
 			]);
 		}
@@ -109,8 +108,8 @@ class AdminBookController extends Controller
 
 		if (!$book) {
 			return response()->json([
-				'errcode' => 1,
-				'errmsg' => '未找到对应书籍信息，请手动录入相关数据'
+				'errcode' => 10,
+				'errmsg' => '请稍后手动录入此书相关数据'
 			]);
 		}
 
@@ -146,8 +145,8 @@ class AdminBookController extends Controller
 
 		if (!$book) {
 			return response()->json([
-				'errcode' => 1,
-				'errmsg' => '未找到对应书籍信息，请手动录入相关数据'
+				'errcode' => 11,
+				'errmsg' => '未找到对应书籍信息'
 			]);
 		}
 

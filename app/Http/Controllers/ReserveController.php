@@ -16,7 +16,7 @@ class ReserveController extends Controller
 
 		if ($exists) {
 			return response()->json([
-				'errcode' => 1,
+				'errcode' => 6,
 				'data' => '该学号已存在预约订单！'
 			]);
 		}
@@ -58,7 +58,7 @@ class ReserveController extends Controller
 
 		if (!$exists) {
 			return response()->json([
-				'errcode' => 1,
+				'errcode' => 7,
 				'data' => '未找到该学号对应的订单信息！'
 			]);
 		}

@@ -24,13 +24,13 @@ class CollisionCheck
             ->exists();
 
         if ($collision) {
-            $notice = json_encode([
-                $req->stuno, $req->stuname, $req->books
-            ]);
+            $notice = "$req->stuno $req->stuname ";
+            $notice .= implode(', ', $req->books);
+
             Log::channel('collision')->notice($notice);
 
             return response()->json([
-                'errcode' => 1,
+                'errcode' => -1,
                 'data' => '列表中存在余量为 0 的书籍'
             ]);
         }

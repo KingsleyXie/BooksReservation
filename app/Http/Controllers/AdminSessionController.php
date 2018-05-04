@@ -19,7 +19,7 @@ class AdminSessionController extends Controller
 		if (!(($req->username == $username)
 			&& password_verify($req->password, $hash)))
 			return response()->json([
-				'errcode' => 1,
+				'errcode' => 8,
 				'errmsg' => '用户名或密码错误！'
 			]);
 

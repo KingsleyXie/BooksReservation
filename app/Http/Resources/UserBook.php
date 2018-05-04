@@ -15,13 +15,13 @@ class UserBook extends JsonResource
 	public function toArray($request)
 	{
 		return [
-			'id' => $this->id,
-			'title' => $this->title,
-			'author' => $this->author,
-			'publisher' => $this->publisher,
-			'pubdate' => $this->pubdate,
-			'cover' => $this->cover,
-			'quantity' => $this->quantity
+			'id' => htmlspecialchars($this->id),
+			'title' => htmlspecialchars($this->title),
+			'author' => htmlspecialchars($this->author),
+			'publisher' => htmlspecialchars($this->publisher),
+			'pubdate' => htmlspecialchars($this->pubdate),
+			'cover' => htmlspecialchars($this->cover),
+			'quantity' => htmlspecialchars($this->quantity)
 		];
 	}
 }

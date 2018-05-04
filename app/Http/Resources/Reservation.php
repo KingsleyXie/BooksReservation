@@ -15,15 +15,15 @@ class Reservation extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'stuname' => $this->stuname,
-            'stuno' => $this->stuno,
-            'dorm' => $this->dorm,
-            'contact' => $this->contact,
-            'takeday' => $this->takeday,
-            'taketime' => $this->taketime,
-            'submited' => $this->submited,
-            'updated' => $this->updated,
+            'id' => htmlspecialchars($this->id),
+            'stuname' => htmlspecialchars($this->stuname),
+            'stuno' => htmlspecialchars($this->stuno),
+            'dorm' => htmlspecialchars($this->dorm),
+            'contact' => htmlspecialchars($this->contact),
+            'takeday' => htmlspecialchars($this->takeday),
+            'taketime' => htmlspecialchars($this->taketime),
+            'submited' => htmlspecialchars($this->submited),
+            'updated' => htmlspecialchars($this->updated),
             'books' => []
         ];
     }

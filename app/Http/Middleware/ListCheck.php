@@ -23,14 +23,14 @@ class ListCheck
 
         if (empty($list)) {
             return response()->json([
-                'errcode' => 1,
+                'errcode' => 3,
                 'errmsg' => '列表内未包含有效书籍'
             ]);
         }
 
         if ($list != array_unique($list)) {
             return response()->json([
-                'errcode' => 2,
+                'errcode' => 4,
                 'errmsg' => '列表中存在重复书籍'
             ]);
         }
