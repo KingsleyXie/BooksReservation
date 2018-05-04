@@ -2,18 +2,16 @@ $(document).ready(function() {
 	$(".button-collapse").sideNav();
 	$(".modal").modal();
 	$("#loading").css("display", "flex");
-	
-	$.post(
-		'../assets/API/reservations.php',
-		'operation=all',
+
+	$.get(
+		'../api/admin/reservation/all',
 		function(response) {
-			if (response.code == 0) {
-				$.each(response, function(index, reservation) {
-					if (index == 'code') return true;
+			if (response.errcode == 0) {
+				$.each(response.data, function(index, reservation) {
 					$("#reservations").append(
 					'<div class="card">' +
 						'<div class="card-content">' +
-							'<div class="card-title">订单号：' + reservation.reservationNo + '</div>' +
+							'<div class="card-title">订单号：' + reservation.id + '</div>' +
 							'<div class="card-details">' +
 								'<table class="highlight responsive-table">' +
 									'<thead>' +
@@ -30,47 +28,42 @@ $(document).ready(function() {
 									'</thead>' +
 									'<tbody>' +
 										'<tr>' +
-											'<td>' + reservation.stuName + '</td>' +
-											'<td>' + reservation.stuNo + '</td>' +
+											'<td>' + reservation.stuname + '</td>' +
+											'<td>' + reservation.stuno + '</td>' +
 											'<td>' + reservation.contact + '</td>' +
-											'<td>' + reservation.dormitory + '</td>' +
-											'<td>' + reservation.date + '</td>' +
-											'<td>' + reservation.timePeriod + '</td>' +
-											'<td>' + reservation.sbmTime + '</td>' +
-											'<td>' + reservation.updTime + '</td>' +
+											'<td>' + reservation.dorm + '</td>' +
+											'<td>' + reservation.takeday + '</td>' +
+											'<td>' + reservation.taketime + '</td>' +
+											'<td>' + reservation.submited + '</td>' +
+											'<td>' + reservation.updated + '</td>' +
 										'</tr>' +
 									'</tbody>' +
 								'</table>' +
 								'<div class="section">' +
 									'<div class="card-title">预约书籍信息：</div>' +
-									'<div class="row" id="reserved-books-for' + reservation.reservationNo + '"></div>' +
+									'<div class="row" id="reserved-books-for' + reservation.id + '"></div>' +
 								'</div>' +
 							'</div>' +
 						'</div>' +
 					'</div>');
 
 					$.each(reservation.books, function(i, book) {
-						MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
-						if (book.image == './assets/pictures/defaultCover.png') {
-								book.image = '../assets/pictures/defaultCover.png'
-						}
-
-						$("#reserved-books-for" + reservation.reservationNo).append(
+						$("#reserved-books-for" + reservation.id).append(
 						'<div class="col s12 m4">' +
 							'<div class="card blue-grey darken-1">' +
 								'<div class="card-content white-text">' +
-									'<div class="card-title book-title" onclick="showFullText(this)">#' + book.bookID + ' ' + book.title +
+									'<div class="card-title book-title" onclick="showFullText(this)">#' + book.id + ' ' + book.title +
 									'</div>' +
 									'<div class="card-details">' +
-										'<p>作者：' + book.author + MultipleAuthor + '</p>' +
-										'<p>出版社：' + book.press + '</p>' +
+										'<p>作者：' + book.author + '</p>' +
+										'<p>出版社：' + book.publisher + '</p>' +
 										'<p>出版日期：' + book.pubdate + '</p>' +
 									'</div>' +
 								'</div>' +
 								'<div class="card-action center-align">' +
-									'<a class="cover-reservation" href="' + book.image + '">触碰或点击查看封面图片' +
+									'<a class="cover-reservation" href="' + book.cover + '">触碰或点击查看封面图片' +
 										'<div class="cover-image-reservation">' +
-											'<img src="' + book.image + '" alt="封面图片">' +
+											'<img src="' + book.cover + '" alt="封面图片">' +
 										'</div>' +
 									'</a>' +
 								'</div>' +
@@ -79,7 +72,7 @@ $(document).ready(function() {
 					});
 				});
 			} else {
-				if (response.code == 2) window.location.href = './';
+				if (response.errcode == -1) window.location.href = 'books';
 				Materialize.toast(response.errMsg, 3000);
 			}
 			$("#loading").hide();
