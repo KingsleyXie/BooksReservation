@@ -77,7 +77,7 @@
 			<nav>
 				<div class="nav-wrapper">
 					<div class="brand-logo center">书籍信息</div>
-					
+
 					<a class="button-collapse" data-activates="mobile-menu">
 						<i class="material-icons right">menu</i>
 					</a>
@@ -130,11 +130,11 @@
 	</header>
 
 	<form class="row login" id="login">
-		<div class="card-panel">	
+		<div class="card-panel">
 			<div class="row center">
 				<h5>管理员登录</h5>
 			</div>
-			
+
 			<div class="row">
 				<div class="input-field col s12">
 					<input type="text" name="username" required>
@@ -166,7 +166,7 @@
 					<div class="input-field col s12">
 						<input type="text" id="ISBN" name="ISBN">
 						<label for="ISBN">请输入待添加书籍的 ISBN</label>
-					</div>					
+					</div>
 				</div>
 
 				<div class="center">
@@ -209,15 +209,15 @@
 					</div>
 
 					<div class="input-field col s3">
-						<input type="checkbox" id="is-multiple-author" name="isMultipleAuthor">
-						<label for="is-multiple-author">多作者</label>
+						<input type="checkbox" id="multi">
+						<label for="multi">多作者</label>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="input-field col s7">
-						<input type="text" id="press" name="press">
-						<label for="press">出版社</label>
+						<input type="text" id="publisher" name="publisher">
+						<label for="publisher">出版社</label>
 					</div>
 
 					<div class="input-field col s5">
@@ -228,61 +228,13 @@
 
 				<div class="row">
 					<div class="input-field col s3">
-						<input type="number" id="remaining-amount" name="remainingAmount">
-						<label for="remaining-amount">数量</label>
+						<input type="number" id="quantity" name="quantity">
+						<label for="quantity">数量</label>
 					</div>
 
 					<div class="input-field col s9">
-						<input type="text" id="image" name="image" placeholder="https://upload.wikimedia.org/wikipedia/commons/2/2c/JZM1947.jpg">
-						<label for="image">封面图片链接（参照下方示例，非必填项）</label>
-					</div>
-				</div>
-				
-				<div class="row">
-					<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id);">
-					<label for="categoryA">教材课本</label>
-
-					<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id);">
-					<label for="categoryB">课外书籍</label>
-				</div>
-			</div>
-
-			<div class="book-categoryA" id="book-categoryA">
-				<div class="row">
-					<div class="input-field col s6 selection">
-						<select id="grade" name="grade">
-							<option value="" disabled selected>请选择年级：</option>
-							<option value="不限">不限</option>
-							<option value="大一">大一</option>
-							<option value="大二">大二</option>
-							<option value="大三">大三</option>
-							<option value="大四">大四</option>
-						</select>
-					</div>
-
-					<div class="input-field col s6 selection">
-						<select id="major" name="major">
-							<option value="" disabled selected>请选择专业：</option>
-							<option value="不限">不限</option>
-							<option value="计科">计科</option>
-							<option value="信安">信安</option>
-							<option value="网工">网工</option>
-							<option value="计联计创">计联计创</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="book-categoryB" id="book-categoryB">
-				<div class="row">
-					<div class="input-field col s12 selection">
-						<select id="extracurricular-category" name="extracurricularCategory">
-							<option value="" disabled selected>请选择详细类别：</option>
-							<option value="文学类书籍">文学类书籍</option>
-							<option value="计算机专业类书籍">计算机专业类书籍</option>
-							<option value="学习辅导资料">学习辅导资料</option>
-							<option value="其它">其它</option>
-						</select>
+						<input type="text" id="cover" name="cover" value="../pictures/default.png">
+						<label for="cover">封面图片链接</label>
 					</div>
 				</div>
 			</div>

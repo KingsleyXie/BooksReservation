@@ -132,7 +132,7 @@ function inputDataViaISBN() {
 		'../assets/API/ISBN_API.php',
 		'ISBN=' + $("#ISBN").val(),
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
 				$("#title").val(response.title);
 				$("label[for=title]").addClass("active");
 				$("#author").val(response.author);
@@ -153,27 +153,12 @@ function inputDataViaISBN() {
 	);
 }
 
-function selectCategory(val) {
-	switch(val) {
-		case 'categoryA':
-			$("#book-categoryB").hide(300);
-			$("#book-categoryA").show(300);
-			break;
-		case 'categoryB':
-			$("#book-categoryA").hide(300);
-			$("#book-categoryB").show(300);
-			break;
-	}
-	$("#form-btn").show();
-}
-
 function getBookByID() {
 	$("#progress").show();
-	$.post(
-		'../assets/API/admin.php',
-		'operation=books&bookID=' + $("#bookID").val(),
+	$.get(
+		'../api/admin/book/id/' + $("#bookID").val(),
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
 				book = response[0];
 				$("#title").val(book.title);
 				$("label[for=title]").addClass("active");
@@ -187,18 +172,6 @@ function getBookByID() {
 				$("#remaining-amount").val(book.remainingAmount);
 				$("#" + (book.bookCategory == 'CategoryA' ? 'categoryA' : 'categoryB')).prop("checked", true);
 
-				switch(book.bookCategory) {
-					case 'CategoryA':
-						selectCategory('categoryA');
-						$("#grade").val(book.grade).material_select();
-						$("#major").val(book.major).material_select();
-						break;
-					case 'CategoryB':
-						selectCategory('categoryB');
-						$("#extracurricular-category").val(book.extracurricularCategory).material_select();
-						break;
-				}
-
 				$("#is-multiple-author").prop("checked", parseInt(book.isMultipleAuthor));
 				
 				inputDataManually();
@@ -208,31 +181,6 @@ function getBookByID() {
 			$("#progress").hide();
 		}
 	);
-}
-
-function check() {
-	if ($("#title").val() == ''
-		|| $("#author").val() == ''
-		|| $("#press").val() == ''
-		|| $("#pubdate").val() == ''
-		|| $("#remaining-amount").val() == ''
-		|| !($("#categoryA").prop("checked")
-		|| $("#categoryB").prop("checked"))) {
-			alert('请将书籍信息填写完整！');
-			return false;
-	}
-	if ($("#categoryA").prop("checked")
-		&& ($("#grade").val() == ''
-		|| $("#major").val() == '')) {
-			alert('请将分类信息填写完整！');
-			return false;
-	}
-	if ($("#categoryB").prop("checked")
-		&& $("#extracurricular-category").val() == '') {
-			alert('请将分类信息填写完整！');
-			return false;
-	}
-	return true;
 }
 
 function showFullText(val) {

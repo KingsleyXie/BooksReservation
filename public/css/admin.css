@@ -102,10 +102,7 @@ th {
 }
 .progress,
 .book-info,
-.book-categoryA,
-.book-categoryB,
-.update-init,
-.form-btn {
+.update-init {
 	display: none;
 }
 .login {
