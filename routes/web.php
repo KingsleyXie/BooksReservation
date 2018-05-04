@@ -63,17 +63,17 @@ Route::get(
 Route::post(
 	'/api/admin/book/add/raw',
 	'AdminBookController@addByRaw'
-)->middleware('admin');
+)->middleware('admin', 'book');
 
 Route::post(
 	'/api/admin/book/add/isbn',
 	'AdminBookController@addByISBN'
-)->middleware('admin');
+)->middleware('admin', 'book');
 
 Route::post(
 	'/api/admin/book/update/{id}',
 	'AdminBookController@updateById'
-)->middleware('admin');
+)->middleware('admin', 'book');
 
 /*
 ==================================================================
