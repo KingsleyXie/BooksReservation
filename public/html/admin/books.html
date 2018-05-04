@@ -83,26 +83,33 @@
 					</a>
 
 					<ul class="right hide-on-med-and-down">
-						<li><a href="#book">新增书籍</a></li>
-						<li><a href="#" onclick="update(); return false;">更新书籍信息</a></li>
+						<li><a href="#barcode">扫码录入</a></li>
+						<li><a href="#book">手动新增</a></li>
+						<li><a href="#update">更新书籍信息</a></li>
 						<li><a href="reservations">查看所有订单</a></li>
-						<li><a href="#" onclick="logout(); return false;">退出管理系统</a></li>
+						<li><a id="logout">退出管理系统</a></li>
 					</ul>
 				</div>
 			</nav>
 		</div>
-		
+
 		<ul class="side-nav" id="mobile-menu">
 			<div class="brand"></div>
 
 			<li>
 				<a href="#book">
-					<i class="material-icons left">add_box</i>新增书籍
+					<i class="material-icons left">add_box</i>扫码录入
 				</a>
 			</li>
 
 			<li>
-				<a href="#" onclick="update(); return false;">
+				<a href="#book">
+					<i class="material-icons left">add_box</i>手动新增
+				</a>
+			</li>
+
+			<li>
+				<a href="#update">
 					<i class="material-icons left">edit</i>更新书籍信息
 				</a>
 			</li>
@@ -114,13 +121,13 @@
 			</li>
 
 			<li>
-				<a href="#" onclick="logout(); return false;">
+				<a id="logout">
 					<i class="material-icons left">highlight_off</i>退出管理系统
 				</a>
 			</li>
 
 			<li>
-				<a onclick="returnToMainPage();">
+				<a id="return">
 					<i class="material-icons">navigate_before</i>返回
 				</a>
 			</li>
@@ -157,40 +164,47 @@
 		</div>
 	</form>
 
+	<form class="modal" id="barcode">
+		<div class="modal-content">
+			<h5 id="form-title">扫码录入</h5>
+
+			<div class="progress" id="progress">
+				<div class="indeterminate"></div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" id="isbn">
+					<label for="isbn">图书 ISBN</label>
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div class="modal" id="update">
+		<div class="modal-content">
+			<h5 id="form-title">更新书籍信息</h5>
+
+			<div class="progress" id="progress">
+				<div class="indeterminate"></div>
+			</div>
+
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" id="bookID">
+					<label for="bookID">请输入书籍 ID </label>
+				</div>
+			</div>
+
+			<div class="center">
+				<a class="waves-effect waves-light btn" onclick="getBookByID();">确定</a>
+			</div>
+		</div>
+	</div>
+
 	<form class="modal" id="book">
 		<div class="modal-content">
 			<h5 id="form-title">新增书籍</h5>
-
-			<div id="add-init">
-				<div class="row">
-					<div class="input-field col s12">
-						<input type="text" id="ISBN" name="ISBN">
-						<label for="ISBN">请输入待添加书籍的 ISBN</label>
-					</div>
-				</div>
-
-				<div class="center">
-					<a class="waves-effect waves-light btn" onclick="inputDataViaISBN();">
-						<i class="material-icons right">cloud_download</i>获取书籍信息
-					</a>
-					<a class="waves-effect waves-light btn" onclick="inputDataManually();">
-						<i class="material-icons right">edit</i>手动录入数据
-					</a>
-				</div>
-			</div>
-
-			<div class="update-init" id="update-init">
-				<div class="row">
-					<div class="input-field col s12">
-						<input type="text" id="bookID" name="bookID">
-						<label for="bookID">请输入书籍 ID </label>
-					</div>
-				</div>
-
-				<div class="center">
-					<a class="waves-effect waves-light btn" onclick="getBookByID();">确定</a>
-				</div>
-			</div>
 
 			<div class="progress" id="progress">
 				<div class="indeterminate"></div>
@@ -238,10 +252,10 @@
 					</div>
 				</div>
 			</div>
-		</div>
 
-		<div class="modal-footer">
-			<button type="submit" class="btn-flat form-btn" id="form-btn">确认添加</button>
+			<div class="center">
+				<button type="submit" class="waves-effect waves-light btn form-btn" id="form-btn">确认添加</button>
+			</div>
 		</div>
 	</form>
 

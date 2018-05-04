@@ -100,9 +100,7 @@ th {
 	margin-bottom: 15px;
 	height: 185px;
 }
-.progress,
-.book-info,
-.update-init {
+.progress {
 	display: none;
 }
 .login {

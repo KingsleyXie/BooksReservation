@@ -33,6 +33,26 @@ $(document).ready(function() {
 		}
 	});
 
+	$("#logout").click(function() {
+		$.get(
+			'../api/admin/logout',
+			function(response) {
+				if (response.errcode == 0) {
+					Materialize.toast('退出系统成功', 1700);
+					setTimeout(function () {
+						window.location.href = 'books';
+					}, 2000);
+				} else {
+					Materialize.toast(response.errmsg, 3000);
+				}
+			}
+		);
+	});
+
+	$("#return").click(function() {
+		$(".button-collapse").sideNav('hide');
+	});
+
 	$.get(
 		'../api/admin/book/all',
 		function(response) {
@@ -199,24 +219,4 @@ function getBookByID() {
 function showFullText(val) {
 	$("#alert-content").text(val.textContent);
 	$("#alert").modal('open');
-}
-
-function returnToMainPage() {
-	$(".button-collapse").sideNav('hide');
-}
-
-function logout() {
-	$.get(
-		'../api/admin/logout',
-		function(response) {
-			if (response.errcode == 0) {
-				Materialize.toast('退出系统成功', 1700);
-				setTimeout(function () {
-					window.location.href = 'books';
-				}, 2000);
-			} else {
-				Materialize.toast(response.errmsg, 3000);
-			}
-		}
-	);
 }
