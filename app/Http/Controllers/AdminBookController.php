@@ -57,16 +57,20 @@ class AdminBookController extends Controller
 	private function add($book)
 	{
 		$record = [
-			'isbn' => $book[0],
-			'title' => $book[1],
-			'author' => $book[2],
-			'publisher' => $book[3],
-			'pubdate' => $book[4],
-			'cover' => $book[5]
+			'title' => $book['title'],
+			'author' => $book['author'],
+			'publisher' => $book['publisher'],
+			'pubdate' => $book['pubdate'],
+			'cover' => $book['cover']
 		];
 
-		if (isset($book[6]))
-			$record['quantity'] = $book[6];
+		// Add By ISBN Without Quantity
+		if (isset($book['isbn']))
+			$record['isbn'] = $book['isbn'];
+
+		// Add By Raw Without ISBN
+		if (isset($book['quantity']))
+			$record['quantity'] = $book['quantity'];
 
 		return DB::table('book')
 			->insertGetId($record);
@@ -75,13 +79,12 @@ class AdminBookController extends Controller
 	public function addByRaw(Request $req)
 	{
 		$bookID = $this->add([
-			$req->isbn,
-			$req->title,
-			$req->author,
-			$req->publisher,
-			$req->pubdate,
-			$req->cover,
-			$req->quantity
+			'title' => $req->title,
+			'author' => $req->author,
+			'publisher' => $req->publisher,
+			'pubdate' => $req->pubdate,
+			'cover' => $req->cover,
+			'quantity' => $req->quantity
 		]);
 
 		return response()->json([
@@ -109,7 +112,7 @@ class AdminBookController extends Controller
 		if (!$book) {
 			return response()->json([
 				'errcode' => 10,
-				'errmsg' => '请稍后手动录入此书相关数据'
+				'errmsg' => '请稍后手动录入此书信息'
 			]);
 		}
 
