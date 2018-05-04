@@ -16,6 +16,23 @@
 
 /*
 ==================================================================
+	Resources Route
+==================================================================
+*/
+Route::get('/', function() {
+	return \File::get(public_path() . '/html/index.html');
+});
+Route::get('/admin/books', function() {
+	return \File::get(public_path() . '/html/admin/books.html');
+});
+Route::get('/admin/reservations', function() {
+	return \File::get(public_path() . '/html/admin/reservations.html');
+});
+
+
+
+/*
+==================================================================
 	Admin Route 0. Session Control
 ==================================================================
 */
