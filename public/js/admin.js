@@ -61,20 +61,6 @@ function prepare() {
 		if(e.keyCode == 13) getBookByID();
 	});
 
-	$("#barcode").modal({
-		ready: function() {
-			window.setTimeout(function () {
-				$("#isbn").focus();
-			}, 0);
-		}
-	});
-
-	$("#book").modal({
-		complete: function() {
-			window.location.href = 'books';
-		}
-	});
-
 	$("#return").click(function() {
 		$(".button-collapse").sideNav('hide');
 	});
@@ -90,6 +76,27 @@ function prepare() {
 			if (txt.indexOf(' 等') == len) {
 				$("#author").val(txt.substr(0, len));
 			}
+		}
+	});
+
+	$("#barcode").modal({
+		ready: function() {
+			$("#books").slideUp(700);
+			window.setTimeout(function () {
+				$("#isbn").focus();
+			}, 0);
+		},
+		complete: function() {
+			location.reload();
+		}
+	});
+
+	$("#book").modal({
+		ready: function() {
+			$("#books").slideUp(700);
+		},
+		complete: function() {
+			location.reload();
 		}
 	});
 }
@@ -125,7 +132,7 @@ function bind() {
 				if (response.errcode == 0) {
 					Materialize.toast(response.data, 1700);
 					window.setTimeout(function() {
-						window.location.href = 'books';
+						location.reload();
 					}, 2000);
 				} else {
 					Materialize.toast(response.errmsg, 3000);
@@ -143,7 +150,7 @@ function bind() {
 				if (response.errcode == 0) {
 					Materialize.toast('登录成功！', 1700);
 					setTimeout(function () {
-						window.location.href = 'books';
+						location.reload();
 					}, 2000);
 				} else {
 					Materialize.toast(response.errmsg, 3000);
@@ -159,7 +166,7 @@ function bind() {
 				if (response.errcode == 0) {
 					Materialize.toast('退出系统成功', 1700);
 					setTimeout(function () {
-						window.location.href = 'books';
+						location.reload();
 					}, 2000);
 				} else {
 					Materialize.toast(response.errmsg, 3000);
