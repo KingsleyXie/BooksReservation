@@ -84,7 +84,6 @@
 					
 					<ul class="right hide-on-med-and-down">
 						<li><a href="#search">搜索书籍</a></li>
-						<li><a href="#category">分类查看</a></li>
 						<li><a href="#search-reservation">预订情况查询</a></li>
 					</ul>
 				</div>
@@ -101,19 +100,13 @@
 			</li>
 
 			<li>
-				<a href="#category">
-					<i class="material-icons">format_list_bulleted</i>分类查看
-				</a>
-			</li>
-
-			<li>
 				<a href="#search-reservation">
 					<i class="material-icons">library_books</i>预订情况查询
 				</a>
 			</li>
 
 			<li>
-				<a onclick="returnToMainPage();">
+				<a id="return">
 					<i class="material-icons">navigate_before</i>返回
 				</a>
 			</li>
@@ -126,11 +119,9 @@
 		<div class="modal-content welcome-content">
 			<div class="dialog-title">欢迎光临</div>
 
-			<p>每位同学最多可以选择三本书，需要在确认后选择领取日期和时段并提交，预约信息提交之后可以对订单进行查询和修改</p>
+			<p>每位同学最多可以选择三本书，需要在确认后选择领书日期和时段并提交</p>
 
-			<p>通过 ISBN 获取图书信息的 API 来自豆瓣<a class="underline" href="https://developers.douban.com/wiki/?title=book_v2">图书Api V2</a>，前端 UI 基于<a class="underline" href="https://github.com/Dogfalo/materialize">Materialize</a></p>
-
-			<p>欢迎同时体验<a class="admin-system" href="./admin">后台管理系统</a>（用户名和密码均为 test）</p>
+			<p>预约信息提交之后可以对订单进行查询和修改</p>
 
 			<div class="load-img">
 				<input type="checkbox" name="loadImg" id="load-img0">
@@ -156,67 +147,6 @@
 			<div class="load-img">
 				<input type="checkbox" name="loadImg" id="load-img1" checked>
 				<label for="load-img1">加载书籍封面图片</label>
-			</div>
-		</div>
-
-		<div class="modal-footer">
-			<button type="submit" class="modal-action waves-effect waves-light btn-flat">确定</button>
-		</div>
-	</form>
-
-	<form class="modal" id="category">
-		<div class="modal-content">
-			<div class="dialog-title">分类查看</div>
-			<div class="center-align" id="book-category">
-				<p>请选择书籍分类：</p>
-				<input type="radio" class="with-gap" id="categoryA" name="bookCategory" value="CategoryA" onclick="selectCategory(this.id)">
-				<label for="categoryA">教材课本</label>
-
-				<input type="radio" class="with-gap" id="categoryB" name="bookCategory" value="CategoryB" onclick="selectCategory(this.id)">
-				<label for="categoryB">课外书籍</label>
-			</div>
-
-			<div class="book-categoryA" id="book-categoryA">
-				<div class="row">
-					<div class="input-field col s6 selection">
-						<select name="grade" id="grade">
-							<option value="all">年级：不限</option>
-							<option value="大一">大一</option>
-							<option value="大二">大二</option>
-							<option value="大三">大三</option>
-							<option value="大四">大四</option>
-						</select>
-					</div>
-
-					<div class="input-field col s6 selection">
-						<select id="major" name="major">
-							<option value="all">专业：不限</option>
-							<option value="计科">计科</option>
-							<option value="信安">信安</option>
-							<option value="网工">网工</option>
-							<option value="计联计创">计联计创</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="book-categoryB" id="book-categoryB">
-				<div class="row">
-					<div class="input-field col s12 selection">
-						<select id="extracurricular-category" name="extracurricularCategory">
-							<option value="all">详细类别：不限</option>
-							<option value="文学类书籍">文学类书籍</option>
-							<option value="计算机专业类书籍">计算机专业类书籍</option>
-							<option value="学习辅导资料">学习辅导资料</option>
-							<option value="其它">其它</option>
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="load-img">
-				<input type="checkbox" id="load-img2" name="loadImg" checked>
-				<label for="load-img2">加载书籍封面图片</label>
 			</div>
 		</div>
 
@@ -269,17 +199,17 @@
 			<h4>预约信息</h4>
 			<div class="row">
 				<div class="input-field col s4">
-					<input type="text" id="student-name" name="studentName" required>
-					<label for="student-name">姓名</label>
+					<input type="text" id="stuname" name="stuname" required>
+					<label for="stuname">姓名</label>
 				</div>
 
 				<div class="input-field col s5">
-					<input type="text" id="student-number" name="studentNo" required>
-					<label for="student-number">学号</label>
+					<input type="text" id="stuno" name="stuno" required>
+					<label for="stuno">学号</label>
 				</div>
 
 				<div class="input-field col s3 selection">
-					<select id="dormitory" name="dormitory">
+					<select id="dorm" name="dorm">
 						<option value="" disabled selected>宿舍楼</option>
 						<option value="C12">C12</option>
 						<option value="C10">C10</option>
@@ -294,20 +224,20 @@
 					<input type="text" id="contact" name="contact" required>
 					<label for="contact">联系方式（手机号码优先）</label>
 				</div>
-			</div>	
+			</div>
 
 			<div class="row">
 				<div class="input-field col s5 selection">
-					<select id="date" name="date">
-						<option value="" disabled selected>领取日期</option>
-						<option value="6月10日">6月10日</option>
-						<option value="6月11日">6月11日</option>
+					<select id="takeday" name="takeday">
+						<option value="" disabled selected>领书日期</option>
+						<option value="5月10日">5月10日</option>
+						<option value="5月11日">5月11日</option>
 					</select>
 				</div>
 
 				<div class="input-field col s7 selection">
-					<select id="time-period" name="timePeriod">
-						<option value="" disabled selected>领取时间段</option>
+					<select id="taketime" name="taketime">
+						<option value="" disabled selected>领书时段</option>
 						<option value="10：00 - 12：00">10：00 - 12：00</option>
 						<option value="16：00 - 18：00">16：00 - 18：00</option>
 						<option value="21：30 - 22：30">21：30 - 22：30</option>

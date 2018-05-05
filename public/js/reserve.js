@@ -131,19 +131,6 @@ function display(data,type) {
 	);
 }
 
-function selectCategory(val) {
-	switch(val) {
-		case 'categoryA':
-			$("#book-categoryB").hide(700);
-			$("#book-categoryA").show(700);
-			break;
-		case 'categoryB':
-			$("#book-categoryA").hide(700);
-			$("#book-categoryB").show(700);
-			break;
-	}
-}
-
 function searchReservation() {
 	$("#progress").show();
 	stuNo = $("#stu-number").val();
@@ -380,6 +367,6 @@ function back() {
 	$("#reservation").modal('close');
 }
 
-function returnToMainPage() {
+$("#return").click(function() {
 	$(".button-collapse").sideNav('hide');
-}
+});
