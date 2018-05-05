@@ -37,12 +37,12 @@ Route::get('/' . config('app.adminpath'). '/reservations', function() {
 ==================================================================
 */
 Route::post(
-	'/api/' . config('app.adminpath'). '/login',
+	'/api/admin/login',
 	'AdminSessionController@login'
 );
 
 Route::get(
-	'/api/' . config('app.adminpath'). '/logout',
+	'/api/admin/logout',
 	'AdminSessionController@logout'
 )->middleware('admin');
 
@@ -52,23 +52,23 @@ Route::get(
 ==================================================================
 */
 Route::get(
-	'/api/' . config('app.adminpath'). '/book/all',
+	'/api/admin/book/all',
 	'AdminBookController@index'
 )->middleware('admin');
 
 Route::get(
-	'/api/' . config('app.adminpath'). '/book/id/{id}',
+	'/api/admin/book/id/{id}',
 	'AdminBookController@getById'
 )->middleware('admin');
 
 Route::get(
-	'/api/' . config('app.adminpath'). '/book/page/{page}/limit/{limit}',
+	'/api/admin/book/page/{page}/limit/{limit}',
 	'AdminBookController@getByPage'
 )->middleware('admin');
 
 // This Interface Is Currently Still Reserved
 Route::get(
-	'/api/' . config('app.adminpath'). '/book/isbn/{isbn}',
+	'/api/admin/book/isbn/{isbn}',
 	'AdminBookController@searchByISBN'
 )->middleware('admin');
 
@@ -78,17 +78,17 @@ Route::get(
 ==================================================================
 */
 Route::post(
-	'/api/' . config('app.adminpath'). '/book/add/raw',
+	'/api/admin/book/add/raw',
 	'AdminBookController@addByRaw'
 )->middleware('admin', 'book');
 
 Route::post(
-	'/api/' . config('app.adminpath'). '/book/add/isbn',
+	'/api/admin/book/add/isbn',
 	'AdminBookController@addByISBN'
 )->middleware('admin');
 
 Route::post(
-	'/api/' . config('app.adminpath'). '/book/update/{id}',
+	'/api/admin/book/update/{id}',
 	'AdminBookController@updateById'
 )->middleware('admin', 'book');
 
@@ -98,7 +98,7 @@ Route::post(
 ==================================================================
 */
 Route::get(
-	'/api/' . config('app.adminpath'). '/reservation/all',
+	'/api/admin/reservation/all',
 	'ReservationController@index'
 )->middleware('admin');
 
