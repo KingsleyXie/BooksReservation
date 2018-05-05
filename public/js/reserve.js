@@ -2,6 +2,7 @@ modifying = false, count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
+pageLimit = 30;
 loadimg = true;
 defaultImg = './pictures/default.png';
 
@@ -125,7 +126,7 @@ function display(data, type) {
 						'</div>' + btnAttr +
 					'</div>');
 				});
-				$("#placeholder").show();
+				$("#pagination").show();
 				$("#book-confirm").show();
 				$("#" + type).modal('close');
 				$(".button-collapse").sideNav('hide');
@@ -356,6 +357,10 @@ function confirmChoose() {
 	}
 	$("#reserve").modal('open');
 }
+
+$("#page-limit").on('input', function() {
+	pageLimit = parseInt($(this).val());
+});
 
 $("#back").click(function() {
 	$("#reservation").modal('close');

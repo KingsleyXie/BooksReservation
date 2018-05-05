@@ -190,11 +190,9 @@ th {
 .alert-content {
 	padding-bottom: 10px !important;
 }
-.placeholder {
+.pagination {
 	display: none;
-	padding-bottom: 60px;
-	text-align: center;
-	color: #9e9e9e
+	padding-bottom: 50px;
 }
 .book-confirm {
 	display: none;
