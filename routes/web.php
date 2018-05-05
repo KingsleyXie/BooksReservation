@@ -113,15 +113,26 @@ Route::get(
 	'/api/user/book/all',
 	'UserBookController@index'
 );
-
 Route::get(
-	'/api/user/book/page/{page}/limit/{limit}',
-	'UserBookController@getByPage'
+	'/api/user/book/all/count',
+	'UserBookController@countedIndex'
+);
+Route::get(
+	'/api/user/book/all/page/{page}/limit/{limit}',
+	'UserBookController@pagedIndex'
 );
 
 Route::post(
 	'/api/user/book/search',
 	'UserBookController@search'
+);
+Route::post(
+	'/api/user/book/search/count',
+	'UserBookController@countedSearch'
+);
+Route::post(
+	'/api/user/book/search/page/{page}/limit/{limit}',
+	'UserBookController@pagedSearch'
 );
 
 /*
