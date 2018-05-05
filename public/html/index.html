@@ -178,10 +178,17 @@
 		<div class="modal-content">
 			<div class="dialog-title">系统设置</div>
 
-			<div class="load-img">
-				<input type="checkbox" id="settings-loadimg" checked>
-				<label for="settings-loadimg">加载书籍封面图片</label>
+			<div class="row">
+				<div class="input-field col s12 load-img">
+					<input type="checkbox" id="settings-loadimg" checked>
+					<label for="settings-loadimg">加载封面图片</label>
+				</div>
 			</div>
+
+			<p class="range-field">
+				<label for="page-limit">每页书籍显示量：</label>
+				<input type="range" id="page-limit" min="10" max="100" value="30">
+			</p>
 
 			<div class="center-align">
 				<a class="waves-effect waves-light btn" id="settings-confirm">确定</a>
@@ -192,7 +199,9 @@
 	<div id="display"></div>
 
 	<div class="placeholder" id="placeholder">没有更多书籍啦~</div>
+<div>
 
+</div>
 	<a class="book-confirm" id="book-confirm" href="#list">查看预约书籍列表</a>
 
 	<div class="modal bottom-sheet" id="list">
@@ -253,9 +262,9 @@
 				<div class="input-field col s7 selection">
 					<select id="taketime" name="taketime">
 						<option value="" disabled selected>领书时段</option>
-						<option value="10：00 - 12：00">10：00 - 12：00</option>
-						<option value="16：00 - 18：00">16：00 - 18：00</option>
-						<option value="21：30 - 22：30">21：30 - 22：30</option>
+						<option value="11:00 - 12:30">11:00 - 12:30</option>
+						<option value="16:30 - 18:00">16:30 - 18:00</option>
+						<option value="21:30 - 23:00">21:30 - 23:00</option>
 					</select>
 				</div>
 			</div>
