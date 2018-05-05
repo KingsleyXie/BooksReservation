@@ -106,7 +106,8 @@ function display(data,type) {
 					$("#display").append(
 					'<div class="card horizontal">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + book.cover.replace('..', '.') +
+							'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
+							book.cover.replace('..', '.') +
 							' onclick="window.location.href=this.src">' +
 						'</div>' +
 						'<div class="card-stacked">' +
@@ -202,7 +203,8 @@ function searchReservation() {
 							'<div class="card-action center-align">' +
 								'<a class="cover" href=' + book.cover + '>触碰或点击查看封面图片' +
 									'<div class="cover-image">' +
-										'<img src=' + book.cover + ' alt="封面图片">' +
+										'<img onerror="replaceCover(this)"' +
+										' src=' + book.cover + ' alt="封面图片">' +
 									'</div>' +
 								'</a>' +
 							'</div>' +
@@ -256,7 +258,8 @@ function modifyReservation() {
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + book.cover + '>' +
+							'<img class="z-depth-3" onerror="replaceCover(this)"' +
+							' src=' + book.cover + '>' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
@@ -301,7 +304,7 @@ function addToList(val) {
 	$("#list-data").append(
 	'<div class="card horizontal list-card">' +
 		'<div class="card-image">' +
-			'<img class="z-depth-3" src=' +
+			'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
 				val.previousSibling.previousSibling.children[0].src +
 			'>' +
 		'</div>' +
@@ -357,3 +360,7 @@ function back() {
 $("#return").click(function() {
 	$(".button-collapse").sideNav('hide');
 });
+
+function replaceCover(ele) {
+	ele.src = './pictures/default.png';
+}
