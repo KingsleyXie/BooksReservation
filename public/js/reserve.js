@@ -63,7 +63,6 @@ $(document).ready(function() {
 
 		refreshPages();
 
-		$('#search').modal('close');
 		$(".button-collapse").sideNav('hide');
 	});
 
@@ -146,6 +145,7 @@ function refreshPages() {
 				if (response.data == 0) {
 					Materialize.toast('未找到相关书籍，换个关键词试试吧', 3000);
 				} else {
+					$('#search').modal('close');
 					resetPagination(response.data);
 				}
 			}

@@ -27,3 +27,6 @@ You can also see brief introductions and directions of this system inside [`./as
 Source of [sample SideNav header picture](./assets/pictures/books.png) was [here](https://assets.entrepreneur.com/content/3x2/1300/20150115183825-books-reading.jpeg) and it was processed to fit in its element position
 
 You can experience this entire system on [https://projects.kingsleyxie.cn/books-reservation/](https://projects.kingsleyxie.cn/books-reservation/)
+
+### Note
+Currently this is almost the version 2.0.0, but some documentation shall be updated later before releasing it.
