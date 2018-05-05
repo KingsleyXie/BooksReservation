@@ -2,6 +2,7 @@
 modifying = false, count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
+
 $(document).ready(function() {
 	$(".modal").modal();
 	$(".button-collapse").sideNav();
@@ -18,28 +19,18 @@ $(document).ready(function() {
 		display(this, 1);
 	});
 
-	$("#category").submit(function(e) {
-		e.preventDefault();
-		if (!($("#categoryA").prop("checked")
-			|| $("#categoryB").prop("checked"))) {
-				alert('请选择书籍分类！');
-		} else {
-			display(this, 2);
-		}
-	});
-
 	$("#reserve").submit(function(e) {
 		e.preventDefault();
 		if (reserveCheck()) {
 			$("#loading").css("display", "flex");
-			
+
 			data = $(this).serialize() + 
 				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
 				(!modifying ? '&operation=new' :
 				'&operation=modify' + '&preList0=' + preList[0] +
 				'&preList1=' + preList[1] + '&preList2=' + preList[2] +
 				'&studentNo=' + $("#student-number").val());
-			
+
 			$.post(
 				'./assets/API/reserve.php',
 				data,
@@ -85,34 +76,30 @@ $(document).ready(function() {
 
 function display(data,type) {
 	$("#loading").css("display", "flex");
-	operation = ['all', 'search', 'category'][type];
-    $.post(
-		'./assets/API/books.php',
-		$(data).serialize() + '&operation=' + operation,
+	$.get(
+		'api/user/book/all',
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
 				$("#display").empty();
-				$.each(response, function(i, book) {
-					if (i == 'code') return true;
-					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
-					btnAttr = book.remainingAmount == 0 ?
+				$.each(response.data, function(i, book) {
+					var btnAttr = book.quantity == 0 ?
 						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
 						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-						'data-id=' + book.bookID + ' onclick="addToList(this)">' +
-						book.remainingAmount + '</a>';
-					
+						'data-id=' + book.id + ' onclick="addToList(this)">' +
+						book.quantity + '</a>';
+
 					$("#display").append(
 					'<div class="card horizontal">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + book.image +
+							'<img class="z-depth-3" src=' + book.cover.replace('..', '.') +
 							' onclick="window.location.href=this.src">' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
 								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
-									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
-									'<p>出版社：' + book.press + '</p>' +
+									'<p>作者：' + book.author + '</p>' +
+									'<p>出版社：' + book.publisher + '</p>' +
 									'<p>出版时间：' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
@@ -121,10 +108,10 @@ function display(data,type) {
 				});
 				$("#placeholder").show();
 				$("#book-confirm").show();
-				$("#" + operation).modal('close');
+				// $("#" + operation).modal('close');
 				$(".button-collapse").sideNav('hide');
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#loading").hide();
 		}
@@ -133,16 +120,15 @@ function display(data,type) {
 
 function searchReservation() {
 	$("#progress").show();
-	stuNo = $("#stu-number").val();
-	$.post(
-		'./assets/API/reservations.php',
-		'operation=search&stuNo=' + stuNo,
+	$.get(
+		'api/user/reservation/' + $("#stu-number").val(),
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
+				var reservation = response.data;
 				$("#reservation").html(
 				'<div class="card-content">' +
 					'<div class="reservation-title">订单详情</div>' +
-					'<div class="card-title">订单号：' + response[0].reservationNo + '</div>' +
+					'<div class="card-title">订单号：' + reservation.id + '</div>' +
 					'<div class="card-details">' +
 						'<table class="highlight responsive-table">' +
 							'<thead>' +
@@ -159,14 +145,14 @@ function searchReservation() {
 							'</thead>' +
 							'<tbody>' +
 								'<tr>' +
-									'<td>' + response[0].stuName + '</td>' +
-									'<td>' + response[0].stuNo + '</td>' +
-									'<td>' + response[0].contact + '</td>' +
-									'<td>' + response[0].dormitory + '</td>' +
-									'<td>' + response[0].date + '</td>' +
-									'<td>' + response[0].timePeriod + '</td>' +
-									'<td>' + response[0].sbmTime + '</td>' +
-									'<td>' + response[0].updTime + '</td>' +
+									'<td>' + reservation.stuname + '</td>' +
+									'<td>' + reservation.stuno + '</td>' +
+									'<td>' + reservation.contact + '</td>' +
+									'<td>' + reservation.dorm + '</td>' +
+									'<td>' + reservation.takeday + '</td>' +
+									'<td>' + reservation.taketime + '</td>' +
+									'<td>' + reservation.submited + '</td>' +
+									'<td>' + reservation.updated + '</td>' +
 								'</tr>' +
 							'</tbody>' +
 						'</table>' +
@@ -185,8 +171,7 @@ function searchReservation() {
 					'</div>' +
 				'</div>');
 
-				$.each(response[0].books, function(i, book) {
-					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
+				$.each(reservation.books, function(i, book) {
 					$("#reserved-books").append(
 					'<div class="col s12 m4">' +
 						'<div class="card blue-grey darken-1">' +
@@ -194,15 +179,15 @@ function searchReservation() {
 								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title +
 								'</div>' +
 								'<div class="card-details">' +
-									'<p>作者：' + book.author + MultipleAuthor + '</p>' +
-									'<p>出版社：' + book.press + '</p>' +
+									'<p>作者：' + book.author + '</p>' +
+									'<p>出版社：' + book.publisher + '</p>' +
 									'<p>出版日期：' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
 							'<div class="card-action center-align">' +
-								'<a class="cover" href=' + book.image + '>触碰或点击查看封面图片' +
+								'<a class="cover" href=' + book.cover + '>触碰或点击查看封面图片' +
 									'<div class="cover-image">' +
-										'<img src=' + book.image + ' alt="封面图片">' +
+										'<img src=' + book.cover + ' alt="封面图片">' +
 									'</div>' +
 								'</a>' +
 							'</div>' +
@@ -213,7 +198,7 @@ function searchReservation() {
 				$(".button-collapse").sideNav('hide');
 				$("#reservation").modal('open');
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#progress").hide();
 		}
@@ -223,53 +208,52 @@ function searchReservation() {
 function modifyReservation() {
 	$("#loading").css("display", "flex");
 	$("#submit").html('<i class="material-icons right">send</i>确定修改');
-	stuNo = $("#stu-number").val();
 
 	modifying = true, count = 0;
 	list = ['0', '0', '0'];
 	preList = ['0', '0', '0'];
-	
-	$.post(
-		'./assets/API/reservations.php',
-		'operation=search&stuNo=' + stuNo,
+
+	$.get(
+		'api/user/reservation/' + $("#stu-number").val(),
 		function(response) {
-			if (response.code == 0) {
+			if (response.errcode == 0) {
+				var reservation = response.data;
+
 				$("#list-data").empty();
 				
-				$("label[for=student-name]").addClass("active");
-				$("#student-name").val(response[0].stuName);
-				$("label[for=student-number]").addClass("active");
-				$("#student-number").val(response[0].stuNo);
+				$("label[for=stuname]").addClass("active");
+				$("#stuname").val(reservation.stuname);
+				$("label[for=stuno]").addClass("active");
+				$("#stuno").val(reservation.stuno);
 				$("label[for=contact]").addClass("active");
-				$("#contact").val(response[0].contact);
+				$("#contact").val(reservation.contact);
 
-				$("#student-number").prop('disabled', true);
-				$("#dormitory").val(response[0].dormitory).material_select();
-				$("#date").val(response[0].date).material_select();
-				$("#time-period").val(response[0].timePeriod).material_select();
+				$("#stuno").prop('disabled', true);
+				$("#dorm").val(reservation.dorm).material_select();
+				$("#takeday").val(reservation.takeday).material_select();
+				$("#taketime").val(reservation.taketime).material_select();
 
-				$.each(response[0].books, function(i, book) {
-					list[list.indexOf('0')] = book.bookID;
-					preList[preList.indexOf('0')] = book.bookID;
+				$.each(reservation.books, function(i, book) {
+					list[list.indexOf('0')] = book.id;
+					preList[preList.indexOf('0')] = book.id;
 					count++;
 
-					MultipleAuthor = book.isMultipleAuthor == 1 ? ' 等' : '';
 					$("#list-data").append(
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
-							'<img class="z-depth-3" src=' + book.image + '>' +
+							'<img class="z-depth-3" src=' + book.cover + '>' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
 								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
 								'<div class="card-details">' +
-									'<p>' + book.author + MultipleAuthor + '</p>' +
-									'<p>' + book.press + '</p>' +
+									'<p>' + book.author + '</p>' +
+									'<p>' + book.publisher + '</p>' +
 									'<p>' + book.pubdate + '</p>' +
 								'</div>' +
 							'</div>' +
 						'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
-						'data-id=' + book.bookID + ' onclick="deleteFromList(this)">' +
+						'data-id=' + book.id + ' onclick="deleteFromList(this)">' +
 						'<i class="material-icons">clear</i></a>' +
 					'</div>');
 				});
@@ -351,13 +335,13 @@ function confirmChoose() {
 }
 
 function reserveCheck() {
-	if ($("#student-name").val() == ''
-		|| $("#student-number").val() == ''
-		|| $("#dormitory").val() == ''
+	if ($("#stuname").val() == ''
+		|| $("#stuno").val() == ''
+		|| $("#dorm").val() == ''
 		|| $("#contact").val() == ''
-		|| $("#date").val() == ''
-		|| $("#time-period").val() == '') {
-			alert('请将预约信息填写完整！');
+		|| $("#takeday").val() == ''
+		|| $("#taketime").val() == '') {
+			modalAlert('请将预约信息填写完整！');
 			return false;
 	}
 	return true;
