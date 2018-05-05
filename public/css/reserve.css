@@ -163,9 +163,7 @@ th {
 .book-title:hover {
 	cursor: pointer;
 }
-.progress,
-.book-categoryA,
-.book-categoryB {
+.progress {
 	display: none;
 }
 .btn-add {
@@ -214,7 +212,4 @@ th {
 .underline {
 	color: inherit;
 	text-decoration: underline;
-}
-.admin-system {
-	color: #ee6e73;
 }

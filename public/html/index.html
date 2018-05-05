@@ -77,14 +77,15 @@
 			<nav>
 				<div class="nav-wrapper">
 					<div class="brand-logo center">书籍预约</div>
-					
+
 					<a href="#" data-activates="mobile-menu" class="button-collapse">
 						<i class="material-icons">menu</i>
 					</a>
-					
+
 					<ul class="right hide-on-med-and-down">
 						<li><a href="#search">搜索书籍</a></li>
-						<li><a href="#search-reservation">预订情况查询</a></li>
+						<li><a href="#search-reservation">订单查询</a></li>
+						<li><a href="#settings">系统设置</a></li>
 					</ul>
 				</div>
 			</nav>
@@ -101,7 +102,13 @@
 
 			<li>
 				<a href="#search-reservation">
-					<i class="material-icons">library_books</i>预订情况查询
+					<i class="material-icons">library_books</i>订单查询
+				</a>
+			</li>
+
+			<li>
+				<a href="#settings">
+					<i class="material-icons">settings</i>系统设置
 				</a>
 			</li>
 
@@ -119,14 +126,9 @@
 		<div class="modal-content welcome-content">
 			<div class="dialog-title">欢迎光临</div>
 
-			<p>每位同学最多可以选择三本书，需要在确认后选择领书日期和时段并提交</p>
+			<p>每位同学最多可以选择三本书籍，订单提交后仍可进行查询和修改</p>
 
-			<p>预约信息提交之后可以对订单进行查询和修改</p>
-
-			<div class="load-img">
-				<input type="checkbox" name="loadImg" id="load-img0">
-				<label for="load-img0">加载书籍封面图片</label>
-			</div>
+			<p>封面图片的加载开关在菜单的“系统设置”部分，可自行关闭</p>
 
 			<div class="copyright">Copyright © 2018 Kingsley</div>
 		</div>
@@ -139,19 +141,16 @@
 	<form class="modal" id="search">
 		<div class="modal-content">
 			<div class="dialog-title">搜索书籍</div>
-			<div class="input-field col s12">
-				<input type="text" name="keyWord" id="key-word">
-				<label for="key-word">输入书名或作者</label>
+			<div class="row">
+				<div class="input-field col s12">
+					<input type="text" id="keyword" name="keyword">
+					<label for="keyword">请输入学号</label>
+				</div>
 			</div>
 
-			<div class="load-img">
-				<input type="checkbox" name="loadImg" id="load-img1" checked>
-				<label for="load-img1">加载书籍封面图片</label>
+			<div class="center-align">
+				<a type="submit" class="waves-effect waves-light btn">确定</a>
 			</div>
-		</div>
-
-		<div class="modal-footer">
-			<button type="submit" class="modal-action waves-effect waves-light btn-flat">确定</button>
 		</div>
 	</form>
 
@@ -166,7 +165,7 @@
 			</div>
 
 			<div class="center-align">
-				<a type="submit" class="waves-effect waves-light btn" onclick="searchReservation()">查找</a>
+				<a class="waves-effect waves-light btn" onclick="searchReservation()">查找</a>
 			</div>
 
 			<div class="progress" id="progress">
@@ -174,6 +173,21 @@
 			</div>
 		</div>
 	</form>
+
+	<div class="modal" id="settings">
+		<div class="modal-content">
+			<div class="dialog-title">系统设置</div>
+
+			<div class="load-img">
+				<input type="checkbox" id="settings-loadimg">
+				<label for="settings-loadimg">加载书籍封面图片</label>
+			</div>
+
+			<div class="center-align">
+				<a type="submit" class="waves-effect waves-light btn">确定</a>
+			</div>
+		</div>
+	</div>
 
 	<div id="display"></div>
 
@@ -230,8 +244,9 @@
 				<div class="input-field col s5 selection">
 					<select id="takeday" name="takeday">
 						<option value="" disabled selected>领书日期</option>
-						<option value="5月10日">5月10日</option>
-						<option value="5月11日">5月11日</option>
+						<option value="5月12日">5月12日</option>
+						<option value="5月13日">5月13日</option>
+						<option value="5月14日">5月14日</option>
 					</select>
 				</div>
 

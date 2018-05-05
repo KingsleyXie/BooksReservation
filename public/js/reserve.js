@@ -179,7 +179,7 @@ function searchReservation() {
 								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation();">' +
 									'<i class="material-icons right">edit</i>更改' +
 								'</button>' +
-								'<button class="btn waves-effect waves-light red lighten-2 modal-close" onclick="back();">' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close" id="back">' +
 									'<i class="material-icons right">replay</i>返回' +
 								'</button>' +
 							'</div>' +
@@ -353,9 +353,9 @@ function confirmChoose() {
 	$("#reserve").modal('open');
 }
 
-function back() {
+$("#back").click(function() {
 	$("#reservation").modal('close');
-}
+});
 
 $("#return").click(function() {
 	$(".button-collapse").sideNav('hide');
