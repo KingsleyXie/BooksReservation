@@ -6,7 +6,7 @@ count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
-perpage = 30, pages = 0;
+perpage = 10, pages = 0;
 loadimg = true;
 defaultImg = './pictures/default.png';
 
@@ -143,14 +143,22 @@ function refreshPages() {
 			'api/user/book/search/count',
 			$("#search").serialize(),
 			function(response) {
-				resetPagination(response.data);
+				if (response.data == 0) {
+					Materialize.toast('未找到相关书籍，换个关键词试试吧', 3000);
+				} else {
+					resetPagination(response.data);
+				}
 			}
 		);
 	} else {
 		$.get(
 			'api/user/book/all/count',
 			function(response) {
-				resetPagination(response.data);
+				if (response.data == 0) {
+					Materialize.toast('数据库还是空的，晚点再来看看吧', 3000);
+				} else {
+					resetPagination(response.data);
+				}
 			}
 		);
 	}
@@ -198,6 +206,7 @@ function togglePage(page) {
 			freshPagination(page);
 
 			if (searching) {
+				Materialize.toast('正在加载第 ' + page + ' 页搜索结果', 1700);
 				$.post(
 					'api/user/book/search/page/' + page + '/limit/' + perpage,
 					$("#search").serialize(),
@@ -206,6 +215,7 @@ function togglePage(page) {
 					}
 				);
 			} else {
+				Materialize.toast('正在加载第 ' + page + ' 页书籍数据', 1700);
 				$.get(
 					'api/user/book/all/page/' + page + '/limit/' + perpage,
 					function(response) {
