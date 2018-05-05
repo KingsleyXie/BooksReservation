@@ -191,11 +191,9 @@ th {
 	padding-bottom: 10px !important;
 }
 .pagination {
-	display: none;
 	padding-bottom: 50px;
 }
 .book-confirm {
-	display: none;
 	position: fixed;
 	background-color: #ee6e73;
 	font-size: 1.3em;

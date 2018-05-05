@@ -1,4 +1,8 @@
-modifying = false, count = 0;
+// Currently there is no time to refactory these......
+searching = false;
+modifying = false;
+
+count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
@@ -6,22 +10,110 @@ pageLimit = 30;
 loadimg = true;
 defaultImg = './pictures/default.png';
 
+
+
 $(document).ready(function() {
 	$(".modal").modal();
 	$(".button-collapse").sideNav();
 	$("select").material_select();
 
-	$("#all").modal('open');
+	$("#search-reservation").submit(function(e) {
+		e.preventDefault();
+		searchReservation();
+	});
+
+	$("#page-limit").on('input', function() {
+		pageLimit = parseInt($(this).val());
+	});
+
+	$("#back").click(function() {
+		$("#reservation").modal('close');
+	});
+
+	$("#settings-loadimg").click(function() {
+		loadimg = $(this).prop('checked');
+	});
+
+	$("#settings-confirm").click(function() {
+		$("#settings").modal('close');
+		$(".button-collapse").sideNav('hide');
+	});
+
+	$("#return").click(function() {
+		$(".button-collapse").sideNav('hide');
+	});
+
 	$("#all").submit(function(e) {
 		e.preventDefault();
-		display(this, 'all');
+		$.get(
+			'api/user/book/all',
+			function(response) {
+				if (response.errcode == 0) {
+					display(response.data);
+					$('#all').modal('close');
+					$(".button-collapse").sideNav('hide');
+				} else {
+					Materialize.toast(response.errmsg, 3000);
+				}
+			}
+		);
 	});
 
 	$("#search").submit(function(e) {
 		e.preventDefault();
-		display(this, 'search');
+		$.post(
+			'api/user/book/search',
+			$(this).serialize(),
+			function(response) {
+				if (response.errcode == 0) {
+					display(response.data);
+					$('#search').modal('close');
+					$(".button-collapse").sideNav('hide');
+				} else {
+					Materialize.toast(response.errmsg, 3000);
+				}
+			}
+		);
 	});
 
+	$("#all").modal('open');
+});
+
+function display(data) {
+	$("#loading").css("display", "flex");
+
+	$("#display").empty();
+	$.each(data, function(i, book) {
+		var btnAttr = book.quantity == 0 ?
+			'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+			'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+			'data-id=' + book.id + ' onclick="addToList(this)">' +
+			book.quantity + '</a>';
+
+		$("#display").append(
+		'<div class="card horizontal">' +
+			'<div class="card-image">' +
+				'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
+				(loadimg ? book.cover.replace('..', '.') : defaultImg) +
+				' onclick="window.location.href=this.src">' +
+			'</div>' +
+			'<div class="card-stacked">' +
+				'<div class="card-content">' +
+					'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
+					'<div class="card-details">' +
+						'<p>作者：' + book.author + '</p>' +
+						'<p>出版社：' + book.publisher + '</p>' +
+						'<p>出版时间：' + book.pubdate + '</p>' +
+					'</div>' +
+				'</div>' +
+			'</div>' + btnAttr +
+		'</div>');
+	});
+
+	$("#loading").hide();
+}
+
+function reserveBind() {
 	$("#reserve").submit(function(e) {
 		e.preventDefault();
 		if ($("#stuname").val() == ''
@@ -85,57 +177,6 @@ $(document).ready(function() {
 			}
 		});
 	});
-
-	$("#search-reservation").submit(function(e) {
-		e.preventDefault();
-		searchReservation();
-	});
-});
-
-function display(data, type) {
-	$("#loading").css("display", "flex");
-	$.post(
-		'api/user/book/search',
-		$(data).serialize(),
-		function(response) {
-			if (response.errcode == 0) {
-				$("#display").empty();
-				$.each(response.data, function(i, book) {
-					var btnAttr = book.quantity == 0 ?
-						'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-						'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-						'data-id=' + book.id + ' onclick="addToList(this)">' +
-						book.quantity + '</a>';
-
-					$("#display").append(
-					'<div class="card horizontal">' +
-						'<div class="card-image">' +
-							'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
-							(loadimg ? book.cover.replace('..', '.') : defaultImg) +
-							' onclick="window.location.href=this.src">' +
-						'</div>' +
-						'<div class="card-stacked">' +
-							'<div class="card-content">' +
-								'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
-								'<div class="card-details">' +
-									'<p>作者：' + book.author + '</p>' +
-									'<p>出版社：' + book.publisher + '</p>' +
-									'<p>出版时间：' + book.pubdate + '</p>' +
-								'</div>' +
-							'</div>' +
-						'</div>' + btnAttr +
-					'</div>');
-				});
-				$("#pagination").show();
-				$("#book-confirm").show();
-				$("#" + type).modal('close');
-				$(".button-collapse").sideNav('hide');
-			} else {
-				Materialize.toast(response.errmsg, 3000);
-			}
-			$("#loading").hide();
-		}
-	);
 }
 
 function searchReservation() {
@@ -357,27 +398,6 @@ function confirmChoose() {
 	}
 	$("#reserve").modal('open');
 }
-
-$("#page-limit").on('input', function() {
-	pageLimit = parseInt($(this).val());
-});
-
-$("#back").click(function() {
-	$("#reservation").modal('close');
-});
-
-$("#settings-loadimg").click(function() {
-	loadimg = $(this).prop('checked');
-});
-
-$("#settings-confirm").click(function() {
-	$("#settings").modal('close');
-	$(".button-collapse").sideNav('hide');
-});
-
-$("#return").click(function() {
-	$(".button-collapse").sideNav('hide');
-});
 
 function replaceCover(ele) {
 	ele.src = defaultImg;
