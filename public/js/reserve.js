@@ -1,7 +1,9 @@
-//The following three lines of code are wrote for reservation or modification
 modifying = false, count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
+
+loadimg = true;
+defaultImg = './pictures/default.png';
 
 $(document).ready(function() {
 	$(".modal").modal();
@@ -11,12 +13,12 @@ $(document).ready(function() {
 	$("#all").modal('open');
 	$("#all").submit(function(e) {
 		e.preventDefault();
-		display(this, 0);
+		display(this, 'all');
 	});
 
 	$("#search").submit(function(e) {
 		e.preventDefault();
-		display(this, 1);
+		display(this, 'search');
 	});
 
 	$("#reserve").submit(function(e) {
@@ -89,10 +91,11 @@ $(document).ready(function() {
 	});
 });
 
-function display(data,type) {
+function display(data, type) {
 	$("#loading").css("display", "flex");
-	$.get(
-		'api/user/book/all',
+	$.post(
+		'api/user/book/search',
+		$(data).serialize(),
 		function(response) {
 			if (response.errcode == 0) {
 				$("#display").empty();
@@ -107,7 +110,7 @@ function display(data,type) {
 					'<div class="card horizontal">' +
 						'<div class="card-image">' +
 							'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
-							book.cover.replace('..', '.') +
+							(loadimg ? book.cover.replace('..', '.') : defaultImg) +
 							' onclick="window.location.href=this.src">' +
 						'</div>' +
 						'<div class="card-stacked">' +
@@ -124,7 +127,7 @@ function display(data,type) {
 				});
 				$("#placeholder").show();
 				$("#book-confirm").show();
-				// $("#" + operation).modal('close');
+				$("#" + type).modal('close');
 				$(".button-collapse").sideNav('hide');
 			} else {
 				Materialize.toast(response.errmsg, 3000);
@@ -204,7 +207,8 @@ function searchReservation() {
 								'<a class="cover" href=' + book.cover + '>触碰或点击查看封面图片' +
 									'<div class="cover-image">' +
 										'<img onerror="replaceCover(this)"' +
-										' src=' + book.cover + ' alt="封面图片">' +
+										' src=' + (loadimg ? defaultImg : book.cover) +
+										' alt="封面图片">' +
 									'</div>' +
 								'</a>' +
 							'</div>' +
@@ -259,7 +263,7 @@ function modifyReservation() {
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
 							'<img class="z-depth-3" onerror="replaceCover(this)"' +
-							' src=' + book.cover + '>' +
+							' src=' + (loadimg ? defaultImg : book.cover) + '>' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
@@ -357,10 +361,19 @@ $("#back").click(function() {
 	$("#reservation").modal('close');
 });
 
+$("#settings-loadimg").click(function() {
+	loadimg = $(this).prop('checked');
+});
+
+$("#settings-confirm").click(function() {
+	$("#settings").modal('close');
+	$(".button-collapse").sideNav('hide');
+});
+
 $("#return").click(function() {
 	$(".button-collapse").sideNav('hide');
 });
 
 function replaceCover(ele) {
-	ele.src = './pictures/default.png';
+	ele.src = defaultImg;
 }
