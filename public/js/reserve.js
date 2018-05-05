@@ -35,7 +35,7 @@ $(document).ready(function() {
 	$("#settings-confirm").click(function() {
 		$("#settings").modal('close');
 		$(".button-collapse").sideNav('hide');
-		refreshDisplay();
+		refreshPages();
 	});
 
 	$("#return").click(function() {
@@ -51,43 +51,20 @@ $(document).ready(function() {
 		e.preventDefault();
 		searching = false;
 
-		refreshDisplay();
+		refreshPages();
 
 		$('#all').modal('close');
 		$(".button-collapse").sideNav('hide');
-
-		// $.get(
-		// 	'api/user/book/all',
-		// 	function(response) {
-		// 		if (response.errcode == 0) {
-		// 			display(response.data);
-		// 		} else {
-		// 			Materialize.toast(response.errmsg, 3000);
-		// 		}
-		// 	}
-		// );
 	});
 
 	$("#search").submit(function(e) {
 		e.preventDefault();
 		searching = true;
 
-		refreshDisplay();
+		refreshPages();
 
 		$('#search').modal('close');
 		$(".button-collapse").sideNav('hide');
-
-		// $.post(
-		// 	'api/user/book/search',
-		// 	$(this).serialize(),
-		// 	function(response) {
-		// 		if (response.errcode == 0) {
-		// 			display(response.data);
-		// 		} else {
-		// 			Materialize.toast(response.errmsg, 3000);
-		// 		}
-		// 	}
-		// );
 	});
 
 	$("#all").modal('open');
@@ -159,7 +136,7 @@ function reserveBind() {
 	});
 }
 
-function refreshDisplay() {
+function refreshPages() {
 	if (searching) {
 		$.post(
 			'api/user/book/search/count',
@@ -199,15 +176,16 @@ function resetPagination(rows) {
 }
 
 function togglePage(page) {
+	var curr = parseInt($(".page-item.active").text());
 	switch(page) {
 		case '«':
 			togglePage(1);
 			break;
 		case '‹':
-			togglePage(parseInt($(".page-item.active").text()) - 1);
+			togglePage(curr - 1);
 			break;
 		case '›':
-			togglePage(parseInt($(".page-item.active").text()) + 1);
+			togglePage(curr + 1);
 			break;
 		case '»':
 			togglePage(pages);
@@ -215,10 +193,25 @@ function togglePage(page) {
 
 		default:
 			page = parseInt(page);
-			if (page <= 0 || page > pages) return;
+			if (page <= 0 || page > pages || page == curr) return;
 			freshPagination(page);
-			// LIST
 
+			if (searching) {
+				$.post(
+					'api/user/book/search/page/' + page + '/limit/' + perpage,
+					$("#search").serialize(),
+					function(response) {
+						display(response.data);
+					}
+				);
+			} else {
+				$.get(
+					'api/user/book/all/page/' + page + '/limit/' + perpage,
+					function(response) {
+						display(response.data);
+					}
+				);
+			}
 			break;
 	}
 }
