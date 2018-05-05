@@ -6,7 +6,7 @@ count = 0;
 list = ['0', '0', '0'];
 preList = ['0', '0', '0'];
 
-pageLimit = 30;
+perpage = 30, pages = 0;
 loadimg = true;
 defaultImg = './pictures/default.png';
 
@@ -25,7 +25,7 @@ $(document).ready(function() {
 	reserveBind();
 
 	$("#page-limit").on('input', function() {
-		pageLimit = parseInt($(this).val());
+		perpage = parseInt($(this).val());
 	});
 
 	$("#settings-loadimg").click(function() {
@@ -84,6 +84,22 @@ $(document).ready(function() {
 	});
 
 	$("#all").modal('open');
+
+	// pages = Math.ceil(all / perpage);
+	pages = 11;
+
+	var links = (pages > 5 ? 5 : pages);
+	$(".page-item:gt(1):lt(-2)>a").remove();
+	for (var i = 0; i < links; i++) {
+		$(".page-item:eq(-2)").before(
+			'<li class="page-item"><a class="page-link">' + (i + 1) + '</a></li>'
+		);
+	}
+
+	togglePage(1);
+	$(".page-link").click(function() {
+		togglePage($(this).text());
+	});
 });
 
 function reserveBind() {
@@ -149,6 +165,59 @@ function reserveBind() {
 					Materialize.toast(response.errmsg, 3000);
 			}
 		});
+	});
+}
+
+function togglePage(page) {
+	switch(page) {
+		case '«':
+			togglePage(1);
+			break;
+		case '‹':
+			togglePage(parseInt($(".page-item.active").text()) - 1);
+			break;
+		case '›':
+			togglePage(parseInt($(".page-item.active").text()) + 1);
+			break;
+		case '»':
+			togglePage(pages);
+			break;
+
+		default:
+			page = parseInt(page);
+			if (page <= 0 || page > pages) return;
+			freshPagination(page);
+			// LIST
+
+			break;
+	}
+}
+
+function freshPagination(newPage) {
+	$(".page-item.disabled").removeClass("disabled");
+
+	if (newPage == 1) {
+		$(".page-item:eq(1)").addClass("disabled");
+	}
+
+	if (newPage == pages) {
+		$(".page-item:eq(-2)").addClass("disabled");
+	}
+
+	// IF pages < 5: just display all the page buttons
+	// ELSE: display 5 page buttons and make sure the active page is centered
+	var start = ((pages < 5 || newPage < 3) ? 1 :
+		(
+			(pages - newPage) < 3 ? (pages - 4) : (newPage - 2))
+		);
+
+	$.each($(".page-item:gt(1):lt(-2)>a"), function(i) {
+		var n = start + i;
+		$(this).text(n);
+		if (n == newPage) {
+			$(".page-item.active").removeClass("active");
+			$(this).parent().addClass("active");
+		}
 	});
 }
 
