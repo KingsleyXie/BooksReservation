@@ -21,51 +21,66 @@ $(document).ready(function() {
 
 	$("#reserve").submit(function(e) {
 		e.preventDefault();
-		if (reserveCheck()) {
-			$("#loading").css("display", "flex");
-
-			data = $(this).serialize() + 
-				'&list0=' + list[0] + '&list1=' + list[1] + '&list2=' + list[2] +
-				(!modifying ? '&operation=new' :
-				'&operation=modify' + '&preList0=' + preList[0] +
-				'&preList1=' + preList[1] + '&preList2=' + preList[2] +
-				'&studentNo=' + $("#student-number").val());
-
-			$.post(
-				'./assets/API/reserve.php',
-				data,
-				function(response) {
-					$("#reserve").modal('close');
-					$("#loading").hide();
-					switch(response.code) {
-						case 0:
-							Materialize.toast('订单' + (modifying ? '修改' : '提交') + '成功！', 3000);
-							setTimeout(function () {
-								$("#stu-number").val($("#student-number").val());
-								$("label[for=stu-number]").addClass("active");
-								searchReservation();
-							}, 1000);
-							break;
-						case 5:
-							if (modifying) {
-								$("#stu-number").val($("#student-number").val());
-								$("label[for=stu-number]").addClass("active");
-								searchReservation();
-								modifyReservation();
-							} else {
-								$("#list-data").empty();
-								$("#display").empty();
-								count = 0; list = ['0', '0', '0'];
-							}
-							$("#all").modal('open');
-							modalAlert('列表中有书籍已被他人预约，请重新选择<br><br>预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨');
-							break;
-						default:
-							Materialize.toast(response.errMsg, 3000);
-					}
-				}
-			);
+		if ($("#stuname").val() == ''
+			|| $("#stuno").val() == ''
+			|| $("#dorm").val() == ''
+			|| $("#contact").val() == ''
+			|| $("#takeday").val() == ''
+			|| $("#taketime").val() == '') {
+				modalAlert('请将预约信息填写完整！');
+				return;
 		}
+
+		$("#loading").css("display", "flex");
+
+		var data = $(this).serialize();
+		data +=
+			'&book0=' + list[0] +
+			'&book1=' + list[1] +
+			'&book2=' + list[2];
+
+		if (modifying)
+			data +=
+				'&prebook0=' + preList[0] +
+				'&prebook1=' + preList[1] +
+				'&prebook2=' + preList[2];
+
+		var url = 'api/user/reserve/' +
+			(modifying ? 'modify' : 'add');
+
+		$.post(url, data, function(response) {
+			$("#reserve").modal('close');
+			$("#loading").hide();
+			switch(response.errcode) {
+				case 0:
+					Materialize.toast(response.data, 3000);
+					setTimeout(function () {
+						$("#search-stuno").val($("#stuno").val());
+						$("label[for=search-stuno]").addClass("active");
+						searchReservation();
+					}, 700);
+					break;
+				case -1:
+					if (modifying) {
+						$("#search-stuno").val($("#stuno").val());
+						$("label[for=search-stuno]").addClass("active");
+						searchReservation();
+						modifyReservation();
+					} else {
+						$("#list-data").empty();
+						$("#display").empty();
+						count = 0; list = ['0', '0', '0'];
+					}
+					$("#all").modal('open');
+					modalAlert(
+						'列表中有书籍已被他人预约，请重新选择<br><br>' +
+						'预约信息不需要重新填写୧(﹒︠ᴗ﹒︡)୨'
+					);
+					break;
+				default:
+					Materialize.toast(response.errmsg, 3000);
+			}
+		});
 	});
 
 	$("#search-reservation").submit(function(e) {
@@ -121,7 +136,7 @@ function display(data,type) {
 function searchReservation() {
 	$("#progress").show();
 	$.get(
-		'api/user/reservation/' + $("#stu-number").val(),
+		'api/user/reservation/stuno/' + $("#search-stuno").val(),
 		function(response) {
 			if (response.errcode == 0) {
 				var reservation = response.data;
@@ -214,7 +229,7 @@ function modifyReservation() {
 	preList = ['0', '0', '0'];
 
 	$.get(
-		'api/user/reservation/' + $("#stu-number").val(),
+		'api/user/reservation/stuno/' + $("#search-stuno").val(),
 		function(response) {
 			if (response.errcode == 0) {
 				var reservation = response.data;
@@ -258,8 +273,9 @@ function modifyReservation() {
 					'</div>');
 				});
 				$("#reservation").modal('close');
+				$("#list-data").modal('open');
 			} else {
-				Materialize.toast(response.errMsg, 3000);
+				Materialize.toast(response.errmsg, 3000);
 			}
 			$("#loading").hide();
 		}
@@ -332,19 +348,6 @@ function confirmChoose() {
 		return;
 	}
 	$("#reserve").modal('open');
-}
-
-function reserveCheck() {
-	if ($("#stuname").val() == ''
-		|| $("#stuno").val() == ''
-		|| $("#dorm").val() == ''
-		|| $("#contact").val() == ''
-		|| $("#takeday").val() == ''
-		|| $("#taketime").val() == '') {
-			modalAlert('请将预约信息填写完整！');
-			return false;
-	}
-	return true;
 }
 
 function back() {
