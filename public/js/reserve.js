@@ -93,6 +93,7 @@ function reserveBind() {
 
 		if (modifying)
 			data +=
+				'&stuno=' + $("#stuno").val() +
 				'&prebook0=' + preList[0] +
 				'&prebook1=' + preList[1] +
 				'&prebook2=' + preList[2];

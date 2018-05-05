@@ -29,7 +29,7 @@ class BookManage
         if ($validator->fails()) {
             return response()->json([
                 'errcode' => 12,
-                'data' => '缺少必要参数'
+                'errmsg' => '缺少必要参数'
             ]);
         }
 

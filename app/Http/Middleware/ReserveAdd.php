@@ -33,7 +33,7 @@ class ReserveAdd
         if ($validator->fails()) {
             return response()->json([
                 'errcode' => 1,
-                'data' => '缺少必要参数'
+                'errmsg' => '缺少必要参数'
             ]);
         }
 

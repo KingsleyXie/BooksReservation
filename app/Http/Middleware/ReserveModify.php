@@ -27,7 +27,7 @@ class ReserveModify
         if ($validator->fails()) {
             return response()->json([
                 'errcode' => 2,
-                'data' => '缺少必要参数'
+                'errmsg' => '缺少必要参数'
             ]);
         }
 
