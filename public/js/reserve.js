@@ -43,8 +43,15 @@ $(document).ready(function() {
 		$(".button-collapse").sideNav('hide');
 	});
 
+	$(".list-all").click(function() {
+		$("#all").submit();
+		$(".button-collapse").sideNav('hide');
+	});
+
 	$("#all").submit(function(e) {
 		e.preventDefault();
+		searching = false;
+
 		$.get(
 			'api/user/book/all',
 			function(response) {
@@ -61,6 +68,8 @@ $(document).ready(function() {
 
 	$("#search").submit(function(e) {
 		e.preventDefault();
+		searching = true;
+
 		$.post(
 			'api/user/book/search',
 			$(this).serialize(),
@@ -318,7 +327,7 @@ function modifyReservation() {
 							'</div>' +
 						'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
 						'data-id=' + book.id + ' onclick="deleteFromList(this)">' +
-						'<i class="material-icons">clear</i></a>' +
+						'<i class="material-icons">delete_forever</i></a>' +
 					'</div>');
 				});
 				$("#reservation").modal('close');
@@ -367,7 +376,7 @@ function addToList(val) {
 			'</div>' +
 		'</div><a class="btn-floating waves-effect waves-light red center-align btn-del" ' +
 		'data-id=' + val.dataset.id + ' onclick="deleteFromList(this)">' +
-		'<i class="material-icons">clear</i></a>' +
+		'<i class="material-icons">delete_forever</i></a>' +
 	'</div>');
 
 	if (val.innerText == 0) {

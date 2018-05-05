@@ -83,6 +83,7 @@
 					</a>
 
 					<ul class="right hide-on-med-and-down">
+						<li><a class="list-all">书籍列表</a></li>
 						<li><a href="#search">搜索书籍</a></li>
 						<li><a href="#search-reservation">订单查询</a></li>
 						<li><a href="#settings">系统设置</a></li>
@@ -90,9 +91,15 @@
 				</div>
 			</nav>
 		</div>
-		
+
 		<ul class="side-nav" id="mobile-menu">
 			<div class="brand"></div>
+
+			<li>
+				<a class="list-all">
+					<i class="material-icons">format_list_bulleted</i>书籍列表
+				</a>
+			</li>
 
 			<li>
 				<a href="#search">
@@ -102,7 +109,7 @@
 
 			<li>
 				<a href="#search-reservation">
-					<i class="material-icons">library_books</i>订单查询
+					<i class="material-icons">description</i>订单查询
 				</a>
 			</li>
 
@@ -187,7 +194,7 @@
 
 			<p class="range-field">
 				<label for="page-limit">每页书籍显示量：</label>
-				<input type="range" id="page-limit" min="10" max="100" value="30">
+				<input type="range" id="page-limit" min="10" max="50" value="30">
 			</p>
 
 			<div class="center-align">
