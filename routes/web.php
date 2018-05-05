@@ -22,10 +22,10 @@
 Route::get('/', function() {
 	return \File::get(public_path() . '/html/index.html');
 });
-Route::get('/admin/books', function() {
+Route::get('/' . config('app.adminpath'). '/books', function() {
 	return \File::get(public_path() . '/html/admin/books.html');
 });
-Route::get('/admin/reservations', function() {
+Route::get('/' . config('app.adminpath'). '/reservations', function() {
 	return \File::get(public_path() . '/html/admin/reservations.html');
 });
 
@@ -37,12 +37,12 @@ Route::get('/admin/reservations', function() {
 ==================================================================
 */
 Route::post(
-	'/api/admin/login',
+	'/api/' . config('app.adminpath'). '/login',
 	'AdminSessionController@login'
 );
 
 Route::get(
-	'/api/admin/logout',
+	'/api/' . config('app.adminpath'). '/logout',
 	'AdminSessionController@logout'
 )->middleware('admin');
 
@@ -52,23 +52,23 @@ Route::get(
 ==================================================================
 */
 Route::get(
-	'/api/admin/book/all',
+	'/api/' . config('app.adminpath'). '/book/all',
 	'AdminBookController@index'
 )->middleware('admin');
 
 Route::get(
-	'/api/admin/book/id/{id}',
+	'/api/' . config('app.adminpath'). '/book/id/{id}',
 	'AdminBookController@getById'
 )->middleware('admin');
 
 Route::get(
-	'/api/admin/book/page/{page}/limit/{limit}',
+	'/api/' . config('app.adminpath'). '/book/page/{page}/limit/{limit}',
 	'AdminBookController@getByPage'
 )->middleware('admin');
 
 // This Interface Is Currently Still Reserved
 Route::get(
-	'/api/admin/book/isbn/{isbn}',
+	'/api/' . config('app.adminpath'). '/book/isbn/{isbn}',
 	'AdminBookController@searchByISBN'
 )->middleware('admin');
 
@@ -78,17 +78,17 @@ Route::get(
 ==================================================================
 */
 Route::post(
-	'/api/admin/book/add/raw',
+	'/api/' . config('app.adminpath'). '/book/add/raw',
 	'AdminBookController@addByRaw'
 )->middleware('admin', 'book');
 
 Route::post(
-	'/api/admin/book/add/isbn',
+	'/api/' . config('app.adminpath'). '/book/add/isbn',
 	'AdminBookController@addByISBN'
 )->middleware('admin');
 
 Route::post(
-	'/api/admin/book/update/{id}',
+	'/api/' . config('app.adminpath'). '/book/update/{id}',
 	'AdminBookController@updateById'
 )->middleware('admin', 'book');
 
@@ -98,7 +98,7 @@ Route::post(
 ==================================================================
 */
 Route::get(
-	'/api/admin/reservation/all',
+	'/api/' . config('app.adminpath'). '/reservation/all',
 	'ReservationController@index'
 )->middleware('admin');
 

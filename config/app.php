@@ -211,4 +211,7 @@ return [
 
     ],
 
+    // Self defined admin path configuration
+    // Change it to something which can't be guessed may help = =
+    'adminpath' => 'admin',
 ];
