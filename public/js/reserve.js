@@ -22,12 +22,10 @@ $(document).ready(function() {
 		searchReservation();
 	});
 
+	reserveBind();
+
 	$("#page-limit").on('input', function() {
 		pageLimit = parseInt($(this).val());
-	});
-
-	$("#back").click(function() {
-		$("#reservation").modal('close');
 	});
 
 	$("#settings-loadimg").click(function() {
@@ -87,40 +85,6 @@ $(document).ready(function() {
 
 	$("#all").modal('open');
 });
-
-function display(data) {
-	$("#loading").css("display", "flex");
-
-	$("#display").empty();
-	$.each(data, function(i, book) {
-		var btnAttr = book.quantity == 0 ?
-			'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
-			'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
-			'data-id=' + book.id + ' onclick="addToList(this)">' +
-			book.quantity + '</a>';
-
-		$("#display").append(
-		'<div class="card horizontal">' +
-			'<div class="card-image">' +
-				'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
-				(loadimg ? book.cover.replace('..', '.') : defaultImg) +
-				' onclick="window.location.href=this.src">' +
-			'</div>' +
-			'<div class="card-stacked">' +
-				'<div class="card-content">' +
-					'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
-					'<div class="card-details">' +
-						'<p>作者：' + book.author + '</p>' +
-						'<p>出版社：' + book.publisher + '</p>' +
-						'<p>出版时间：' + book.pubdate + '</p>' +
-					'</div>' +
-				'</div>' +
-			'</div>' + btnAttr +
-		'</div>');
-	});
-
-	$("#loading").hide();
-}
 
 function reserveBind() {
 	$("#reserve").submit(function(e) {
@@ -188,6 +152,40 @@ function reserveBind() {
 	});
 }
 
+function display(data) {
+	$("#loading").css("display", "flex");
+
+	$("#display").empty();
+	$.each(data, function(i, book) {
+		var btnAttr = book.quantity == 0 ?
+			'<a class="btn-floating waves-effect waves-light grey center-align btn-add">0</a>' :
+			'<a class="btn-floating waves-effect waves-light red center-align btn-add" ' +
+			'data-id=' + book.id + ' onclick="addToList(this)">' +
+			book.quantity + '</a>';
+
+		$("#display").append(
+		'<div class="card horizontal">' +
+			'<div class="card-image">' +
+				'<img class="z-depth-3" onerror="replaceCover(this)" src=' +
+				(loadimg ? book.cover.replace('..', '.') : defaultImg) +
+				' onclick="window.location.href=this.src">' +
+			'</div>' +
+			'<div class="card-stacked">' +
+				'<div class="card-content">' +
+					'<div class="card-title book-title" onclick="showFullText(this)">' + book.title + '</div>' +
+					'<div class="card-details">' +
+						'<p>作者：' + book.author + '</p>' +
+						'<p>出版社：' + book.publisher + '</p>' +
+						'<p>出版时间：' + book.pubdate + '</p>' +
+					'</div>' +
+				'</div>' +
+			'</div>' + btnAttr +
+		'</div>');
+	});
+
+	$("#loading").hide();
+}
+
 function searchReservation() {
 	$("#progress").show();
 	$.get(
@@ -233,7 +231,7 @@ function searchReservation() {
 								'<button class="btn waves-effect waves-light red lighten-2" onclick="modifyReservation();">' +
 									'<i class="material-icons right">edit</i>更改' +
 								'</button>' +
-								'<button class="btn waves-effect waves-light red lighten-2 modal-close" id="back">' +
+								'<button class="btn waves-effect waves-light red lighten-2 modal-close">' +
 									'<i class="material-icons right">replay</i>返回' +
 								'</button>' +
 							'</div>' +
@@ -390,7 +388,12 @@ function deleteFromList(val) {
 	val.parentNode.outerHTML = '';
 }
 
-function modalAlert(content, title = '<i class="material-icons left">warning</i>系统提示') {
+function replaceCover(ele) {
+	ele.src = defaultImg;
+}
+
+function modalAlert(content, title =
+	'<i class="material-icons left">warning</i>系统提示') {
 	$("#alert-title").html(title);
 	$("#alert-content").html(content);
 	$("#alert").modal('open');
@@ -406,8 +409,4 @@ function confirmChoose() {
 		return;
 	}
 	$("#reserve").modal('open');
-}
-
-function replaceCover(ele) {
-	ele.src = defaultImg;
 }
