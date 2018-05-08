@@ -16,6 +16,9 @@ class DoubanAPIHandler extends Controller
 		$book = json_decode($book, true);
 
 		// Specially write to handle books with multiple authors
+
+		if (count($book['author']) == 0) return false;
+
 		$author = $book['author'][0];
 		if (count($book['author']) > 1)
 			$author .= ' 等';

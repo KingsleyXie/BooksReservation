@@ -12,7 +12,12 @@ class UserBookController extends Controller
 	public function index()
 	{
 		$books = DB::table('book')
-			->orderByRaw('quantity > 0 DESC, id DESC')
+			->orderByRaw(
+				'quantity = 0,
+				quantity > 21,
+				quantity DESC,
+				id ASC'
+			)
 			->get();
 
 		return response()->json([
@@ -32,7 +37,12 @@ class UserBookController extends Controller
 	public function pagedIndex($page, $limit)
 	{
 		$books = DB::table('book')
-			->orderByRaw('quantity > 0 DESC, id DESC')
+			->orderByRaw(
+				'quantity = 0,
+				quantity > 21,
+				quantity DESC,
+				id ASC'
+			)
 			->skip(($page - 1) * $limit)
 			->take($limit)
 			->get();
@@ -53,7 +63,12 @@ class UserBookController extends Controller
 					'%' . $req->keyword . '%'
 				]
 			)
-			->orderByRaw('quantity > 0 DESC, id DESC')
+			->orderByRaw(
+				'quantity = 0,
+				quantity > 21,
+				quantity DESC,
+				id ASC'
+			)
 			->get();
 
 		return response()->json([
@@ -90,7 +105,12 @@ class UserBookController extends Controller
 					'%' . $req->keyword . '%'
 				]
 			)
-			->orderByRaw('quantity > 0 DESC, id DESC')
+			->orderByRaw(
+				'quantity = 0,
+				quantity > 21,
+				quantity DESC,
+				id ASC'
+			)
 			->skip(($page - 1) * $limit)
 			->take($limit)
 			->get();

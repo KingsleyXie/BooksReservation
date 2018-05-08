@@ -155,7 +155,8 @@ th {
 	padding-bottom: 20px;
 	font-weight: 300;
 }
-.book-title {
+.book-title,
+.card .card-content p {
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	overflow: hidden;
