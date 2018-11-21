@@ -171,16 +171,14 @@ class AdminBookController extends Controller
 	public function initElasticIndex()
 	{
 		Book::addAllToIndex();
-		return response()->json([
-			'errcode' => 0
-		]);
+
+		return view('index', ['info' => 'Elasticsearch 索引初始化成功！']);
 	}
 
 	public function resetElasticIndex()
 	{
 		Book::reindex();
-		return response()->json([
-			'errcode' => 0
-		]);
+
+		return view('index', ['info' => 'Elasticsearch 索引重置成功！']);
 	}
 }
