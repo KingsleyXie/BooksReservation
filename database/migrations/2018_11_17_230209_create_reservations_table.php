@@ -17,7 +17,7 @@ class CreateReservationsTable extends Migration
 		{
 			$table->integer('id', true);
 			$table->string('stuname', 60);
-			$table->string('stuno', 15);
+			$table->string('stuno', 15)->unique();
 			$table->string('dorm', 15);
 			$table->string('contact', 15);
 			$table->string('takeday', 15);

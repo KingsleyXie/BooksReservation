@@ -18,7 +18,7 @@ class CollisionCheck
      */
     public function handle($req, Closure $next)
     {
-        $collision = DB::table('book')
+        $collision = DB::table('books')
             ->where('quantity', '<=', 0)
             ->whereIn('id', $req->books)
             ->exists();

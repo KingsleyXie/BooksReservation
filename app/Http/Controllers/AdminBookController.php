@@ -74,17 +74,17 @@ class AdminBookController extends Controller
 		if (isset($book['quantity']))
 			$record['quantity'] = $book['quantity'];
 
-		$bookID = DB::table('books')->insertGetId($record);
+		$bookId = DB::table('books')->insertGetId($record);
 
-		$book = Book::find($bookID);
+		$book = Book::find($bookId);
 		$book->addToIndex();
 
-		return $bookID;
+		return $bookId;
 	}
 
 	public function addByRaw(Request $req)
 	{
-		$bookID = $this->add([
+		$bookId = $this->add([
 			'title' => $req->title,
 			'author' => $req->author,
 			'publisher' => $req->publisher,
@@ -95,7 +95,7 @@ class AdminBookController extends Controller
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => '书籍新增成功，编号为 ' . $bookID
+			'data' => '书籍新增成功，编号为 ' . $bookId
 		]);
 	}
 
@@ -122,11 +122,11 @@ class AdminBookController extends Controller
 			]);
 		}
 
-		$bookID = $this->add($book);
+		$bookId = $this->add($book);
 
 		return response()->json([
 			'errcode' => 0,
-			'data' => '书籍新增成功，编号为 ' . $bookID
+			'data' => '书籍新增成功，编号为 ' . $bookId
 		]);
 	}
 

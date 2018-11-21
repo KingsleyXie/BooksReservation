@@ -30,20 +30,27 @@ class ReserveController extends Controller
 			'taketime' => $req->taketime
 		];
 
-		if ($req->book0 != 0) $record['book0'] = $req->book0;
-		if ($req->book1 != 0) $record['book1'] = $req->book1;
-		if ($req->book2 != 0) $record['book2'] = $req->book2;
+		$bookIds = [$req->book0, $req->book1, $req->book2];
 
-		DB::table('reservations')->insert($record);
+		DB::transaction(function () use ($bookIds, $record) {
+			DB::table('books')
+				->whereIn('id', $bookIds)
+				->where('quantity', '>', 0)
+				->decrement('quantity');
 
-		DB::table('books')
-			->whereIn('id', [
-				$req->book0,
-				$req->book1,
-				$req->book2
-			])
-			->where('quantity', '>', 0)
-			->decrement('quantity');
+			$reservationId = DB::table('reservations')->insertGetId($record);
+			$relation = [
+				'reservation_id' => $reservationId,
+				'book_id' => 0
+			];
+
+			foreach ($bookIds as $bookId) {
+				if ($bookId != 0) {
+					$relation['book_id'] = $bookId;
+					DB::table('reservation_book')->insert($relation);
+				}
+			}
+		});
 
 		return response()->json([
 			'errcode' => 0,
@@ -72,30 +79,46 @@ class ReserveController extends Controller
 			'taketime' => $req->taketime
 		];
 
-		if ($req->book0 != 0) $record['book0'] = $req->book0;
-		if ($req->book1 != 0) $record['book1'] = $req->book1;
-		if ($req->book2 != 0) $record['book2'] = $req->book2;
+		$preBookIds = [$req->prebook0, $req->prebook1, $req->prebook2];
+		$bookIds = [$req->book0, $req->book1, $req->book2];
 
-		DB::table('reservations')
+		$reservationId = DB::table('reservations')
 			->where('stuno', $req->stuno)
-			->update($record);
+			->value('id');
 
-		DB::table('books')
-			->whereIn('id', [
-				$req->prebook0,
-				$req->prebook1,
-				$req->prebook2
-			])
-			->increment('quantity');
+		DB::transaction(function () use ($preBookIds, $bookIds, $record, $reservationId) {
+			DB::table('books')
+				->whereIn('id', $preBookIds)
+				->increment('quantity');
 
-		DB::table('books')
-			->whereIn('id', [
-				$req->book0,
-				$req->book1,
-				$req->book2
-			])
-			->where('quantity', '>', 0)
-			->decrement('quantity');
+			DB::table('books')
+				->whereIn('id', $bookIds)
+				->where('quantity', '>', 0)
+				->decrement('quantity');
+
+			DB::table('reservations')
+				->where('id', $reservationId)
+				->update($record);
+
+			$relation = [
+				'reservation_id' => $reservationId,
+				'book_id' => 0
+			];
+
+			foreach ($preBookIds as $bookId) {
+				if ($bookId != 0) {
+					$relation['book_id'] = $bookId;
+					DB::table('reservation_book')->where($relation)->delete();
+				}
+			}
+
+			foreach ($bookIds as $bookId) {
+				if ($bookId != 0) {
+					$relation['book_id'] = $bookId;
+					DB::table('reservation_book')->insert($relation);
+				}
+			}
+		});
 
 		return response()->json([
 			'errcode' => 0,

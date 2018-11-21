@@ -13,11 +13,11 @@ class ReservationController extends Controller
 	private function getData($reservation)
 	{
 		$books = DB::table('books')
-			->whereIn('id', [
-				$reservation->book0,
-				$reservation->book1,
-				$reservation->book2
-			])
+			->whereIn('id', function($query) use ($reservation) {
+				$query->select('book_id')
+				->from('reservation_book')
+				->where('reservation_id', $reservation->id);
+			})
 			->get();
 
 		$data = new ReservationResource($reservation);
