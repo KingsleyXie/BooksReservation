@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -73,8 +74,12 @@ class AdminBookController extends Controller
 		if (isset($book['quantity']))
 			$record['quantity'] = $book['quantity'];
 
-		return DB::table('book')
-			->insertGetId($record);
+		$bookID = DB::table('book')->insertGetId($record);
+
+		$book = Book::find($bookID);
+		$book->addToIndex();
+
+		return $bookID;
 	}
 
 	public function addByRaw(Request $req)
@@ -138,6 +143,8 @@ class AdminBookController extends Controller
 				'quantity' => $req->quantity
 			]);
 
+		Book::reindex();
+
 		return response()->json([
 			'errcode' => 0,
 			'data' => '书籍信息修改成功'
@@ -158,6 +165,22 @@ class AdminBookController extends Controller
 		return response()->json([
 			'errcode' => 0,
 			'data' => new AdminBookResource($book)
+		]);
+	}
+
+	public function initElasticIndex()
+	{
+		Book::addAllToIndex();
+		return response()->json([
+			'errcode' => 0
+		]);
+	}
+
+	public function resetElasticIndex()
+	{
+		Book::reindex();
+		return response()->json([
+			'errcode' => 0
 		]);
 	}
 }

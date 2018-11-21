@@ -66,6 +66,16 @@ Route::get(
 	'AdminBookController@getByPage'
 )->middleware('admin');
 
+Route::get(
+	'/api/admin/book/init-index',
+	'AdminBookController@initElasticIndex'
+)->middleware('admin');
+
+Route::get(
+	'/api/admin/book/reset-index',
+	'AdminBookController@resetElasticIndex'
+)->middleware('admin');
+
 // This Interface Is Currently Still Reserved
 Route::get(
 	'/api/admin/book/isbn/{isbn}',

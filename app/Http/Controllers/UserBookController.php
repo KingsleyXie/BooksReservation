@@ -130,7 +130,7 @@ class UserBookController extends Controller
 		}
 
 		Redis::set($redis_key, json_encode($ids));
-		Redis::expire($redis_key, 600);
+		Redis::expire($redis_key, 300);
 
 		return $ids;
 	}
