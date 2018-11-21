@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuth
 {
@@ -15,11 +16,12 @@ class AdminAuth
      */
     public function handle($req, Closure $next)
     {
-        if (!$req->session()->exists('admin'))
+        if (!Auth::check()) {
             return response()->json([
                 'errcode' => -1,
                 'errmsg' => '请登录系统！'
             ]);
+        }
 
         return $next($req);
     }

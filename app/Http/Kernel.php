@@ -66,5 +66,9 @@ class Kernel extends HttpKernel
         'modify' => \App\Http\Middleware\ReserveModify::class,
         'list' => \App\Http\Middleware\ListCheck::class,
         'collision' => \App\Http\Middleware\CollisionCheck::class,
+
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
     ];
 }
