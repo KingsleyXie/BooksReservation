@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -55,6 +56,28 @@ class UserBookController extends Controller
 
 	public function search(Request $req)
 	{
+		// Book::addAllToIndex();
+		// dd(Book::searchByQuery([
+		// 	'multi_match' => [
+		// 		'title' => $req->keyword,
+		// 		'author' => $req->keyword,
+		// 		'publisher' => $req->keyword
+		// 	]
+		// ]));
+
+		// dd(Book::search($req->keyword));
+
+		// dd(Book::complexSearch(array(
+		// 	'body' => array(
+		// 		'query' => array(
+		// 			'multi_match' => array(
+		// 				"query" => $req->keyword,
+		// 				"fields" => ['title', 'author', 'publisher']
+		// 			)
+		// 		)
+		// 	)
+		// )));
+
 		$books = DB::table('book')
 			->whereRaw(
 				'(title LIKE ?) OR (author LIKE ?)',
