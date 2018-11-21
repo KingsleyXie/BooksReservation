@@ -359,7 +359,7 @@ function searchReservation() {
 								'<a class="cover" href=' + book.cover + '>触碰或点击查看封面图片' +
 									'<div class="cover-image">' +
 										'<img onerror="replaceCover(this)"' +
-										' src=' + (loadimg ? defaultImg : book.cover) +
+										' src=' + (loadimg ? book.cover : defaultImg) +
 										' alt="封面图片">' +
 									'</div>' +
 								'</a>' +
@@ -415,7 +415,7 @@ function modifyReservation() {
 					'<div class="card horizontal list-card">' +
 						'<div class="card-image">' +
 							'<img class="z-depth-3" onerror="replaceCover(this)"' +
-							' src=' + (loadimg ? defaultImg : book.cover) + '>' +
+							' src=' + (loadimg ? book.cover : defaultImg) + '>' +
 						'</div>' +
 						'<div class="card-stacked">' +
 							'<div class="card-content">' +
