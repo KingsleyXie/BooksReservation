@@ -56,36 +56,8 @@ class UserBookController extends Controller
 
 	public function search(Request $req)
 	{
-		// Book::addAllToIndex();
-		// dd(Book::searchByQuery([
-		// 	'multi_match' => [
-		// 		'title' => $req->keyword,
-		// 		'author' => $req->keyword,
-		// 		'publisher' => $req->keyword
-		// 	]
-		// ]));
-
-		// dd(Book::search($req->keyword));
-
-		// dd(Book::complexSearch(array(
-		// 	'body' => array(
-		// 		'query' => array(
-		// 			'multi_match' => array(
-		// 				"query" => $req->keyword,
-		// 				"fields" => ['title', 'author', 'publisher']
-		// 			)
-		// 		)
-		// 	)
-		// )));
-
 		$books = DB::table('book')
-			->whereRaw(
-				'(title LIKE ?) OR (author LIKE ?)',
-				[
-					'%' . $req->keyword . '%',
-					'%' . $req->keyword . '%'
-				]
-			)
+			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->orderByRaw(
 				'quantity = 0,
 				quantity > 21,
@@ -103,13 +75,7 @@ class UserBookController extends Controller
 	public function countedSearch(Request $req)
 	{
 		$count = DB::table('book')
-			->whereRaw(
-				'(title LIKE ?) OR (author LIKE ?)',
-				[
-					'%' . $req->keyword . '%',
-					'%' . $req->keyword . '%'
-				]
-			)
+			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->count();
 
 		return response()->json([
@@ -121,13 +87,7 @@ class UserBookController extends Controller
 	public function pagedSearch(Request $req, $page, $limit)
 	{
 		$books = DB::table('book')
-			->whereRaw(
-				'(title LIKE ?) OR (author LIKE ?)',
-				[
-					'%' . $req->keyword . '%',
-					'%' . $req->keyword . '%'
-				]
-			)
+			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->orderByRaw(
 				'quantity = 0,
 				quantity > 21,
@@ -142,5 +102,28 @@ class UserBookController extends Controller
 			'errcode' => 0,
 			'data' => UserBookResource::collection($books)
 		]);
+	}
+
+
+
+	public function getIdsFromElasticSearch($keyword)
+	{
+		Book::addAllToIndex();
+		$books = Book::complexSearch([
+			'body' => [
+				'_source' => ['id'],
+				"min_score" => 0.3,
+				'query' => ['multi_match' => [
+					'query' => $keyword,
+					'fields' => ['title^5', 'author^3', 'publisher']
+				]]
+			]
+		]);
+
+		$ids = [];
+		foreach ($books as $value) {
+			$ids[] = $value->id;
+		}
+		return $ids;
 	}
 }
