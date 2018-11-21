@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateReservationTable extends Migration
+class CreateReservationsTable extends Migration
 {
 
 	/**
@@ -13,7 +13,7 @@ class CreateReservationTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('reservation', function(Blueprint $table)
+		Schema::create('reservations', function(Blueprint $table)
 		{
 			$table->integer('id', true);
 			$table->string('stuname', 60);
@@ -22,14 +22,11 @@ class CreateReservationTable extends Migration
 			$table->string('contact', 15);
 			$table->string('takeday', 15);
 			$table->string('taketime', 15);
-			$table->integer('book0')->nullable()->index('book0');
-			$table->integer('book1')->nullable()->index('book1');
-			$table->integer('book2')->nullable()->index('book2');
 			$table->timestamp('submited')->default(DB::raw('CURRENT_TIMESTAMP'));
 			$table->timestamp('updated')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
 
-		DB::update("ALTER TABLE reservation AUTO_INCREMENT = 6001;");
+		DB::update("ALTER TABLE reservations AUTO_INCREMENT = 6001;");
 	}
 
 
@@ -40,7 +37,7 @@ class CreateReservationTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('reservation');
+		Schema::drop('reservations');
 	}
 
 }

@@ -10,7 +10,7 @@ class ReserveController extends Controller
 {
 	public function add(Request $req)
 	{
-		$exists = DB::table('reservation')
+		$exists = DB::table('reservations')
 			->where('stuno', $req->stuno)
 			->exists();
 
@@ -34,9 +34,9 @@ class ReserveController extends Controller
 		if ($req->book1 != 0) $record['book1'] = $req->book1;
 		if ($req->book2 != 0) $record['book2'] = $req->book2;
 
-		DB::table('reservation')->insert($record);
+		DB::table('reservations')->insert($record);
 
-		DB::table('book')
+		DB::table('books')
 			->whereIn('id', [
 				$req->book0,
 				$req->book1,
@@ -53,7 +53,7 @@ class ReserveController extends Controller
 
 	public function modify(Request $req)
 	{
-		$exists = DB::table('reservation')
+		$exists = DB::table('reservations')
 			->where('stuno', $req->stuno)
 			->exists();
 
@@ -76,11 +76,11 @@ class ReserveController extends Controller
 		if ($req->book1 != 0) $record['book1'] = $req->book1;
 		if ($req->book2 != 0) $record['book2'] = $req->book2;
 
-		DB::table('reservation')
+		DB::table('reservations')
 			->where('stuno', $req->stuno)
 			->update($record);
 
-		DB::table('book')
+		DB::table('books')
 			->whereIn('id', [
 				$req->prebook0,
 				$req->prebook1,
@@ -88,7 +88,7 @@ class ReserveController extends Controller
 			])
 			->increment('quantity');
 
-		DB::table('book')
+		DB::table('books')
 			->whereIn('id', [
 				$req->book0,
 				$req->book1,

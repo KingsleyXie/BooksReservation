@@ -13,7 +13,7 @@ class AdminBookController extends Controller
 {
 	public function index()
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->orderBy('id', 'DESC')
 			->get();
 
@@ -25,7 +25,7 @@ class AdminBookController extends Controller
 
 	public function getById($id)
 	{
-		$book = DB::table('book')
+		$book = DB::table('books')
 			->where('id', $id)
 			->first();
 
@@ -44,7 +44,7 @@ class AdminBookController extends Controller
 
 	public function getByPage($page, $limit)
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->orderBy('id', 'DESC')
 			->skip(($page - 1) * $limit)
 			->take($limit)
@@ -74,7 +74,7 @@ class AdminBookController extends Controller
 		if (isset($book['quantity']))
 			$record['quantity'] = $book['quantity'];
 
-		$bookID = DB::table('book')->insertGetId($record);
+		$bookID = DB::table('books')->insertGetId($record);
 
 		$book = Book::find($bookID);
 		$book->addToIndex();
@@ -101,7 +101,7 @@ class AdminBookController extends Controller
 
 	public function addByISBN(Request $req)
 	{
-		$affected = DB::table('book')
+		$affected = DB::table('books')
 			->where('isbn', $req->isbn)
 			->increment('quantity');
 
@@ -132,7 +132,7 @@ class AdminBookController extends Controller
 
 	public function updateById(Request $req, $id)
 	{
-		DB::table('book')
+		DB::table('books')
 			->where('id', $id)
 			->update([
 				'title' => $req->title,

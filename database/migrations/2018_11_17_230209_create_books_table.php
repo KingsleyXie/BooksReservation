@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateBookTable extends Migration
+class CreateBooksTable extends Migration
 {
 
 	/**
@@ -13,7 +13,7 @@ class CreateBookTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('book', function(Blueprint $table)
+		Schema::create('books', function(Blueprint $table)
 		{
 			$table->integer('id', true);
 			$table->string('isbn', 15)->nullable()->unique('isbn');
@@ -27,7 +27,7 @@ class CreateBookTable extends Migration
 			$table->timestamp('updated')->default(DB::raw('CURRENT_TIMESTAMP'));
 		});
 
-		DB::update("ALTER TABLE book AUTO_INCREMENT = 1001;");
+		DB::update("ALTER TABLE books AUTO_INCREMENT = 1001;");
 	}
 
 
@@ -38,7 +38,7 @@ class CreateBookTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('book');
+		Schema::drop('books');
 	}
 
 }

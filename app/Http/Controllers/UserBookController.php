@@ -13,7 +13,7 @@ class UserBookController extends Controller
 {
 	public function index()
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->orderByRaw(
 				'quantity = 0,
 				quantity > 21,
@@ -32,13 +32,13 @@ class UserBookController extends Controller
 	{
 		return response()->json([
 			'errcode' => 0,
-			'data' => DB::table('book')->count()
+			'data' => DB::table('books')->count()
 		]);
 	}
 
 	public function pagedIndex($page, $limit)
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->orderByRaw(
 				'quantity = 0,
 				quantity > 21,
@@ -57,7 +57,7 @@ class UserBookController extends Controller
 
 	public function search(Request $req)
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->orderByRaw(
 				'quantity = 0,
@@ -75,7 +75,7 @@ class UserBookController extends Controller
 
 	public function countedSearch(Request $req)
 	{
-		$count = DB::table('book')
+		$count = DB::table('books')
 			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->count();
 
@@ -87,7 +87,7 @@ class UserBookController extends Controller
 
 	public function pagedSearch(Request $req, $page, $limit)
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->whereIn('id', $this->getIdsFromElasticSearch($req->keyword))
 			->orderByRaw(
 				'quantity = 0,

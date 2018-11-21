@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ReservationTableSeeder extends Seeder
+class ReservationsTableSeeder extends Seeder
 {
 
     /**
@@ -14,9 +14,9 @@ class ReservationTableSeeder extends Seeder
     {
         
 
-        \DB::table('reservation')->delete();
+        \DB::table('reservations')->delete();
         
-        \DB::table('reservation')->insert(array (
+        \DB::table('reservations')->insert(array (
             0 => 
             array (
                 'id' => 6001,
@@ -26,14 +26,9 @@ class ReservationTableSeeder extends Seeder
                 'contact' => '13755555555',
                 'takeday' => '5月13日',
                 'taketime' => '16:30 - 18:00',
-                'book0' => 1004,
-                'book1' => 1003,
-                'book2' => NULL,
                 'submited' => '2018-11-17 10:40:39',
                 'updated' => '2018-11-17 10:40:39',
             ),
         ));
-        
-        
     }
 }

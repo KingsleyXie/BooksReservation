@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class BookTableSeeder extends Seeder
+class BooksTableSeeder extends Seeder
 {
 
     /**
@@ -14,9 +14,9 @@ class BookTableSeeder extends Seeder
     {
         
 
-        \DB::table('book')->delete();
+        \DB::table('books')->delete();
         
-        \DB::table('book')->insert(array (
+        \DB::table('books')->insert(array (
             0 => 
             array (
                 'id' => 1001,

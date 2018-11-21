@@ -9,8 +9,6 @@ class Book extends Model
 {
     use ElasticquentTrait;
 
-    protected $table = 'book';
-
     protected $mappingProperties = [
         'title' => ['analyzer' => 'ik_max_word'],
         'author' => ['analyzer' => 'ik_max_word'],

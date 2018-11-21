@@ -12,7 +12,7 @@ class ReservationController extends Controller
 {
 	private function getData($reservation)
 	{
-		$books = DB::table('book')
+		$books = DB::table('books')
 			->whereIn('id', [
 				$reservation->book0,
 				$reservation->book1,
@@ -29,7 +29,7 @@ class ReservationController extends Controller
 
 	public function index()
 	{
-		$reservations = DB::table('reservation')
+		$reservations = DB::table('reservations')
 			->orderBy('submited', 'DESC')
 			->get();
 
@@ -46,7 +46,7 @@ class ReservationController extends Controller
 
 	public function searchByStuno($stuno)
 	{
-		$reservation = DB::table('reservation')
+		$reservation = DB::table('reservations')
 			->where('stuno', $stuno)
 			->first();
 
