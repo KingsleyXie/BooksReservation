@@ -3,6 +3,13 @@ $(document).ready(function() {
 	prepare();
 	bind();
 
+	$.get('../api/admin/pms-status', function(response) {
+		if (!response['books.view']) $(".pms-books-import").remove();
+		if (!response['books.import']) $(".pms-books-import").remove();
+		if (!response['books.update']) $(".pms-books-update").remove();
+		if (!response['reservations.view']) $(".pms-reservations-view").remove();
+	});
+
 	$.get('../api/admin/book/all', function(response) {
 		if (response.errcode == 0) {
 			$.each(response.data, function(i, book) {

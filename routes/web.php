@@ -61,6 +61,13 @@ Route::prefix('api/admin')->group(function () {
 		*/
 		Route::get('init-index', 'AdminBookController@initElasticIndex');
 		Route::get('reset-index', 'AdminBookController@resetElasticIndex');
+
+		/*
+		==================================================================
+			Admin Route 5. Query Admin User's Permission Status
+		==================================================================
+		*/
+		Route::get('pms-status', 'AdminSessionController@permissionStatus');
 	});
 });
 
