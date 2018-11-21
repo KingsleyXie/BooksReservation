@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserBook as UserBookResource;
 
@@ -108,7 +109,10 @@ class UserBookController extends Controller
 
 	public function getIdsFromElasticSearch($keyword)
 	{
-		Book::addAllToIndex();
+		$redis_key = "key$keyword";
+		if (Redis::exists($redis_key))
+			return json_decode(Redis::get($redis_key), true);
+
 		$books = Book::complexSearch([
 			'body' => [
 				'_source' => ['id'],
@@ -124,6 +128,10 @@ class UserBookController extends Controller
 		foreach ($books as $value) {
 			$ids[] = $value->id;
 		}
+
+		Redis::set($redis_key, json_encode($ids));
+		Redis::expire($redis_key, 600);
+
 		return $ids;
 	}
 }
