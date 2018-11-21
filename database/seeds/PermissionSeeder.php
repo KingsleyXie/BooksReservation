@@ -21,27 +21,31 @@ class PermissionSeeder extends Seeder
         $booksUpdater = Role::create(['name' => 'books.updater']);
         $reservationsAdmin = Role::create(['name' => 'reservations.admin']);
 
-        $booksIndex = Permission::create(['name' => 'books.index']);
+        $booksView = Permission::create(['name' => 'books.view']);
         $booksImport = Permission::create(['name' => 'books.import']);
         $booksUpdate = Permission::create(['name' => 'books.update']);
-        $reservationsIndex = Permission::create(['name' => 'reservations.index']);
+        $reservationsView = Permission::create(['name' => 'reservations.view']);
 
 
 
-        $superadmin->givePermissionTo($booksIndex);
+        $superadmin->givePermissionTo($booksView);
         $superadmin->givePermissionTo($booksImport);
         $superadmin->givePermissionTo($booksUpdate);
-        $superadmin->givePermissionTo($reservationsIndex);
+        $superadmin->givePermissionTo($reservationsView);
 
-        $booksAdmin->givePermissionTo($booksIndex);
+        $booksAdmin->givePermissionTo($booksView);
         $booksAdmin->givePermissionTo($booksImport);
         $booksAdmin->givePermissionTo($booksUpdate);
 
-        $booksViewer->givePermissionTo($booksIndex);
+        $booksViewer->givePermissionTo($booksView);
+
+        $booksImporter->givePermissionTo($booksView);
         $booksImporter->givePermissionTo($booksImport);
+
+        $booksUpdater->givePermissionTo($booksView);
         $booksUpdater->givePermissionTo($booksUpdate);
 
-        $reservationsAdmin->givePermissionTo($reservationsIndex);
+        $reservationsAdmin->givePermissionTo($reservationsView);
 
 
 

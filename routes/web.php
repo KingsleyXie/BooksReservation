@@ -28,24 +28,23 @@ Route::prefix('api/admin')->group(function () {
 			Admin Route 1. Query Books
 			==================================================================
 			*/
-			Route::get('all', 'AdminBookController@index');
-			Route::get('id/{id}', 'AdminBookController@getById');
-			Route::get('page/{page}/limit/{limit}', 'AdminBookController@getByPage');
+			Route::group(['middleware' => ['permission:books.view']], function () {
+				Route::get('all', 'AdminBookController@index');
+				Route::get('id/{id}', 'AdminBookController@getById');
+				Route::get('page/{page}/limit/{limit}', 'AdminBookController@getByPage');
 
-			Route::get('init-index', 'AdminBookController@initElasticIndex');
-			Route::get('reset-index', 'AdminBookController@resetElasticIndex');
-
-			// This Interface Is Currently Still Reserved
-			Route::get('isbn/{isbn}', 'AdminBookController@searchByISBN');
+				// This Legacy Interface May Be Deprecated Later
+				Route::get('isbn/{isbn}', 'AdminBookController@searchByISBN');
+			});
 
 			/*
 			==================================================================
 				Admin Route 2. Manage Books
 			==================================================================
 			*/
-			Route::post('add/raw', 'AdminBookController@addByRaw')->middleware('book');
-			Route::post('add/isbn', 'AdminBookController@addByISBN');
-			Route::post('update/{id}', 'AdminBookController@updateById')->middleware('book');
+			Route::post('add/isbn', 'AdminBookController@addByISBN')->middleware('permission:books.import');
+			Route::post('add/raw', 'AdminBookController@addByRaw')->middleware('book', 'permission:books.import');
+			Route::post('update/{id}', 'AdminBookController@updateById')->middleware('book', 'books.update');
 		});
 
 		/*
@@ -53,7 +52,15 @@ Route::prefix('api/admin')->group(function () {
 			Admin Route 3. Query Reservations
 		==================================================================
 		*/
-		Route::get('reservation/all', 'ReservationController@index');
+		Route::get('reservation/all', 'ReservationController@index')->middleware('permission:reservations.view');
+
+		/*
+		==================================================================
+			Admin Route 4. Elastic Search Index Init And Reset
+		==================================================================
+		*/
+		Route::get('init-index', 'AdminBookController@initElasticIndex');
+		Route::get('reset-index', 'AdminBookController@resetElasticIndex');
 	});
 });
 
@@ -111,4 +118,4 @@ Route::get(config('app.adminpath'). '/books', function() {
 
 Route::get(config('app.adminpath'). '/reservations', function() {
 	return \File::get(public_path() . '/html/admin/reservations.html');
-});
+})->middleware('permission:reservations.view');
