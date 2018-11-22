@@ -44,7 +44,7 @@ Route::prefix('api/admin')->group(function () {
 			*/
 			Route::post('add/isbn', 'AdminBookController@addByISBN')->middleware('permission:books.import');
 			Route::post('add/raw', 'AdminBookController@addByRaw')->middleware('book', 'permission:books.import');
-			Route::post('update/{id}', 'AdminBookController@updateById')->middleware('book', 'books.update');
+			Route::post('update/{id}', 'AdminBookController@updateById')->middleware('book', 'permission:books.update');
 		});
 
 		/*
