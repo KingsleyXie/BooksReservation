@@ -141,7 +141,8 @@ class AdminBookController extends Controller
 				'publisher' => $req->publisher,
 				'pubdate' => $req->pubdate,
 				'cover' => $req->cover,
-				'quantity' => $req->quantity
+				'quantity' => $req->quantity,
+				'updated' => DB::raw('NOW()')
 			]);
 
 		Book::reindex();
@@ -172,7 +173,9 @@ class AdminBookController extends Controller
 	public function initElasticIndex()
 	{
 		Book::addAllToIndex();
-		Redis::del(Redis::keys('key:*'));
+
+		$keys = Redis::keys('key:*');
+		if ($keys) Redis::del($keys);
 
 		return view('index', ['info' => 'Elasticsearch 索引初始化成功！']);
 	}
@@ -180,7 +183,9 @@ class AdminBookController extends Controller
 	public function resetElasticIndex()
 	{
 		Book::reindex();
-		Redis::del(Redis::keys('key:*'));
+
+		$keys = Redis::keys('key:*');
+		if ($keys) Redis::del($keys);
 
 		return view('index', ['info' => 'Elasticsearch 索引重置成功！']);
 	}
