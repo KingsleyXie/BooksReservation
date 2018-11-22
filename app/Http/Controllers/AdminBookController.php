@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminBook as AdminBookResource;
 use App\Http\Controllers\DoubanAPIHandler as Douban;
@@ -171,6 +172,7 @@ class AdminBookController extends Controller
 	public function initElasticIndex()
 	{
 		Book::addAllToIndex();
+		Redis::del(Redis::keys('key:*'));
 
 		return view('index', ['info' => 'Elasticsearch 索引初始化成功！']);
 	}
@@ -178,6 +180,7 @@ class AdminBookController extends Controller
 	public function resetElasticIndex()
 	{
 		Book::reindex();
+		Redis::del(Redis::keys('key:*'));
 
 		return view('index', ['info' => 'Elasticsearch 索引重置成功！']);
 	}

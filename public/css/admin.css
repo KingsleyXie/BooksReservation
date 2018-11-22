@@ -122,3 +122,12 @@ th {
 .book-title:hover {
 	cursor: pointer;
 }
+
+/* Remove autofill styles in Chrome*/
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+	background-color: white !important;
+	transition: background-color 5000s ease-in-out 0s !important;
+}

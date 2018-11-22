@@ -109,7 +109,7 @@ class UserBookController extends Controller
 
 	public function getIdsFromElasticSearch($keyword)
 	{
-		$redis_key = "key$keyword";
+		$redis_key = 'key:' . base64_encode($keyword);
 		if (Redis::exists($redis_key))
 			return json_decode(Redis::get($redis_key), true);
 
