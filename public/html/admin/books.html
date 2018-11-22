@@ -6,8 +6,8 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 	<title>书籍管理页面</title>
 	<link rel="shortcut icon" href="../pictures/icon.png">
-	<link rel="stylesheet" href="https://cdn.bootcss.com/materialize/0.98.2/css/materialize.min.css">
-	<link rel="stylesheet" href="https://cdn.bootcss.com/material-design-icons/3.0.1/iconfont/material-icons.min.css">
+	<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
 	<link rel="stylesheet" href="../css/admin.css">
 </head>
 
@@ -144,14 +144,14 @@
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input type="text" name="username" required>
+					<input type="text" name="username" required autocomplete="off">
 					<label for="username">用户名</label>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input type="password" name="password" required>
+					<input type="password" name="password" required autocomplete="off">
 					<label for="password">密码</label>
 				</div>
 			</div>
@@ -170,7 +170,7 @@
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input type="text" id="isbn" name="isbn">
+					<input type="text" id="isbn" name="isbn" autocomplete="off">
 					<label for="isbn">图书 ISBN</label>
 				</div>
 			</div>
@@ -187,7 +187,7 @@
 
 			<div class="row">
 				<div class="input-field col s12">
-					<input type="text" id="bookID">
+					<input type="text" id="bookID" autocomplete="off">
 					<label for="bookID">请输入书籍 ID </label>
 				</div>
 			</div>
@@ -209,41 +209,41 @@
 			<div class="center">
 				<div class="row">
 					<div class="input-field col s5">
-						<input type="text" id="title" name="title">
+						<input type="text" id="title" name="title" autocomplete="off">
 						<label for="title">书名</label>
 					</div>
 
 					<div class="input-field col s4">
-						<input type="text" id="author" name="author">
+						<input type="text" id="author" name="author" autocomplete="off">
 						<label for="author">作者</label>
 					</div>
 
 					<div class="input-field col s3">
-						<input type="checkbox" id="multi">
+						<input type="checkbox" id="multi" autocomplete="off">
 						<label for="multi">多作者</label>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="input-field col s7">
-						<input type="text" id="publisher" name="publisher">
+						<input type="text" id="publisher" name="publisher" autocomplete="off">
 						<label for="publisher">出版社</label>
 					</div>
 
 					<div class="input-field col s5">
-						<input type="text" id="pubdate" name="pubdate">
+						<input type="text" id="pubdate" name="pubdate" autocomplete="off">
 						<label for="pubdate">出版日期</label>
 					</div>
 				</div>
 
 				<div class="row">
 					<div class="input-field col s3">
-						<input type="number" id="quantity" name="quantity">
+						<input type="number" id="quantity" name="quantity" autocomplete="off">
 						<label for="quantity">数量</label>
 					</div>
 
 					<div class="input-field col s9">
-						<input type="text" id="cover" name="cover" value="../pictures/default.png">
+						<input type="text" id="cover" name="cover" value="../pictures/default.png" autocomplete="off">
 						<label for="cover">封面图片链接</label>
 					</div>
 				</div>
@@ -269,8 +269,8 @@
 
 	<div class="copyright">Copyright © 2018 <a href="https://github.com/KingsleyXie/BooksReservation">Kingsley</a></div>
 
-	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdn.bootcss.com/materialize/0.98.2/js/materialize.min.js"></script>
+	<script src="https://cdnjs.loli.net/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.loli.net/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
 	<script src="../js/admin.js"></script>
 </body>
 </html>
