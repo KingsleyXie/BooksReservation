@@ -27,6 +27,57 @@ You can also see brief introductions and directions of this system inside [`./as
 Source of [sample SideNav header picture](./assets/pictures/books.png) was [here](https://assets.entrepreneur.com/content/3x2/1300/20150115183825-books-reading.jpeg) and it was processed to fit in its element position
 
 You can experience this entire system on [https://projects.kingsleyxie.cn/books-reservation/](https://projects.kingsleyxie.cn/books-reservation/)
+ 
+## Temporary Brief Deploy Guide For v2.0.0+
+This README is currently not up-to-date with the project version due to lacking of time. Commands are shown below to give a brief deploy guide, based on my demo site using Ubuntu 16.04, and the process to install LNMP/LAMP is ignored here. Besides, for convience, any user permission related problem are also not shown.
 
-### Note
-Currently this is almost the version 2.0.0, but some documentation shall be updated later before releasing it.
+### Elasticsearch with `ik` analysis plugin, and `Java` environment:
+
+Refrences:
+  - [How To Install Oracle Java JDK 11 / 8 on Ubuntu 16.04 / Linux Mint 18](https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-java-jdk-8-on-ubuntu-14-10-linux-mint-17-1.html)
+  - [How To Install and Configure Elasticsearch on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-elasticsearch-on-ubuntu-16-04)
+  - [IK Analysis for Elasticsearch](https://github.com/medcl/elasticsearch-analysis-ik/).
+
+```shell
+$ sudo add-apt-repository -y ppa:webupd8team/java
+$ sudo apt-get update
+$ sudo apt-get install -y oracle-java8-installer
+
+$ wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.5.0.deb
+$ sudo dpkg -i elasticsearch-6.5.0.deb
+$ sudo systemctl enable elasticsearch.service
+$ sudo systemctl start elasticsearch
+
+$ sudo ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.5.0/elasticsearch-analysis-ik-6.5.0.zip
+$ sudo systemctl restart elasticsearch
+```
+
+### Redis database for session cache and book search result cache
+
+Refrences:
+  - [How to Install and Configure a Redis Cluster on Ubuntu 16.04](https://www.linode.com/docs/applications/big-data/how-to-install-and-configure-a-redis-cluster-on-ubuntu-1604/)
+  - [want to run redis-server in background nonstop](https://stackoverflow.com/questions/24221449/want-to-run-redis-server-in-background-nonstop/33316249#33316249)
+
+```shell
+$ sudo apt-get update && sudo apt-get upgrade
+$ sudo apt install make gcc libc6-dev tcl
+
+$ wget http://download.redis.io/redis-stable.tar.gz
+$ tar xvzf redis-stable.tar.gz
+$ cd redis-stable
+
+$ make install
+$ make test
+
+$ redis-server --daemonize yes
+```
+
+### Project initialization with composer and Laravel's Artisan commands
+
+```shell
+$ curl https://getcomposer.org/installer > composer.phar
+$ php composer.phar
+$ php composer.phar install
+
+$ php artisan migrate:fresh --seed
+```
