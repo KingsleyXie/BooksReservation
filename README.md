@@ -1,39 +1,39 @@
 ## Books Reservation
-This is an online web system wrote for books reseravtion, typically old books collected from graduates. The project has been maintained since May 2017, which is excatly the time it was first deployed online, and then in the next year it was updated and worked in production again. Later in November 2018 it was used as my database coursework and so I made even more modifications and optimizations to the core modules.
+This is an online web system wrote for books :books: reseravtion, typically old books collected from graduates :mortar_board:. The project has been maintained since May 2017, which is excatly the time it was first deployed :rocket: online, and then in the next year it was updated and worked in production again. Later in November 2018 it was used as my database coursework :balloon: and so I made even more modifications and optimizations :arrow_up: to the core modules.
 
 ### Brief Introduction
 *Note: In this system, `reserve` refers to the reserve operation itself while `reservation` is used to refer to the reserved order......maybe still kind of confusing = _ =!*
 
-- **User Module:**
-  - Welcome modal will be displayed once the page is loaded, and then after clicking the confirm button you can get paged books' brief data ordered by their entry time, while books with no surplus will be showed in the final page
-  - Navbar displays three options, you can get all books' list, search books via keywords or search reservation via your student ID
-  - Commit or modify a reservation: Choose no more than **three** books and then you can commit the reservation after filling in the information form, and the reservation can be modified any time after its commit
-  - Student ID is used as unique identifier in this system, so it can not be modified, and an reservation with reserved student ID will not be committed.
+- User Module :orange_book::
+  - Welcome modal will be displayed once the page is loaded, and then after clicking the confirm button you can get paged books' brief data ordered by their entry time :clock12:, while books with no surplus :zero: will be showed in the final page
+  - Navbar displays three options, you can get all books' list, search :mag_right: books via keywords or search :mag: reservation via your student ID
+  - Commit or modify a reservation: Choose no more than **three** :three: books and then you can commit the reservation after filling in the information form, and the reservation can be modified :pencil: any time after its commit
+  - Student ID is used as unique identifier :pushpin: in this system, so it can not :no_entry_sign: be modified, and an reservation with reserved student ID will not be committed.
 
-- Admin Module:
-  - After logged in, this page will display all existed books with their detailed information, add and update functions are provided as well, and the cursor will be automatically focused on remaining amount area when updating a book, so that update operations can be more efficient
-  - To add a book to database, you will need to scan or input its ISBN, if there is no data responses after requesting the ISBN-based search, information of the book will need to be inputted manually
-  - All reservations will be displayed in the page from  "show all reservations" link, so that administrators can use them to hand out the reserved books
+- Admin Module :lock::
+  - After logged in :key:, this page will display all existed books with their detailed information :book:, add and update functions are provided as well, and the cursor will be automatically focused on remaining amount area when updating a book, so that update operations can be more efficient :zap:
+  - To add a book to database, you will need to scan :camera_flash: or input its ISBN, if there is no data responses after requesting the ISBN-based search, information of the book will need to be inputted :pencil2: manually
+  - All reservations will be displayed in the page from  "show all reservations" link :link:, so that administrators can use them to hand out the reserved books
 
 **The API used in this system to get books' information from their ISBN is provided by [douban](https://developers.douban.com/wiki/?title=book_v2), and the Front-End UI is based on [Materialize](https://github.com/Dogfalo/materialize)**.
 
 Source of sample SideNav header picture was [here](https://assets.entrepreneur.com/content/3x2/1300/20150115183825-books-reading.jpeg) and it was processed to fit in its element position.
 
-A Brief Chinese introduction and direction of this system lays in [`Instructions.md`](Instructions.md).
+A Brief Chinese :u6709: introduction and direction of this system lays in [`Instructions.md`](Instructions.md).
 
 ### Experience Demo Sites
 You can experience this entire system on [https://db-demo.kingsley.cc](https://db-demo.kingsley.cc), and here are some different versions deployed online:
 
-- [Version 0](https://demos.kingsleyxie.cn/books-reservation/), this should be the furthest version of this system, deployed on May, 2017. And this link is a demo online so you can test with anyway you want.
+- [Version 0 :candy:](https://demos.kingsleyxie.cn/books-reservation/) should be the furthest version of this system, deployed on May, 2017, it is now an online demo which you can test with anyway you want.
 
-- [Version 1](https://cs2018.kingsleyxie.cn), this is in production so please **DO NOT TEST WITH IT**, deployed on May, 2018
+- [Version 1 :icecream:](https://cs2018.kingsleyxie.cn) is in production mode, deployed on May, 2018. Reservation's add and modify interfaces are currently closed, so please **DO NOT TEST WITH IT**.
 
-- [Version 2](https://db-demo.kingsley.cc), yes this is the link given above, it is used as a demo for my database coursework presentation, and this is also the up-to-date version. It is strongly recommended to experience with it if you want to try the system, since it has significant updates and optimizations from the former two versions.
+- [Version 2 :lollipop:](https://db-demo.kingsley.cc) is the link given above, it is used as a demo for my database coursework presentation, and this is also the up-to-date version. It is strongly recommended to experience with it if you want to try the system, since it has significant updates :alembic: and optimizations :sparkles: from the former two versions.
 
 ## Dependency Installation
-Commands are as follows, based on my coursework presentation demo site using Ubuntu 16.04, the process to install LNMP/LAMP is ignored here. Besides, for convenience, any user permission related problem are also not shown either.
+Commands are as follows, based on my coursework presentation demo site :bookmark: using Ubuntu 16.04, the process to install LNMP/LAMP is ignored here. Besides, for convenience, any user permission related problem are also not shown either.
 
-### Elasticsearch with `IK` analysis plugin, and `Java` environment:
+### Elasticsearch with `IK` analysis plugin :package:, and `Java` environment :coffee:
 
 References:
   - [How To Install Oracle Java JDK 11 / 8 on Ubuntu 16.04 / Linux Mint 18](https://www.itzgeek.com/how-tos/linux/ubuntu-how-tos/install-java-jdk-8-on-ubuntu-14-10-linux-mint-17-1.html)
@@ -57,7 +57,7 @@ $ sudo ./bin/elasticsearch-plugin install https://github.com/medcl/elasticsearch
 $ sudo systemctl restart elasticsearch
 ```
 
-### Redis database for session cache and book search result cache
+### Redis database for session cache and book search result cache :beers:
 
 References:
   - [How to Install and Configure a Redis Cluster on Ubuntu 16.04](https://www.linode.com/docs/applications/big-data/how-to-install-and-configure-a-redis-cluster-on-ubuntu-1604/)
@@ -79,7 +79,7 @@ $ make test
 $ redis-server --daemonize yes
 ```
 
-### Laravel project dependencies
+### Laravel project dependencies :heavy_plus_sign:
 
 ```shell
 $ curl https://getcomposer.org/installer > composer.phar
@@ -88,7 +88,7 @@ $ php composer.phar install
 ```
 
 ## Deploy Guide
-### Initialization
+### Initialization :wrench:
 First, test if MySQL, Redis and Elasticsearch is running, execute these commands for them respectively:
 
 ```shell
@@ -99,9 +99,9 @@ $ redis-cli
 $ curl localhost:9200
 ```
 
-Then just change configurations in `.env` file which you should copy from `.env.example`, typically you may  just change `DB_*` to your mysql host, username and password for this project, and `REDIS_*` should just be the default config if you didn't change it. `ADMIN_PATH` is used as a random string for the admin pages' URL.
+Then just change configurations in `.env` file which you should copy from `.env.example`, typically you may  just change `DB_*` to your mysql host, username and password for this project, and `REDIS_*` should just be the default config if you didn't change it. `ADMIN_PATH` is used as a random string :see_no_evil: for the admin pages' URL.
 
-Remember to give write permission to `storage` directory, and you can just start using the system after following operations:
+Remember to give write permission to `storage` directory, and you can just start using the system after following operations :ok_hand::
 
 ```shell
 # Generate an app key for the Laravel project
@@ -111,9 +111,9 @@ $ php artisan key:generate
 $ php artisan migrate:fresh --seed
 ```
 
-Since the sync between MySQL and Elasticseach is only done when adding or updating book in admin module, this database operation makes no synchronization between them, so you'll need to manually do that, luckily I've wrote an API for that operation, just sign in admin module and visit `api/admin/init-index` will make everything in the right position.
+Since the sync :speech_balloon: between MySQL and Elasticseach is only done when adding or updating book in admin module, this database operation makes no synchronization between them, so you'll need to manually do that, luckily I've wrote an API for that operation, just sign in admin module and visit `api/admin/init-index` will make everything in the right position.
 
-### Reset all dirty data
+### Reset all dirty data :boom:
 You may want to clear all changes after several test operations, only need three commands are needed for that:
 
 ```shell
@@ -128,3 +128,5 @@ $ redis-cli FLUSHALL
 ```
 
 And of course the `api/admin/init-index` URL should be visited again to recreate indices for these test books.
+
+Made By Kingsley With :heart:
