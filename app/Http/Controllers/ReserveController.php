@@ -76,7 +76,8 @@ class ReserveController extends Controller
 			'dorm' => $req->dorm,
 			'contact' => $req->contact,
 			'takeday' => $req->takeday,
-			'taketime' => $req->taketime
+			'taketime' => $req->taketime,
+			'updated' => DB::raw('NOW()')
 		];
 
 		$preBookIds = [$req->prebook0, $req->prebook1, $req->prebook2];
