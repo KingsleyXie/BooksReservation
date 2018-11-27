@@ -31,7 +31,7 @@ You can experience this entire system on [https://db-demo.kingsley.cc](https://d
 - [Version 2 :lollipop:](https://db-demo.kingsley.cc) is the link given above, it is used as a demo for my database coursework presentation, and this is also the up-to-date version. It is strongly recommended to experience with it if you want to try the system, since it has significant updates :alembic: and optimizations :zap: from the former two versions.
 
 ## Dependency Installation
-Commands are as follows, based on my coursework presentation demo site using Ubuntu 16.04, the process to install LNMP/LAMP is ignored here. Besides, for convenience, any user permission related problem are also not shown either.
+Commands are as follows, based on my coursework presentation demo site using Ubuntu 16.04, the process to install LNMP/LAMP is ignored here. Besides, for convenience, any user permission related problem are not shown either.
 
 ### Elasticsearch with `IK` analysis plugin :package: and `Java` environment :coffee:
 
@@ -99,9 +99,9 @@ $ redis-cli
 $ curl localhost:9200
 ```
 
-Then just change configurations in `.env` file which you should copy from `.env.example`, typically you may  just change `DB_*` to your mysql host, username and password for this project, and `REDIS_*` should just be the default config if you didn't change it. `ADMIN_PATH` is used as a random string :see_no_evil: for the admin pages' URL.
+Then just change configurations in file `.env` which should be dumplicated from `.env.example`, typically you may just change `DB_*` to your MySQL host, username and password for this project, and leave the values of `REDIS_*` just the defaults if you didn't change them. `ADMIN_PATH` is used as a random string for the admin pages' URL.
 
-Remember to give write permission to `storage` directory, and you can just start using the system after following operations:
+Remember to give write permission to `storage` directory, and you can just start to use the system after following commands:
 
 ```shell
 # Generate an app key for the Laravel project
@@ -111,10 +111,10 @@ $ php artisan key:generate
 $ php artisan migrate:fresh --seed
 ```
 
-Since the sync :speech_balloon: between MySQL and Elasticseach is only done when adding or updating book in admin module, this database operation makes no synchronization between them, so you'll need to manually do that, luckily I've wrote an API for that operation, just sign in admin module and visit `api/admin/init-index` will make everything in the right position.
+Since the sync :speech_balloon: between MySQL and Elasticseach is only executed when adding or updating book in admin pages, the above direct database operations make no synchronization between them, so you'll need to manually do that. Luckily, there is an API for that, just sign in to admin module and visit `api/admin/init-index`, then everything shall be in the right position.
 
 ### Reset all dirty data :boom:
-You may want to clear all changes after several test operations, only need three commands are needed for that:
+You may want to clear all changes after several test operations, only three commands are needed for that:
 
 ```shell
 # Reset database structure and test data
